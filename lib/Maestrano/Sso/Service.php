@@ -106,6 +106,17 @@ class Maestrano_Sso_Service
     $path = Maestrano::param('sso_app_init_path');
     return "${host}${path}";
   }
+  
+  /**
+   * The URL where the SSO response will be posted and consumed.
+   * @var string
+   */
+  public function getConsumeUrl()
+  {
+    $host = Maestrano::param('app_host');
+    $path = Maestrano::param('sso_app_consume_path');
+    return "${host}${path}";
+  }
 
   /**
    * Return where the app should redirect after logging user
@@ -171,17 +182,6 @@ class Maestrano_Sso_Service
     $api_base = Maestrano::param('api_base');
     $endpoint = 'auth/saml';
     return "${host}${api_base}${endpoint}";
-  }
-  
-  /**
-   * The URL where the SSO response will be posted and consumed.
-   * @var string
-   */
-  public function getConsumeUrl()
-  {
-    $host = Maestrano::param('app_host');
-    $path = Maestrano::param('sso_app_consume_path');
-    return "${host}${path}";
   }
   
   /**
