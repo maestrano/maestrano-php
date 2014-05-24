@@ -13,7 +13,7 @@ class Maestrano_Sso_BaseGroup
   public $free_trial_end_at = '';
   
   /* Company Name */
-  public $company_display_name = '';
+  public $company_name = '';
   
   /* Country - alpha2 format */
   public $country = '';
