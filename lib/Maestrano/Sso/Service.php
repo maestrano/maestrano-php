@@ -27,30 +27,6 @@ class Maestrano_Sso_Service
       }
       return self::$_instance;
   }
-  
-  /**
-  * Return a reference to the user session object
-  *
-  * @return session hash
-  */
-  public function &getHttpSession()
-  {
-   if (!$this->client_session) {
-     $this->setHttpSession($_SESSION);
-   }
- 
-   return $this->client_session;
-  }
-
-  /**
-  * Set internal pointer to the session
-  *
-  * @var session hash
-  */
-  public function setHttpSession(& $session_hash)
-  {
-   return $this->client_session = & $session_hash;
-  }
 
   /**
   * Return the maestrano sso session
@@ -163,13 +139,6 @@ class Maestrano_Sso_Service
    */
   public function getAfterSignInPath()
   {
-    if ($this->getHttpSession()) {
-  		$session = $this->getHttpSession();
-  		if (isset($session['mno_previous_url'])) {
-  			return $session['mno_previous_url'];
-  		}
-    
-  	}
   	return $this->after_sso_sign_in_path;
   }
   

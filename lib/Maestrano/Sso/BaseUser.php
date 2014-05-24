@@ -65,8 +65,7 @@ class Maestrano_Sso_BaseUser
       $this->group_uid  = $assert_attrs['group_uid'][0];
       $this->group_role = $assert_attrs['group_role'][0];
       
-      // Extract session information
-      $this->session = &Maestrano::sso()->getHttpSession(); #reference
+      // Extract mno session information
       $this->sso_session = $assert_attrs['mno_session'][0];
       $this->sso_session_recheck = new DateTime($assert_attrs['mno_session_recheck'][0]);
       
@@ -226,14 +225,15 @@ class Maestrano_Sso_BaseUser
    * It is expected that this method get extended with
    * application specific behavior in the Maestrano_Sso_User class
    *
+   * @param $http_session the current session hash
    * @return boolean whether the user was successfully signedIn or not
    */
-  public function signIn()
+  public function signIn(& $http_session)
   {
-    if ($this->setInSession()) {
-      $this->session['mno_uid'] = $this->uid;
-      $this->session['mno_session'] = $this->sso_session;
-      $this->session['mno_session_recheck'] = $this->sso_session_recheck->format(DateTime::ISO8601);
+    if ($this->setInSession($http_session)) {
+      $http_session['mno_uid'] = $this->uid;
+      $http_session['mno_session'] = $this->sso_session;
+      $http_session['mno_session_recheck'] = $this->sso_session_recheck->format(DateTime::ISO8601);
     }
   }
   
@@ -260,9 +260,10 @@ class Maestrano_Sso_BaseUser
    * reflect the app specific way of putting an authenticated
    * user in session.
    *
+   * @param $http_session the current session hash
    * @return boolean whether the user was successfully set in session or not
    */
-   protected function setInSession()
+   protected function setInSession(& $http_session)
    {
      throw new Exception('Function '. __FUNCTION__ . ' must be overriden in Maestrano_Sso_User class!');
    }

@@ -29,10 +29,10 @@ class Maestrano_Sso_Session
   /**
    * Construct the Maestrano_Sso_Session object
    */
-  public function __construct()
+  public function __construct(& $http_session)
   {
       // Populate attributes from params
-      $this->session = &Maestrano::sso()->getHttpSession();
+      $this->session = &$http_session;
       $this->uid = $this->session['mno_uid'];
       $this->token = $this->session['mno_session'];
       $this->recheck = new DateTime($this->session['mno_session_recheck']);
