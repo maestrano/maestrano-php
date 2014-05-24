@@ -234,7 +234,11 @@ class Maestrano_Sso_BaseUser
       $http_session['mno_uid'] = $this->uid;
       $http_session['mno_session'] = $this->sso_session;
       $http_session['mno_session_recheck'] = $this->sso_session_recheck->format(DateTime::ISO8601);
+      
+      return true;
     }
+    
+    return false;
   }
   
   /**
