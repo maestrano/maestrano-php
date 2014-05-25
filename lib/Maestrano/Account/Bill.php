@@ -10,7 +10,7 @@ class Maestrano_Account_Bill extends Maestrano_Api_Resource
    */
   public static function classUrl($class)
   {
-    return "/api/v1/billing/bills";
+    return "/api/v1/account/bills";
   }
   
   /**
