@@ -39,6 +39,8 @@ abstract class Maestrano_Api_Util
         $results[$k] = $v->__toArray(true);
       } else if (is_array($v)) {
         $results[$k] = self::convertMaestranoObjectToArray($v);
+      } else if ($v instanceOf DateTime) {
+        $results[$k] = $v->format(DateTime::ISO8601);
       } else {
         $results[$k] = $v;
       }
@@ -73,7 +75,12 @@ abstract class Maestrano_Api_Util
       }
       return Maestrano_Api_Object::scopedConstructFrom($class, $resp, $apiKey);
     } else {
-      return $resp;
+      // Automatically convert dates
+      if (preg_match('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $resp) {
+        return new DateTime($resp);
+      } else {
+        return $resp;
+      }
     }
   }
 }
