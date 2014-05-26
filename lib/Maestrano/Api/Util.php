@@ -76,7 +76,7 @@ abstract class Maestrano_Api_Util
       return Maestrano_Api_Object::scopedConstructFrom($class, $resp, $apiKey);
     } else {
       // Automatically convert dates
-      if (preg_match('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $resp) {
+      if (preg_match('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $resp)) {
         return new DateTime($resp);
       } else {
         return $resp;
