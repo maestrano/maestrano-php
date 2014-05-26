@@ -33,9 +33,9 @@ class Maestrano_Sso_Service
   *
   * @return Maestrano_Sso_Session
   */
-  public function session()
+  public function session(& $http_session)
   {
-    return new Maestrano_Sso_Session();
+    return new Maestrano_Sso_Session($http_session);
   }
   
   /**
