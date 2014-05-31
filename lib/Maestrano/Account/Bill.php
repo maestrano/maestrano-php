@@ -15,38 +15,38 @@ class Maestrano_Account_Bill extends Maestrano_Api_Resource
   
   /**
    * @param string $id The ID of the bill to retrieve.
-   * @param string|null $apiKey
+   * @param string|null $apiToken
    *
    * @return Maestrano_Billing_Bill
    */
-  public static function retrieve($id, $apiKey=null)
+  public static function retrieve($id, $apiToken=null)
   {
     $class = get_class();
-    return self::_scopedRetrieve($class, $id, $apiKey);
+    return self::_scopedRetrieve($class, $id, $apiToken);
   }
 
   /**
    * @param array|null $params
-   * @param string|null $apiKey
+   * @param string|null $apiToken
    *
    * @return array An array of Maestrano_Billing_Bills.
    */
-  public static function all($params=null, $apiKey=null)
+  public static function all($params=null, $apiToken=null)
   {
     $class = get_class();
-    return self::_scopedAll($class, $params, $apiKey);
+    return self::_scopedAll($class, $params, $apiToken);
   }
 
   /**
    * @param array|null $params
-   * @param string|null $apiKey
+   * @param string|null $apiToken
    *
    * @return Maestrano_Billing_Bill The created bill.
    */
-  public static function create($params=null, $apiKey=null)
+  public static function create($params=null, $apiToken=null)
   {
     $class = get_class();
-    return self::_scopedCreate($class, $params, $apiKey);
+    return self::_scopedCreate($class, $params, $apiToken);
   }
 
   /**

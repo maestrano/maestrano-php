@@ -15,19 +15,19 @@ class Maestrano_Api_Object implements ArrayAccess
 
   public static function init()
   {
-    self::$permanentAttributes = new Maestrano_Util_Set(array('_apiKey', 'id'));
+    self::$permanentAttributes = new Maestrano_Util_Set(array('_apiToken', 'id'));
     self::$nestedUpdatableAttributes = new Maestrano_Util_Set(array('metadata'));
   }
 
-  protected $_apiKey;
+  protected $_apiToken;
   protected $_values;
   protected $_unsavedValues;
   protected $_transientValues;
   protected $_retrieveOptions;
 
-  public function __construct($id=null, $apiKey=null)
+  public function __construct($id=null, $apiToken=null)
   {
-    $this->_apiKey = $apiKey;
+    $this->_apiToken = $apiToken;
     $this->_values = array();
     $this->_unsavedValues = new Maestrano_Util_Set();
     $this->_transientValues = new Maestrano_Util_Set();
@@ -129,40 +129,40 @@ class Maestrano_Api_Object implements ArrayAccess
    *
    * @param Maestrano_Api_Object $class
    * @param array $values
-   * @param string|null $apiKey
+   * @param string|null $apiToken
    *
    * @return Maestrano_Api_Object The object constructed from the given values.
    */
-  public static function scopedConstructFrom($class, $values, $apiKey=null)
+  public static function scopedConstructFrom($class, $values, $apiToken=null)
   {
-    $obj = new $class(isset($values['id']) ? $values['id'] : null, $apiKey);
-    $obj->refreshFrom($values, $apiKey);
+    $obj = new $class(isset($values['id']) ? $values['id'] : null, $apiToken);
+    $obj->refreshFrom($values, $apiToken);
     return $obj;
   }
 
   /**
    * @param array $values
-   * @param string|null $apiKey
+   * @param string|null $apiToken
    *
    * @return Maestrano_Api_Object The object of the same class as $this constructed
    *    from the given values.
    */
-  public static function constructFrom($values, $apiKey=null)
+  public static function constructFrom($values, $apiToken=null)
   {
     $class = get_class($this);
-    return self::scopedConstructFrom($class, $values, $apiKey);
+    return self::scopedConstructFrom($class, $values, $apiToken);
   }
 
   /**
    * Refreshes this object using the provided values.
    *
    * @param array $values
-   * @param string $apiKey
+   * @param string $apiToken
    * @param boolean $partial Defaults to false.
    */
-  public function refreshFrom($values, $apiKey, $partial=false)
+  public function refreshFrom($values, $apiToken, $partial=false)
   {
-    $this->_apiKey = $apiKey;
+    $this->_apiToken = $apiToken;
 
     // Wipe old state before setting new.  This is useful for e.g. updating a
     // customer, where there is no persistent card parameter.  Mark those values
@@ -184,9 +184,9 @@ class Maestrano_Api_Object implements ArrayAccess
         continue;
 
       if (self::$nestedUpdatableAttributes->includes($k) && is_array($v)) {
-        $this->_values[$k] = Maestrano_Api_Object::scopedConstructFrom('Maestrano_AttachedObject', $v, $apiKey);
+        $this->_values[$k] = Maestrano_Api_Object::scopedConstructFrom('Maestrano_AttachedObject', $v, $apiToken);
       } else {
-        $this->_values[$k] = Maestrano_Api_Util::convertToMaestranoObject($v, $apiKey);
+        $this->_values[$k] = Maestrano_Api_Util::convertToMaestranoObject($v, $apiToken);
       }
 
       $this->_transientValues->discard($k);

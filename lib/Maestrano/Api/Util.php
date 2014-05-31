@@ -52,10 +52,10 @@ abstract class Maestrano_Api_Util
    * Converts a response from the Maestrano API to the corresponding PHP object.
    *
    * @param array $resp The response from the Maestrano API.
-   * @param string $apiKey
+   * @param string $apiToken
    * @return Maestrano_Api_Object|array
    */
-  public static function convertToMaestranoObject($resp, $apiKey)
+  public static function convertToMaestranoObject($resp, $apiToken)
   {
     $types = array(
       'account_bill' => 'Maestrano_Account_Bill',
@@ -63,7 +63,7 @@ abstract class Maestrano_Api_Util
     if (self::isList($resp)) {
       $mapped = array();
       foreach ($resp as $i)
-        array_push($mapped, self::convertToMaestranoObject($i, $apiKey));
+        array_push($mapped, self::convertToMaestranoObject($i, $apiToken));
       return $mapped;
     } else if (is_array($resp)) {
       if (isset($resp['object']) 
@@ -73,7 +73,7 @@ abstract class Maestrano_Api_Util
       } else {
         $class = 'Maestrano_Api_Object';
       }
-      return Maestrano_Api_Object::scopedConstructFrom($class, $resp, $apiKey);
+      return Maestrano_Api_Object::scopedConstructFrom($class, $resp, $apiToken);
     } else {
       // Automatically convert dates
       if (preg_match('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $resp)) {
