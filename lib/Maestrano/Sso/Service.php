@@ -176,7 +176,7 @@ class Maestrano_Sso_Service
     
     // Configure SAML
     $settings->idpPublicCertificate = Maestrano::param('sso_x509_certificate');
-    $settings->spIssuer = Maestrano::param('api_key');
+    $settings->spIssuer = Maestrano::param('app_id');
     $settings->requestedNameIdFormat = Maestrano::param('sso_name_id_format');
     $settings->idpSingleSignOnUrl = $this->getIdpUrl();
     $settings->spReturnUrl = $this->getConsumeUrl();
