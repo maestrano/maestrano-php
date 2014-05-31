@@ -3,9 +3,9 @@
 class Maestrano_Api_Requestor
 {
   /**
-   * @var string $apiKey The API key that's to be used to make requests.
+   * @var string $apiToken The API key that's to be used to make requests.
    */
-  public $apiKey;
+  public $apiToken;
 
   private static $preFlight;
 
@@ -14,9 +14,9 @@ class Maestrano_Api_Requestor
     return array();
   }
 
-  public function __construct($apiKey=null)
+  public function __construct($apiToken=null)
   {
-    $this->_apiKey = $apiKey;
+    $this->_apiToken = $apiToken;
   }
 
   /**
@@ -107,9 +107,9 @@ class Maestrano_Api_Requestor
   {
     if (!$params)
       $params = array();
-    list($rbody, $rcode, $myApiKey) = $this->_requestRaw($method, $url, $params);
+    list($rbody, $rcode, $myApiToken) = $this->_requestRaw($method, $url, $params);
     $resp = $this->_interpretResponse($rbody, $rcode);
-    return array($resp, $myApiKey);
+    return array($resp, $myApiToken);
   }
 
 
@@ -160,12 +160,12 @@ class Maestrano_Api_Requestor
 
   private function _requestRaw($method, $url, $params)
   {
-    $myApiKey = $this->_apiKey;
-    if (!$myApiKey)
-      $myApiKey = Maestrano::param('api_key');
+    $myApiToken = $this->_apiToken;
+    if (!$myApiToken)
+      $myApiToken = Maestrano::param('api_token');
 
-    if (!$myApiKey) {
-      $msg = 'No API key provided.';
+    if (!$myApiToken) {
+      $msg = 'No API token provided.';
       throw new Maestrano_Api_AuthenticationError($msg);
     }
 
@@ -180,7 +180,7 @@ class Maestrano_Api_Requestor
                 'uname' => $uname);
     $headers = array('X-Maestrano-Client-User-Agent: ' . json_encode($ua),
                      'User-Agent: Maestrano/v1 PhpBindings/' . Maestrano::VERSION,
-                     'Authorization: Basic ' . base64_encode($myApiKey . ':'));
+                     'Authorization: Basic ' . base64_encode($myApiToken));
     if (Maestrano::param('api_version'))
       $headers[] = 'Maestrano-Version: ' . Maestrano::param('api_version');
     list($rbody, $rcode) = $this->_curlRequest(
@@ -189,7 +189,7 @@ class Maestrano_Api_Requestor
         $headers,
         $params
     );
-    return array($rbody, $rcode, $myApiKey);
+    return array($rbody, $rcode, $myApiToken);
   }
 
   private function _interpretResponse($rbody, $rcode)
