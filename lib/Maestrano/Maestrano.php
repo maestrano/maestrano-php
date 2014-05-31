@@ -29,11 +29,20 @@ class Maestrano
       trigger_error("No environment provided. Defaulting to: '" . self::$environment . "'",E_USER_NOTICE);
     }
     
+    if (array_key_exists('app_id', $settings)) {
+      self::$config['app_id'] = $settings['app_id'];
+    } else {
+      throw new ArgumentException('No app_id provided. Please add your App ID.');
+    }
+    
     if (array_key_exists('api_key', $settings)) {
       self::$config['api_key'] = $settings['api_key'];
     } else {
       throw new ArgumentException('No api_key provided. Please add your API key.');
     }
+    
+    // Build api_token from app_id and api_key
+    self::$config['api_token'] = self::$config['app_id'] . ":" . self::$config['api_key'];
     
     if (array_key_exists('sso_enabled', $settings)) {
       self::$config['sso_enabled'] = $settings['sso_enabled'];
