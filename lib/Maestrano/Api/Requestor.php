@@ -178,11 +178,11 @@ class Maestrano_Api_Requestor
                 'lang_version' => $langVersion,
                 'publisher' => 'maestrano',
                 'uname' => $uname);
+    
     $headers = array('X-Maestrano-Client-User-Agent: ' . json_encode($ua),
                      'User-Agent: Maestrano/v1 PhpBindings/' . Maestrano::VERSION,
                      'Authorization: Basic ' . base64_encode($myApiToken));
-    if (Maestrano::param('api_version'))
-      $headers[] = 'Maestrano-Version: ' . Maestrano::param('api_version');
+    
     list($rbody, $rcode) = $this->_curlRequest(
         $method,
         $absUrl,

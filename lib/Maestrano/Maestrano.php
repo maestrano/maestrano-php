@@ -11,7 +11,7 @@ class Maestrano
   const VERSION = '0.1';
 
   /* Environment: 'test' or 'production' */
-  protected static $environment = 'production';
+  protected static $environment = 'test';
 
   /* Internal Config Map */
   protected static $config = array();
@@ -23,31 +23,11 @@ class Maestrano
   */
   public static function configure($settings)
   {
+    //-------------------------------
+    // App Config
+    //-------------------------------
     if (array_key_exists('environment', $settings)) {
       self::$environment = $settings['environment'];
-    } else {
-      trigger_error("No environment provided. Defaulting to: '" . self::$environment . "'",E_USER_NOTICE);
-    }
-    
-    if (array_key_exists('app_id', $settings)) {
-      self::$config['app_id'] = $settings['app_id'];
-    } else {
-      throw new ArgumentException('No app_id provided. Please add your App ID.');
-    }
-    
-    if (array_key_exists('api_key', $settings)) {
-      self::$config['api_key'] = $settings['api_key'];
-    } else {
-      throw new ArgumentException('No api_key provided. Please add your API key.');
-    }
-    
-    // Build api_token from app_id and api_key
-    self::$config['api_token'] = self::$config['app_id'] . ":" . self::$config['api_key'];
-    
-    if (array_key_exists('sso_enabled', $settings)) {
-      self::$config['sso_enabled'] = $settings['sso_enabled'];
-    } else {
-      self::$config['sso_enabled'] = true;
     }
     
     if (array_key_exists('app_host', $settings)) {
@@ -55,6 +35,29 @@ class Maestrano
     } else {
       self::$config['app_host'] = 'http://localhost:8888';
       trigger_error("No application host provided. Defaulting to: '" . self::$config['app_host'] . "'",E_USER_NOTICE);
+    }
+    
+    //-------------------------------
+    // API Config
+    //-------------------------------
+    if (array_key_exists('app_id', $settings)) {
+      self::$config['app_id'] = $settings['app_id'];
+    }
+    
+    if (array_key_exists('api_key', $settings)) {
+      self::$config['api_key'] = $settings['api_key'];
+    }
+    
+    // Build api_token from app_id and api_key
+    self::$config['api_token'] = self::$config['app_id'] . ":" . self::$config['api_key'];
+    
+    //-------------------------------
+    // SSO Config
+    //-------------------------------
+    if (array_key_exists('sso_enabled', $settings)) {
+      self::$config['sso_enabled'] = $settings['sso_enabled'];
+    } else {
+      self::$config['sso_enabled'] = true;
     }
     
     if (array_key_exists('sso_app_init_path', $settings)) {
@@ -72,7 +75,7 @@ class Maestrano
     if (array_key_exists('user_creation_mode', $settings)) {
       self::$config['user_creation_mode'] = $settings['user_creation_mode'];
     } else {
-      self::$config['sso_app_consume_path'] = 'virtual';
+      self::$config['user_creation_mode'] = 'real';
     }
     
     // Check SSL certificate on API requests
@@ -80,13 +83,6 @@ class Maestrano
       self::$config['verify_ssl_certs'] = $settings['verify_ssl_certs'];
     } else {
       self::$config['verify_ssl_certs'] = false;
-    }
-    
-    // string|null The version of the Maestrano API to use for requests.
-    if (array_key_exists('api_version', $settings)) {
-      self::$config['api_version'] = $settings['api_version'];
-    } else {
-      self::$config['api_version'] = null;
     }
     
     return true;
@@ -101,9 +97,9 @@ class Maestrano
        return self::$config[$parameter];
      } else if (array_key_exists($parameter, self::$evt_config[self::$environment])) {
        return self::$evt_config[self::$environment][$parameter];
-     } else {
-       throw new ArgumentException("No such configuration parameter: '". $parameter ."'");
      }
+     
+     return null;
    }
    
    /**
