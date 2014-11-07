@@ -78,8 +78,8 @@ class Maestrano_Sso_Service
    */
   public function getInitUrl()
   {
-    $host = Maestrano::param('app.host');
-    $path = Maestrano::param('sso_app_init_path');
+    $host = Maestrano::param('sso.idp');
+    $path = Maestrano::param('sso.init_path');
     return "${host}${path}";
   }
   
@@ -90,7 +90,7 @@ class Maestrano_Sso_Service
   public function getConsumeUrl()
   {
     $host = Maestrano::param('app.host');
-    $path = Maestrano::param('sso_app_consume_path');
+    $path = Maestrano::param('sso.consume_path');
     return "${host}${path}";
   }
 
