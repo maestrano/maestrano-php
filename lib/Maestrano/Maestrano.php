@@ -59,6 +59,11 @@ class Maestrano
       self::$config['api.key'] = $settings['api']['key'];
     }
     
+    // Get lang/platform version
+    self::$config['api.version'] = Maestrano::VERSION;
+    self::$config['api.lang'] = 'php';
+    self::$config['api.lang_version'] = phpversion() . " " . php_uname();
+    
     // Build api.token from api.id and api.key
     self::$config['api.token'] = self::$config['api.id'] . ":" . self::$config['api.key'];
     
@@ -139,8 +144,8 @@ class Maestrano
    public static function param($parameter) {
      if (array_key_exists($parameter, self::$config)) {
        return self::$config[$parameter];
-     } else if (array_key_exists($parameter, self::$evt_config[self::$config['environment']])) {
-       return self::$evt_config[self::$config['environment']][$parameter];
+     } else if (array_key_exists($parameter, self::$EVT_CONFIG[self::$config['environment']])) {
+       return self::$EVT_CONFIG[self::$config['environment']][$parameter];
      }
      
      return null;
@@ -154,12 +159,55 @@ class Maestrano
    public static function sso() {
      return Maestrano_Sso_Service::instance();
    }
+   
+   /**
+    * Return a json string describing the configuration
+    * currently used by the PHP bindings
+    */
+   public static function toMetadata() {
+     $config = array(
+       'environment'        => Maestrano::param('environment'),
+       'app' => array(
+         'host'             => Maestrano::param('app.host')
+       ),
+       'api' => array(
+         'id'               => Maestrano::param('api.id'),
+         'version'          => Maestrano::param('api.version'),
+         'verify_ssl_certs' => false,
+         'lang'             => Maestrano::param('api.lang'),
+         'lang_version'     => Maestrano::param('api.lang_version'),
+         'host'             => Maestrano::param('api.host'),
+         'base'             => Maestrano::param('api.base'),
+         
+       ),
+       'sso' => array(
+         'enabled'          => Maestrano::param('sso.enabled'),
+         'slo_enabled'      => Maestrano::param('sso.slo_enabled'),
+         'init_path'        => Maestrano::param('sso.init_path'),
+         'consume_path'     => Maestrano::param('sso.consume_path'),
+         'creation_mode'    => Maestrano::param('sso.creation_mode'),
+         'idm'              => Maestrano::param('sso.idm'),
+         'idp'              => Maestrano::param('sso.idp'),
+         'name_id_format'   => Maestrano::param('sso.name_id_format'),
+         'x509_fingerprint' => Maestrano::param('sso.x509_fingerprint'),
+         'x509_certificate' => Maestrano::param('sso.x509_certificate'),
+       ),
+       'webhook' => array(
+         'account' => array(
+           'groups_path' => Maestrano::param('webhook.account.groups_path'),
+           'group_users_path' => Maestrano::param('webhook.account.group_users_path'),
+         )
+       )
+     );
+     
+     return json_encode($config);
+   }
   
   
     /* 
     * Environment related configuration 
     */
-    private static $evt_config = array(
+    public static $EVT_CONFIG = array(
     'test' => array(
       'api.host'               => 'http://api-sandbox.maestrano.io',
       'api.base'               => '/api/v1/',

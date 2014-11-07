@@ -72,6 +72,46 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
       $this->assertFalse(Maestrano::authenticate($this->config['api']['id'] . "aaa",$this->config['api']['key']));
       $this->assertFalse(Maestrano::authenticate($this->config['api']['id'],$this->config['api']['key'] . "aaa"));
     }
+    
+    public function testToMetadata() {
+      Maestrano::configure($this->config);
+      
+      $expected = array(
+        'environment'        => $this->config['environment'],
+        'app' => array(
+          'host'             => $this->config['app']['host']
+        ),
+        'api' => array(
+          'id'               => $this->config['api']['id'],
+          'version'          => Maestrano::VERSION,
+          'verify_ssl_certs' => false,
+          'lang'             => 'php',
+          'lang_version'     => phpversion() . " " . php_uname(),
+          'host'             => Maestrano::$EVT_CONFIG[$this->config['environment']]['api.host'],
+          'base'             => Maestrano::$EVT_CONFIG[$this->config['environment']]['api.base'],
+        ),
+        'sso' => array(
+          'enabled'          => true,
+          'slo_enabled'      => true,
+          'init_path'        => $this->config['sso']['init_path'],
+          'consume_path'     => $this->config['sso']['consume_path'],
+          'creation_mode'    => 'real',
+          'idm'              => $this->config['app']['host'],
+          'idp'              => Maestrano::$EVT_CONFIG[$this->config['environment']]['sso.idp'],
+          'name_id_format'   => Maestrano::$EVT_CONFIG[$this->config['environment']]['sso.name_id_format'],
+          'x509_fingerprint' => Maestrano::$EVT_CONFIG[$this->config['environment']]['sso.x509_fingerprint'],
+          'x509_certificate' => Maestrano::$EVT_CONFIG[$this->config['environment']]['sso.x509_certificate'],
+        ),
+        'webhook' => array(
+          'account' => array(
+            'groups_path' => $this->config['webhook']['account']['groups_path'],
+            'group_users_path' => $this->config['webhook']['account']['group_users_path'],
+          )
+        )
+      );
+      
+      $this->assertEquals(json_encode($expected),Maestrano::toMetadata());
+    }
 }
 
 
