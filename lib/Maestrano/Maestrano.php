@@ -10,24 +10,26 @@ class Maestrano
   // Maestrano PHP API Version
   const VERSION = '0.1';
 
-  /* Environment: 'test' or 'production' */
-  protected static $environment = 'test';
-
   /* Internal Config Map */
   protected static $config = array();
   
   /**
-  * Configure Maestrano API
+  * Configure Maestrano API from array or file (string path)
   *
   * @return true
   */
-  public static function configure($settings)
-  {
+  public static function configure($settings) {
+    if (is_string($settings)) {
+      return self::configure(json_decode(file_get_contents($settings),true));
+    }
+    
     //-------------------------------
     // App Config
     //-------------------------------
     if (array_key_exists('environment', $settings)) {
-      self::$environment = $settings['environment'];
+      self::$config['environment'] = $settings['environment'];
+    } else {
+      self::$config['environment'] = 'test';
     }
     
     if (array_key_exists('app', $settings) && array_key_exists('host', $settings['app'])) {
@@ -127,8 +129,8 @@ class Maestrano
    public static function param($parameter) {
      if (array_key_exists($parameter, self::$config)) {
        return self::$config[$parameter];
-     } else if (array_key_exists($parameter, self::$evt_config[self::$environment])) {
-       return self::$evt_config[self::$environment][$parameter];
+     } else if (array_key_exists($parameter, self::$evt_config[self::$config['environment']])) {
+       return self::$evt_config[self::$config['environment']][$parameter];
      }
      
      return null;
