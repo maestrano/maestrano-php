@@ -14,6 +14,16 @@ class Maestrano
   protected static $config = array();
   
   /**
+   * Check if the pair api_id/api_key is valid
+   * for authentication purpose
+   * @return whether the pair is valid or not
+   */
+  public static function authenticate($api_id,$api_key) {
+    return !is_null($api_id) && !is_null($api_key) && 
+      self::param('api.id') == $api_id && self::param('api.key') == $api_key;
+  }
+  
+  /**
   * Configure Maestrano API from array or file (string path)
   *
   * @return true

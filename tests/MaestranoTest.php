@@ -59,6 +59,19 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
       
       unlink($path);
     }
+    
+    public function testAuthenticateWhenValid() {
+      Maestrano::configure($this->config);
+      
+      $this->assertTrue(Maestrano::authenticate($this->config['api']['id'],$this->config['api']['key']));
+    }
+    
+    public function testAuthenticateWhenInvalid() {
+      Maestrano::configure($this->config);
+      
+      $this->assertFalse(Maestrano::authenticate($this->config['api']['id'] . "aaa",$this->config['api']['key']));
+      $this->assertFalse(Maestrano::authenticate($this->config['api']['id'],$this->config['api']['key'] . "aaa"));
+    }
 }
 
 
