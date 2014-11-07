@@ -67,7 +67,7 @@ class Maestrano_Sso_Service
    */
    public function isSsoEnabled()
    {
-     return Maestrano::param('sso_enabled');
+     return Maestrano::param('sso.enabled');
    }
 
   /**
@@ -78,7 +78,7 @@ class Maestrano_Sso_Service
    */
   public function getInitUrl()
   {
-    $host = Maestrano::param('app_host');
+    $host = Maestrano::param('app.host');
     $path = Maestrano::param('sso_app_init_path');
     return "${host}${path}";
   }
@@ -89,7 +89,7 @@ class Maestrano_Sso_Service
    */
   public function getConsumeUrl()
   {
-    $host = Maestrano::param('app_host');
+    $host = Maestrano::param('app.host');
     $path = Maestrano::param('sso_app_consume_path');
     return "${host}${path}";
   }
@@ -102,7 +102,7 @@ class Maestrano_Sso_Service
    */
   public function getLogoutUrl()
   {
-    $host = Maestrano::param('api_host');
+    $host = Maestrano::param('api.host');
     $endpoint = '/app_logout';
     
     return "${host}${endpoint}";
@@ -116,7 +116,7 @@ class Maestrano_Sso_Service
    */
   public function getUnauthorizedUrl()
   {
-    $host = Maestrano::param('api_host');
+    $host = Maestrano::param('api.host');
     $endpoint = '/app_access_unauthorized';
     
     return "${host}${endpoint}";
@@ -147,10 +147,10 @@ class Maestrano_Sso_Service
    * @var string
    */
   public function getIdpUrl() {
-    $host = Maestrano::param('api_host');
-    $api_base = Maestrano::param('api_base');
+    $host = Maestrano::param('api.host');
+    $api.base = Maestrano::param('api.base');
     $endpoint = 'auth/saml';
-    return "${host}${api_base}${endpoint}";
+    return "${host}${api.base}${endpoint}";
   }
   
   /**
@@ -159,11 +159,11 @@ class Maestrano_Sso_Service
    */
   public function getSessionCheckUrl($user_id,$sso_session) 
   {
-    $host = Maestrano::param('api_host');
-    $api_base = Maestrano::param('api_base');
+    $host = Maestrano::param('api.host');
+    $api.base = Maestrano::param('api.base');
     $endpoint = 'auth/saml';
     
-    return "${host}${api_base}${endpoint}/${user_id}?session=${sso_session}";
+    return "${host}${api.base}${endpoint}/${user_id}?session=${sso_session}";
   }
   
   /**
@@ -175,9 +175,9 @@ class Maestrano_Sso_Service
     $settings = new Maestrano_Saml_Settings();
     
     // Configure SAML
-    $settings->idpPublicCertificate = Maestrano::param('sso_x509_certificate');
-    $settings->spIssuer = Maestrano::param('app_id');
-    $settings->requestedNameIdFormat = Maestrano::param('sso_name_id_format');
+    $settings->idpPublicCertificate = Maestrano::param('sso.x509_certificate');
+    $settings->spIssuer = Maestrano::param('api.id');
+    $settings->requestedNameIdFormat = Maestrano::param('sso.name_id_format');
     $settings->idpSingleSignOnUrl = $this->getIdpUrl();
     $settings->spReturnUrl = $this->getConsumeUrl();
     
