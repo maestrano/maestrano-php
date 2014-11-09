@@ -24,9 +24,13 @@ class Maestrano_Saml_Request
      *
      * @param $get_params the GET parameters associative array
      */
-    public function __construct($get_params = array())
+    public function __construct($get_params = array(), $settings = null)
     {
-        $this->_settings = Maestrano::sso()->getSamlSettings();
+        if ($settings == null) {
+          $settings = Maestrano::sso()->getSamlSettings();
+        }
+      
+        $this->_settings = $settings;
         $this->_get_params = $get_params;
     }
 
