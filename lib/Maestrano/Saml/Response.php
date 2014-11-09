@@ -9,7 +9,12 @@ class Maestrano_Saml_Response
      * @var Maestrano_Saml_Settings
      */
     protected $_settings;
-
+    
+    /**
+     * @var array
+     */
+    protected $cachedAttributes = null;
+    
     /**
      * The decoded, unprocessed XML assertion provided to the constructor.
      * @var string
@@ -62,10 +67,14 @@ class Maestrano_Saml_Response
 
     public function getAttributes()
     {
+        if ($cachedAttributes != null) {
+          return $cachedAttributes;
+        }
+        
         $entries = $this->_queryAssertion('/saml:AttributeStatement/saml:Attribute');
-
-        $attributes = array();
-        /** @var $entry DOMNode */
+        $cachedAttributes = array();
+        
+        /** $entry DOMNode */
         foreach ($entries as $entry) {
             $attributeName = $entry->attributes->getNamedItem('Name')->nodeValue;
             
@@ -76,9 +85,9 @@ class Maestrano_Saml_Response
                 }
             }
 
-            $attributes[$attributeName] = $attributeValues;
+            $cachedAttributes[$attributeName] = $attributeValues;
         }
-        return $attributes;
+        return $cachedAttributes;
     }
 
     /**
