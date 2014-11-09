@@ -22,7 +22,7 @@ class Maestrano_Sso_Group
   public $local_id = null;
   
   /**
-   * Construct the Maestrano_Sso_BaseUser object from a SAML response
+   * Construct the Maestrano_Sso_User object from a SAML response
    *
    * @param Maestrano_Saml_Response $saml_response
    *   A SamlResponse object from Maestrano containing details

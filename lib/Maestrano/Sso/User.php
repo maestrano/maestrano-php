@@ -6,47 +6,41 @@
  */
 class Maestrano_Sso_User
 {
-  /* Session Object */
-  public $session = null;
+  /* UID of current group */
+  public $groupUid = '';
   
   /* Role in current group */
-  public $group_role = '';
+  public $groupRole = '';
   
   /* User UID */
   public $uid = '';
   
   /* User Virtual UID - unique across users and groups */
-  public $virtual_uid = '';
+  public $virtualUid = '';
   
   /* User email */
   public $email = '';
   
   /* User virtual email - unique across users and groups */
-  public $virtual_email = '';
+  public $virtualEmail = '';
   
-  /* User name */
-  public $name = '';
+  /* User firstName */
+  public $firstName = '';
   
-  /* User surname */
-  public $surname = '';
+  /* User lastName */
+  public $lastName = '';
   
   /* User country - alpha2 code */
   public $country = '';
   
-  /* User company name */
-  public $company_name = '';
+  /* User company firstName */
+  public $companyName = '';
   
   /* Maestrano specific user sso session token */
-  public $sso_session = '';
+  public $ssoSession = '';
   
   /* When to recheck for validity of the sso session */
-  public $sso_session_recheck = null;
-  
-  /**
-   * User Local Id
-   * @var string
-   */
-  public $local_id = null;
+  public $ssoSessionRecheck = null;
   
   
   /**
@@ -56,219 +50,160 @@ class Maestrano_Sso_User
    *   A SamlResponse object from Maestrano containing details
    *   about the user being authenticated
    */
-  public function __construct(Maestrano_Saml_Response $saml_response)
+  public function __construct($saml_response)
   {
       // Get assertion attributes
-      $assert_attrs = $saml_response->getAttributes();
+      $att = $saml_response->getAttributes();
       
       // Group related information
-      $this->group_uid  = $assert_attrs['group_uid'][0];
-      $this->group_role = $assert_attrs['group_role'][0];
+      $this->groupUid  = $att['group_uid'];
+      $this->groupRole = $att['group_role'];
       
       // Extract mno session information
-      $this->sso_session = $assert_attrs['mno_session'][0];
-      $this->sso_session_recheck = new DateTime($assert_attrs['mno_session_recheck'][0]);
+      $this->ssoSession = $att['mno_session'];
+      $this->ssoSessionRecheck = new DateTime($att['mno_session_recheck']);
       
       // Extract user metadata
-      $this->uid = $assert_attrs['uid'][0];
-      $this->virtual_uid = $assert_attrs['virtual_uid'][0];
-      $this->email = $assert_attrs['email'][0];
-      $this->virtual_email = $assert_attrs['virtual_email'][0];
-      $this->name = $assert_attrs['name'][0];
-      $this->surname = $assert_attrs['surname'][0];
-      $this->country = $assert_attrs['country'][0];
-      $this->company_name = $assert_attrs['company_name'][0];
+      $this->uid = $att['uid'];
+      $this->virtualUid = $att['virtual_uid'];
+      $this->email = $att['email'];
+      $this->virtualEmail = $att['virtual_email'];
+      $this->firstName = $att['name'];
+      $this->lastName = $att['surname'];
+      $this->country = $att['country'];
+      $this->companyName = $att['company_name'];
   }
   
-  /* 
-   * Result depends on Maestranos#user_creation_mode:
-   * 'real': return the real maestrano uid (set this if users can be part of multiple groups)
-   * 'virtual': return a composite maestrano uid (set this if users can only be part of one group)
-   */
-  public function getUid() {
-    if (Maestrano::param('user_creation_mode') == 'real') {
-      return $this->uid;
-    } else {
-      return $this->virtual_uid;
-    }
-  }
-  
-  /* 
-   * Result depends on Maestranos#user_creation_mode:
-   * 'real': return the real maestrano email (set this if users can be part of multiple groups)
-   * 'virtual': return a composite maestrano email (set this if users can only be part of one group)
-   */
-  public function getEmail() {
-    if (Maestrano::param('user_creation_mode') == 'real') {
-      return $this->email;
-    } else {
-      return $this->virtual_email;
-    }
-  }
-  
-  /**
-   * Try to find a local application user matching the sso one
-   * using uid first, then email address.
-   * 
-   * @return local_id if a local user matched, null otherwise
-   */
-  public function matchLocal()
-  {
-    // Try to get the local id from uid
-    $this->local_id = $this->getLocalIdByUid();
-    
-    // Sync local details if we have a match
-    if ($this->local_id) {
-      $this->syncLocalDetails();
-    }
-    
-    return $this->local_id;
-  }
-  
-  /**
-   * Return wether the user was matched or not
-   * Check if the local_id is null or not
-   * 
-   * @return boolean
-   */
-  public function isMatched()
-  {
-    return !is_null($this->local_id);
-  }
-  
-  
-  /**
-   * Create a local user by invoking createLocalUser
-   * and set uid on the newly created user
-   * If createLocalUser returns null then access
-   * is refused to the user
-   */
-   public function createLocalUserOrDenyAccess()
-   {
-     if (is_null($this->local_id)) {
-       $this->local_id = $this->createLocalUser();
-
-        // If a user has been created successfully
-        // then make sure UID is set on it
-        if ($this->local_id) {
-          $this->setLocalUid();
-        }
-     }
-     
-     return $this->local_id;
-   }
-  
-  /**
-   * Create a local user based on the sso user
-   * This method must be re-implemented in Maestrano_Sso_User
-   * (raise an error otherwise)
-   *
-   * @return a user ID if found, null otherwise
-   */
-  protected function createLocalUser()
-  {
-    throw new Exception('Function '. __FUNCTION__ . ' must be overriden in Maestrano_Sso_User class!');
-  }
-  
-  /**
-   * Get the ID of a local user via Maestrano UID lookup
-   * This method must be re-implemented in Maestrano_Sso_User
-   * (raise an error otherwise)
-   *
-   * @return a user ID if found, null otherwise
-   */
-  protected function getLocalIdByUid()
-  {
-    throw new Exception('Function '. __FUNCTION__ . ' must be overriden in Maestrano_Sso_User class!');
-  }
-  
-  /**
-   * Get the ID of a local user via email lookup
-   * This method must be re-implemented in Maestrano_Sso_User
-   * (raise an error otherwise)
-   *
-   * @return a user ID if found, null otherwise
-   */
-  protected function getLocalIdByEmail()
-  {
-    throw new Exception('Function '. __FUNCTION__ . ' must be overriden in Maestrano_Sso_User class!');
-  }
-  
-  /**
-   * Set the Maestrano UID on a local user via email lookup
-   * This method must be re-implemented in Maestrano_Sso_User
-   * (raise an error otherwise)
-   *
-   * @return a user ID if found, null otherwise
-   */
-  protected function setLocalUid()
-  {
-    throw new Exception('Function '. __FUNCTION__ . ' must be overriden in Maestrano_Sso_User class!');
-  }
-  
-  /**
-   * Set all 'soft' details on the user (like name, surname, email)
-   * This is a convenience method that must be implemented in
-   * Maestrano_Sso_User but is not mandatory.
-   *
-   * @return boolean whether the user was synced or not
-   */
-   protected function syncLocalDetails()
-   {
-     return true;
-   }
-  
-  /**
-   * Sign the user in the application. By default,
-   * set the mno_uid, mno_session and mno_session_recheck
-   * in session.
-   * It is expected that this method get extended with
-   * application specific behavior in the Maestrano_Sso_User class
-   *
-   * @param $http_session the current session hash
-   * @return boolean whether the user was successfully signedIn or not
-   */
-  public function signIn(& $http_session)
-  {
-    if ($this->setInSession($http_session)) {
-      $http_session['mno_uid'] = $this->uid;
-      $http_session['mno_session'] = $this->sso_session;
-      $http_session['mno_session_recheck'] = $this->sso_session_recheck->format(DateTime::ISO8601);
+	/**
+	 * Return the real UID if Maestrano Sso Creation Mode is set
+   * to "real" and the Virtual UID otherwise ("virtual" mode)
+	 * @return $this->String uid to use in application
+	 */
+    public function toUid()
+    {
+      $svc = Maestrano::sso();
       
-      return true;
+    	if ($svc->getCreationMode() == "real") {
+    		return $this->this->uid;
+    	} else {
+    		return $this->this->virtualUid;
+    	}
     }
     
-    return false;
-  }
-  
-  /**
-   * Generate a random password.
-   * Convenient to set dummy passwords on users
-   *
-   * @return string a random password
-   */
-  protected function generatePassword()
-  {
-    $length = 20;
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, strlen($characters) - 1)];
+    /**
+     * Return the real email if Maestrano Sso Creation Mode is set
+     * to "real" and the Virtual email otherwise ("virtual" mode)
+     * @return
+     */
+    public function toEmail()
+    {
+      $svc = Maestrano::sso();
+      
+    	if ($svc->getCreationMode() == "real") {
+    		return $this->this->email;
+    	} else {
+    		return $this->this->virtualEmail;
+    	}
     }
-    return $randomString;
-  }
-  
-  /**
-   * Set user in session. Called by signIn method.
-   * This method should be overriden in Maestrano_Sso_User to
-   * reflect the app specific way of putting an authenticated
-   * user in session.
-   *
-   * @param $http_session the current session hash
-   * @return boolean whether the user was successfully set in session or not
-   */
-   protected function setInSession(& $http_session)
-   {
-     throw new Exception('Function '. __FUNCTION__ . ' must be overriden in Maestrano_Sso_User class!');
-   }
+	
+	/**
+	 * Return the current user session token
+	 * @return String session token
+	 */
+	public function getSsoSession() {
+		return $this->ssoSession;
+	}
+	
+	/**
+	 * Return when the user session should be remotely checked
+	 * @return DateTime session check time
+	 */
+	public function getSsoSessionRecheck() {
+		return $this->ssoSessionRecheck;
+	}
+	
+	/**
+	 * Return the user group UID 
+	 * @return String group UID
+	 */
+	public function getGroupUid() {
+		return $this->groupUid;
+	}
+	
+	/**
+	 * Return the user role in the group
+	 * Roles are: 'Member', 'Power User', 'Admin', 'Super Admin'
+	 * @return String user role in group
+	 */
+	public function getGroupRole() {
+		return $this->groupRole;
+	}
+	
+	/**
+	 * The Maestrano user UID
+	 * @return String user UID
+	 */
+	public function getUid() {
+		return $this->uid;
+	}
+	
+	/**
+	 * The user virtual UID which is truly unique across users and groups
+	 * @return String user virtual uid
+	 */
+	public function getVirtualUid() {
+		return $this->virtualUid;
+	}
+	
+	/**
+	 * The actual user email 
+	 * @return String user email
+	 */
+	public function getEmail() {
+		return $this->email;
+	}
+	
+	/**
+	 * Virtual email that can be used instead of regular email fields
+	 * This email is unique across users and groups
+	 * All emails sent to this email address are redirected to the real
+	 * user email
+	 * @return String virtual email
+	 */
+	public function getVirtualEmail() {
+		return $this->virtualEmail;
+	}
+	
+	/**
+	 * User first firstName
+	 * @return String user first name
+	 */
+	public function getFirstName() {
+		return $this->firstName;
+	}
+	
+	/**
+	 * User last last name
+	 * @return String user last name
+	 */
+	public function getLastName() {
+		return $this->lastName;
+	}
+	
+	/**
+	 * ALPHA2 code of user country
+	 * @return
+	 */
+	public function getCountry() {
+		return $this->country;
+	}
+	
+	/**
+	 * Company firstName entered by the user
+	 * Can be empty
+	 * @return String company name
+	 */
+	public function getCompanyName() {
+		return $this->companyName;
+	}
 }

@@ -13,8 +13,6 @@ class Maestrano_Saml_RequestTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->settings = SamlTestHelper::getXmlSecSamlTestSettings();
-        #$this->settings->idpSingleSignOnUrl = 'http://stuff.com';
-        #$this->settings->spReturnUrl = 'http://sp.stuff.com';
     }
     
     /**
