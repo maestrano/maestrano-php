@@ -68,42 +68,40 @@ class Maestrano_Saml_XmlSec
      * @return bool
      * @throws Exception
      */
-    public function isValid()
-    {
-        $objXMLSecDSig = new XMLSecurityDSig();
-
-        $objDSig = $objXMLSecDSig->locateSignature($this->_document);
-        if (!$objDSig) {
-            throw new Exception('Cannot locate Signature Node');
-        }
-        $objXMLSecDSig->canonicalizeSignedInfo();
-        $objXMLSecDSig->idKeys = array('ID');
-
-        $retVal = $objXMLSecDSig->validateReference();
-        if (!$retVal) {
-            throw new Exception('Reference Validation Failed');
-        }
-
+    public function isValid() {
         $singleAssertion = $this->validateNumAssertions();
         if (!$singleAssertion) {
             throw new Exception('Multiple assertions are not supported');
         }
-
+        
         $validTimestamps = $this->validateTimestamps();
         if (!$validTimestamps) {
-            throw new Exception('Timing issues (please check your clock settings)
-            ');
+            throw new Exception('Timing issues (please check your clock settings)');
         }
-
+        
+        $objXMLSecDSig = new XMLSecurityDSig();
+        $objDSig = $objXMLSecDSig->locateSignature($this->_document);
+        if (!$objDSig) {
+            throw new Exception('Cannot locate Signature Node');
+        }
+        
+        $objXMLSecDSig->canonicalizeSignedInfo();
+        $objXMLSecDSig->idKeys = array('ID');
         $objKey = $objXMLSecDSig->locateKey();
         if (!$objKey) {
             throw new Exception('We have no idea about the key');
         }
-
+        
+        try {
+            $retVal = $objXMLSecDSig->validateReference();
+        }
+        catch (Exception $e) {
+            throw new Exception('Reference Validation Failed');
+        }
+        
         XMLSecEnc::staticLocateKeyInfo($objKey, $objDSig);
-
-        $objKey->loadKey($this->_settings->idpPublicCertificate, FALSE, TRUE);
-
+        $objKey->loadKey($this->_settings->idpPublicCertificate, false, true);
+        
         return ($objXMLSecDSig->verify($objKey) === 1);
     }
 }

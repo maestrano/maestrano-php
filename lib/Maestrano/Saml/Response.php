@@ -27,9 +27,13 @@ class Maestrano_Saml_Response
      *
      * @param string $saml_response A UUEncoded SAML response from the IdP.
      */
-    public function __construct($saml_response)
+    public function __construct($saml_response, $settings = null)
     {
-        $this->_settings = Maestrano::sso()->getSamlSettings();
+        if ($settings == null) {
+          $settings = Maestrano::sso()->getSamlSettings();
+        }
+        
+        $this->_settings = $settings;
         $this->assertion = base64_decode($saml_response);
         $this->document = new DOMDocument();
         $this->document->loadXML($this->assertion);

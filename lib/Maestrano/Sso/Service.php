@@ -148,9 +148,9 @@ class Maestrano_Sso_Service
    */
   public function getIdpUrl() {
     $host = Maestrano::param('api.host');
-    $api.base = Maestrano::param('api.base');
+    $api_base = Maestrano::param('api.base');
     $endpoint = 'auth/saml';
-    return "${host}${api.base}${endpoint}";
+    return "${host}${api_base}${endpoint}";
   }
   
   /**
@@ -160,10 +160,10 @@ class Maestrano_Sso_Service
   public function getSessionCheckUrl($user_id,$sso_session) 
   {
     $host = Maestrano::param('api.host');
-    $api.base = Maestrano::param('api.base');
+    $api_base = Maestrano::param('api.base');
     $endpoint = 'auth/saml';
     
-    return "${host}${api.base}${endpoint}/${user_id}?session=${sso_session}";
+    return "${host}${api_base}${endpoint}/${user_id}?session=${sso_session}";
   }
   
   /**
