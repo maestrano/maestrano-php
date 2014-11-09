@@ -109,7 +109,7 @@ class Maestrano_Api_Requestor
       $params = array();
     list($rbody, $rcode, $myApiToken) = $this->_requestRaw($method, $url, $params);
     $resp = $this->_interpretResponse($rbody, $rcode);
-    return array($resp, $myApiToken);
+    return array($resp['data'], $myApiToken);
   }
 
 
@@ -212,7 +212,7 @@ class Maestrano_Api_Requestor
   {
 
     if (!self::$preFlight) {
-      self::$preFlight = $this->checkSslCert($this->apiUrl());
+      #self::$preFlight = $this->checkSslCert($this->apiUrl());
     }
 
     $curl = curl_init();
@@ -249,7 +249,7 @@ class Maestrano_Api_Requestor
 
     curl_setopt_array($curl, $opts);
     $rbody = curl_exec($curl);
-
+    
     if (!defined('CURLE_SSL_CACERT_BADFILE')) {
       define('CURLE_SSL_CACERT_BADFILE', 77);  // constant not defined in PHP
     }

@@ -160,7 +160,7 @@ class Maestrano_Api_Object implements ArrayAccess
    * @param string $apiToken
    * @param boolean $partial Defaults to false.
    */
-  public function refreshFrom($values, $apiToken, $partial=false)
+  public function refreshFrom($values, $apiToken = null, $partial=false)
   {
     $this->_apiToken = $apiToken;
 

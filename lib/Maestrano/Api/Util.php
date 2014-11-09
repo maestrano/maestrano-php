@@ -60,15 +60,18 @@ abstract class Maestrano_Api_Util
     $types = array(
       'account_bill' => 'Maestrano_Account_Bill',
     );
+    
     if (self::isList($resp)) {
       $mapped = array();
       foreach ($resp as $i)
         array_push($mapped, self::convertToMaestranoObject($i, $apiToken));
       return $mapped;
+    
     } else if (is_array($resp)) {
       if (isset($resp['object']) 
           && is_string($resp['object'])
           && isset($types[$resp['object']])) {
+        
         $class = $types[$resp['object']];
       } else {
         $class = 'Maestrano_Api_Object';
