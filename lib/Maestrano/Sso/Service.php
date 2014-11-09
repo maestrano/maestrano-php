@@ -69,7 +69,17 @@ class Maestrano_Sso_Service
    {
      return Maestrano::param('sso.enabled');
    }
-
+   
+   /**
+    * Check if Maestrano SLO is enabled
+    *
+    * @return boolean
+    */
+    public function isSloEnabled()
+    {
+      return Maestrano::param('sso.slo_enabled');
+    }
+   
   /**
    * Return where the app should redirect internally to initiate
    * SSO request

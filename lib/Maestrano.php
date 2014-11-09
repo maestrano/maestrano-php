@@ -19,6 +19,9 @@ require_once(dirname(__FILE__) . '/Maestrano/Maestrano.php');
 // XMLSEC Libs
 require_once(dirname(__FILE__) . '/Maestrano/Xmlseclibs/xmlseclibs.php');
 
+// Maestrano NET
+require_once(dirname(__FILE__) . '/Maestrano/Net/HttpClient.php');
+
 // SAML
 require_once(dirname(__FILE__) . '/Maestrano/Saml/XmlSec.php');
 require_once(dirname(__FILE__) . '/Maestrano/Saml/Settings.php');
