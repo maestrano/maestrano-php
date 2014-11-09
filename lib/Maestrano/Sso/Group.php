@@ -6,129 +6,121 @@
  */
 class Maestrano_Sso_Group
 {
-  /* User UID */
-  public $uid = '';
-  
-  /* When does free trial terminate */
-  public $free_trial_end_at = '';
-  
-  /* Company Name */
-  public $company_name = '';
-  
-  /* Country - alpha2 format */
-  public $country = '';
-  
-  /* Group Local Id */
-  public $local_id = null;
-  
-  /**
-   * Construct the Maestrano_Sso_User object from a SAML response
-   *
-   * @param Maestrano_Saml_Response $saml_response
-   *   A SamlResponse object from Maestrano containing details
-   *   about the user being authenticated
-   */
-  public function __construct(Maestrano_Saml_Response $saml_response)
-  {
-      // Get assertion attributes and session
-      $assert_attrs = $saml_response->getAttributes();
-      
-      // Extract group information
-      $this->uid = $assert_attrs['group_uid'][0];
-      $this->free_trial_end_at = new DateTime($assert_attrs['group_end_free_trial'][0]);
-      $this->country = $assert_attrs['country'][0];
-      $this->company_name = $assert_attrs['company_name'][0];
-  }
-  
-  /**
-   * Try to find a local group matching the sso one
-   * using uid.
-   * ---
-   * Internally use the following interface methods:
-   *  - getLocalIdByUid
-   * 
-   * @return local_id if a local user matched, null otherwise
-   */
-  public function matchLocal()
-  {
-    // Try to get the local id from uid
-    $this->local_id = $this->getLocalIdByUid();
+	private $uid;
+	private $name;
+	private $email;
+	private $hasCreditCard;
+	private $freeTrialEndAt;
+	private $companyName;
+	private $currency;
+	private $timezone;
+	private $country;
+	private $city;
     
-    return $this->local_id;
-  }
-  
+    
   /**
-   * Return wether the group was matched or not
-   * Check if the local_id is null or not
-   * 
-   * @return boolean
+   * Constructor
+   * @param samlResponse a SAML Response from Maestrano IDP
+   * @throws ParseException 
    */
-  public function isMatched()
+  public function __construct($saml_response)
   {
-    return !is_null($this->local_id);
-  }
-  
-  /**
-   * Create a local group (global customer account) by invoking createLocalGroup
-   * and set uid on the newly created group
-   */
-   public function createLocalGroupAndMatch()
-   {
-     if (is_null($this->local_id)) {
-       $this->local_id = $this->createLocalGroup();
+      $att = $saml_response->getAttributes();
+      
+      // General info
+      $this->uid = $att["group_uid"];
+      $this->name = $att["group_name"];
+      $this->email = $att["group_email"];
+      $this->freeTrialEndAt = new DateTime($att["group_end_free_trial"]);
+      $this->companyName = $att["company_name"];
+      $this->hasCreditCard = ($att["group_has_credit_card"] != null && $att["group_has_credit_card"] == "true");
 
-        // If a group has been created successfully
-        // then make sure UID is set on it
-        if ($this->local_id) {
-          $this->setLocalUid();
-        }
-     }
-     
-     return $this->local_id;
-   }
-  
-   /**
-    * Add a user to an existing group if the user is not
-    * part of it already
-    */
-   public function addUser($sso_user,$user_role) {
-     throw new Exception('Function '. __FUNCTION__ . ' must be overriden in Maestrano_Sso_Group class!');
-   }
-  
-  /**
-   * Create a local group based on the sso user
-   * This method must be re-implemented in Maestrano_Sso_Group
-   * (raise an error otherwise)
-   *
-   * @return a group ID if created, null otherwise
-   */
-  protected function createLocalGroup()
-  {
-    throw new Exception('Function '. __FUNCTION__ . ' must be overriden in Maestrano_Sso_Group class!');
+      // Geo info
+      $this->currency = $att["group_currency"];
+      $this->timezone = new DateTimeZone($att["group_timezone"]);
+      $this->country = $att["group_country"];
+      $this->city = $att["group_city"];
   }
-  
-  /**
-   * Get the ID of a local group via Maestrano UID lookup
-   * This method must be re-implemented in Maestrano_Sso_Group
-   * (raise an error otherwise)
-   *
-   * @return a group ID if found, null otherwise
-   */
-  protected function getLocalIdByUid()
-  {
-    throw new Exception('Function '. __FUNCTION__ . ' must be overriden in Maestrano_Sso_Group class!');
-  }
-  
-  /**
-   * Set the Maestrano UID on a local group
-   * This method must be re-implemented in Maestrano_Sso_Group
-   * (raise an error otherwise)
-   *
-   * @return boolean
-   */
-  protected function setLocalUid()
-  {
-    throw new Exception('Function '. __FUNCTION__ . ' must be overriden in Maestrano_Sso_Group class!');
-  }
+
+    /**
+     * Return the group UID
+     * @return String group UID
+     */
+	public function getUid() {
+		return $this->uid;
+	}
+
+	/**
+	 * Return the name of the group
+	 * @return String group name
+	 */
+	public function getName() {
+		return $this->name;
+	}
+
+	/**
+	 * Return the principal contact email for this group 
+	 * @return String principal email address
+	 */
+	public function getEmail() {
+		return $this->email;
+	}
+
+	/**
+	 * Return whether the group has a credit card
+	 * @return
+	 */
+	public function hasCreditCard() {
+		return $this->hasCreditCard;
+	}
+
+	/**
+	 * Return when the group free trial is finishing
+	 * @return DateTime end of free trial
+	 */
+	public function getFreeTrialEndAt() {
+		return $this->freeTrialEndAt;
+	}
+
+	/**
+	 * Return the original company name for this group
+	 * Can be empty
+	 * @return String company name
+	 */
+	public function getCompanyName() {
+		return $this->companyName;
+	}
+
+	/**
+	 * Return the currency code of main currency used by this group
+	 * @return String currency code
+	 */
+	public function getCurrency() {
+		return $this->currency;
+	}
+
+	/**
+	 * Return the timezone for this group
+	 * @return TimeZone group timezone
+	 */
+	public function getTimezone() {
+		return $this->timezone;
+	}
+
+	/**
+	 * Return the ALPHA2 country code for this group
+	 * @return String alpha2 country code
+	 */
+	public function getCountry() {
+		return $this->country;
+	}
+
+	/**
+	 * Return the city in which this group is located
+	 * @return String group city
+	 */
+	public function getCity() {
+		return $this->city;
+	}
   
 }
