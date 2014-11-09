@@ -31,8 +31,8 @@ require_once(dirname(__FILE__) . '/Maestrano/Util/Set.php');
 // SSO
 require_once(dirname(__FILE__) . '/Maestrano/Sso/Service.php');
 require_once(dirname(__FILE__) . '/Maestrano/Sso/Session.php');
-require_once(dirname(__FILE__) . '/Maestrano/Sso/BaseUser.php');
-require_once(dirname(__FILE__) . '/Maestrano/Sso/BaseGroup.php');
+require_once(dirname(__FILE__) . '/Maestrano/Sso/User.php');
+require_once(dirname(__FILE__) . '/Maestrano/Sso/Group.php');
 
 // Api
 require_once(dirname(__FILE__) . '/Maestrano/Api/Object.php');

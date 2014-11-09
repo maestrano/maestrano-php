@@ -4,7 +4,7 @@
  * Properly format a User received from Maestrano 
  * SAML IDP
  */
-class Maestrano_Sso_BaseGroup
+class Maestrano_Sso_Group
 {
   /* User UID */
   public $uid = '';

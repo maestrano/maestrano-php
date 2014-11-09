@@ -4,7 +4,7 @@
  * Properly format a User received from Maestrano 
  * SAML IDP
  */
-class Maestrano_Sso_BaseUser
+class Maestrano_Sso_User
 {
   /* Session Object */
   public $session = null;
@@ -50,7 +50,7 @@ class Maestrano_Sso_BaseUser
   
   
   /**
-   * Construct the Maestrano_Sso_BaseUser object from a SAML response
+   * Construct the Maestrano_Sso_User object from a SAML response
    *
    * @param Maestrano_Saml_Response $saml_response
    *   A SamlResponse object from Maestrano containing details
