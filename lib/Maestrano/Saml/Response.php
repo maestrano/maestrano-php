@@ -67,12 +67,12 @@ class Maestrano_Saml_Response
 
     public function getAttributes()
     {
-        if ($cachedAttributes != null) {
-          return $cachedAttributes;
+        if ($this->cachedAttributes != null) {
+          return $this->cachedAttributes;
         }
         
         $entries = $this->_queryAssertion('/saml:AttributeStatement/saml:Attribute');
-        $cachedAttributes = array();
+        $this->cachedAttributes = array();
         
         /** $entry DOMNode */
         foreach ($entries as $entry) {
@@ -85,9 +85,9 @@ class Maestrano_Saml_Response
                 }
             }
 
-            $cachedAttributes[$attributeName] = $attributeValues;
+            $this->cachedAttributes[$attributeName] = $attributeValues;
         }
-        return $cachedAttributes;
+        return $this->cachedAttributes;
     }
 
     /**
