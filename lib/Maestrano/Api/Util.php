@@ -61,6 +61,7 @@ abstract class Maestrano_Api_Util
       'account_bill' => 'Maestrano_Account_Bill',
       'account_recurring_bill' => 'Maestrano_Account_RecurringBill',
       'account_group' => 'Maestrano_Account_Group',
+      'account_user' => 'Maestrano_Account_User',
     );
     
     if (self::isList($resp)) {

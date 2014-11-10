@@ -55,3 +55,4 @@ require_once(dirname(__FILE__) . '/Maestrano/Api/Resource.php');
 require_once(dirname(__FILE__) . '/Maestrano/Account/Bill.php');
 require_once(dirname(__FILE__) . '/Maestrano/Account/RecurringBill.php');
 require_once(dirname(__FILE__) . '/Maestrano/Account/Group.php');
+require_once(dirname(__FILE__) . '/Maestrano/Account/User.php');

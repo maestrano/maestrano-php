@@ -29,10 +29,11 @@ class Maestrano_Account_GroupIntegrationTest extends PHPUnit_Framework_TestCase
   }
   
   public function testRetrieveSelectedGroups() {
-    $date = new DateTime('2014-06-21T00:31:26+0000');
+    $dateAfter = new DateTime('2014-06-21T00:31:26+0000');
+    $dateBefore = new DateTime('2014-06-21T00:31:30+0000');
     $groupList = Maestrano_Account_Group::all(array(
-      'free_trial_end_at_after' => $date,
-      'free_trial_end_at_before' => $date,
+      'free_trial_end_at_after' => $dateAfter,
+      'free_trial_end_at_before' => $dateBefore,
     ));
     
     $this->assertTrue(count($groupList) == 1);
