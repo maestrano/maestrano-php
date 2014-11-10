@@ -45,7 +45,6 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
     
     public function testBindingConfigurationBooleanViaJson() {
       $config = array('environment' => 'production', 'sso' => array('enabled' => false));
-      echo json_encode($config);
       Maestrano::configure(json_decode(json_encode($config),true));
       
       $this->assertFalse(Maestrano::param('sso.enabled'));
