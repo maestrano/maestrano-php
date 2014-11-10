@@ -71,7 +71,7 @@ require_once('/path/to/vendor/maestrano/maestrano-php/lib/Maestrano.php');
 ### Configuration
 #### Via config file
 
-You can configure maestrano via json using configuration file like "maestrano.json" that you load using:
+You can configure maestrano via json using a configuration file like "maestrano.json" which you can load using:
 ```php
 Maestrano::configure('/path/to/maestrano.json')
 ```
