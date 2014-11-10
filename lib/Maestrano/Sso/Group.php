@@ -41,11 +41,19 @@ class Maestrano_Sso_Group
       $this->country = $att["group_country"];
       $this->city = $att["group_city"];
   }
-
-    /**
-     * Return the group UID
-     * @return String group UID
-     */
+  
+  /**
+   * Return the group ID (UID)
+   * @return String group ID (UID)
+   */
+	public function getId() {
+		return $this->uid;
+	}
+  
+  /**
+   * Return the group UID
+   * @return String group UID
+   */
 	public function getUid() {
 		return $this->uid;
 	}

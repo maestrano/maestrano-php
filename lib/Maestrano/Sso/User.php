@@ -74,6 +74,10 @@ class Maestrano_Sso_User
       $this->companyName = $att['company_name'];
   }
   
+  public function toId() {
+    return $this->toUid();
+  }
+  
 	/**
 	 * Return the real UID if Maestrano Sso Creation Mode is set
    * to "real" and the Virtual UID otherwise ("virtual" mode)
@@ -140,6 +144,14 @@ class Maestrano_Sso_User
 	}
 	
 	/**
+	 * The Maestrano user ID (UID)
+	 * @return String user ID (UID)
+	 */
+	public function getId() {
+		return $this->uid;
+	}
+  
+	/**
 	 * The Maestrano user UID
 	 * @return String user UID
 	 */
@@ -147,6 +159,14 @@ class Maestrano_Sso_User
 		return $this->uid;
 	}
 	
+	/**
+	 * The user virtual (ID) UID which is truly unique across users and groups
+	 * @return String user virtual uid
+	 */
+	public function getVirtualId() {
+		return $this->virtualUid;
+	}
+  
 	/**
 	 * The user virtual UID which is truly unique across users and groups
 	 * @return String user virtual uid
