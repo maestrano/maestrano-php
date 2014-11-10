@@ -77,7 +77,7 @@ Maestrano::configure('/path/to/maestrano.json')
 ```
 
 The json file may look like this:
-```json
+```ruby
 {
   # ===> App Configuration
   #
