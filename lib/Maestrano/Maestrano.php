@@ -8,7 +8,7 @@
 class Maestrano
 {
   // Maestrano PHP API Version
-  const VERSION = '0.3.5';
+  const VERSION = '0.4.0';
 
   /* Internal Config Map */
   protected static $config = array();
