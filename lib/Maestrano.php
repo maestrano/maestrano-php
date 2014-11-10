@@ -22,6 +22,9 @@ require_once(dirname(__FILE__) . '/Maestrano/Xmlseclibs/xmlseclibs.php');
 // Maestrano NET
 require_once(dirname(__FILE__) . '/Maestrano/Net/HttpClient.php');
 
+// Maestrano Helpers
+require_once(dirname(__FILE__) . '/Maestrano/Helper/DateTime.php');
+
 // SAML
 require_once(dirname(__FILE__) . '/Maestrano/Saml/XmlSec.php');
 require_once(dirname(__FILE__) . '/Maestrano/Saml/Settings.php');
@@ -51,3 +54,4 @@ require_once(dirname(__FILE__) . '/Maestrano/Api/Resource.php');
 // Account API
 require_once(dirname(__FILE__) . '/Maestrano/Account/Bill.php');
 require_once(dirname(__FILE__) . '/Maestrano/Account/RecurringBill.php');
+require_once(dirname(__FILE__) . '/Maestrano/Account/Group.php');
