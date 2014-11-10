@@ -29,38 +29,6 @@ class Maestrano_Sso_Service
   }
 
   /**
-  * Return the maestrano sso session
-  *
-  * @return Maestrano_Sso_Session
-  */
-  public function session(& $http_session)
-  {
-    return new Maestrano_Sso_Session($http_session);
-  }
-  
-  /**
-  * Return a new saml request object
-  *
-  * @param Array of GET parameters (optional)
-  * @return Maestrano_Saml_Request instance
-  */
-  public function buildRequest($get_params = array())
-  {
-    return new Maestrano_Saml_Request($get_params);
-  }
-  
-  /**
-  * Return a new saml response object
-  *
-  * @param String saml_response
-  * @return Maestrano_Saml_Request instance
-  */
-  public function buildResponse($saml_response)
-  {
-    return new Maestrano_Saml_Response($saml_response);
-  }
-
-  /**
    * Check if Maestrano SSO is enabled
    *
    * @return boolean
@@ -79,7 +47,18 @@ class Maestrano_Sso_Service
     {
       return Maestrano::param('sso.slo_enabled');
     }
-   
+  
+  /**
+   * Return the app used to initiate
+   * SSO request
+   *
+   * @return boolean
+   */
+  public function getInitPath()
+  {
+    return Maestrano::param('sso.init_path');
+  }
+  
   /**
    * Return where the app should redirect internally to initiate
    * SSO request
@@ -89,8 +68,17 @@ class Maestrano_Sso_Service
   public function getInitUrl()
   {
     $host = Maestrano::param('sso.idp');
-    $path = Maestrano::param('sso.init_path');
+    $path = $this->getInitPath();
     return "${host}${path}";
+  }
+  
+  /**
+   * The path where the SSO response will be posted and consumed.
+   * @var string
+   */
+  public function getConsumePath()
+  {
+    return Maestrano::param('sso.consume_path');
   }
   
   /**
@@ -100,7 +88,7 @@ class Maestrano_Sso_Service
   public function getConsumeUrl()
   {
     $host = Maestrano::param('app.host');
-    $path = Maestrano::param('sso.consume_path');
+    $path = $this->getConsumePath();
     return "${host}${path}";
   }
 
@@ -130,26 +118,6 @@ class Maestrano_Sso_Service
     $endpoint = '/app_access_unauthorized';
     
     return "${host}${endpoint}";
-  }
-
-  /**
-   * Set the after sso signin path
-   *
-   * @return string url
-   */
-  public function setAfterSignInPath($path)
-  {
-    $this->$after_sso_sign_in_path = $path;
-  }
-
-  /**
-   * Return the after sso signin path
-   *
-   * @return string url
-   */
-  public function getAfterSignInPath()
-  {
-  	return $this->after_sso_sign_in_path;
   }
   
   /**
