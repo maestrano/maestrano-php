@@ -198,7 +198,7 @@ Maestrano::configure(array(
 ```
 
 ### Metadata Endpoint
-Your configuration initializer is now all setup and shiny. Great! But need to know about it. Of course
+Your configuration initializer is now all setup and shiny. Great! But we need to know about it. Of course
 we could propose a long and boring form on maestrano.com for you to fill all these details (especially the webhooks) but we thought it would be more convenient to fetch that automatically.
 
 For that we expect you to create a metadata endpoint that we can fetch regularly (or when you press 'refresh metadata' in your maestrano cloud partner dashboard). By default we assume that it will be located at
