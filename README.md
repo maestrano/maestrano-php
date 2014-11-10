@@ -84,7 +84,6 @@ The json file may look like this:
   # => environment
   # The environment to connect to. If set to 'production' then all Single Sign-On (SSO) and API requests will be made to maestrano.com. If set to 'test' then requests will be made to api-sandbox.maestrano.io. 
   # The api-sandbox allows you to easily test integration scenarios.
-  app.environment=test
   "environment": "test",
   
   # => host
