@@ -43,6 +43,14 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
       $this->assertEquals($this->config['webhook']['account']['group_users_path'], Maestrano::param('webhook.account.group_users_path'));
     }
     
+    public function testBindingConfigurationBooleanViaJson() {
+      $config = array('environment' => 'production', 'sso' => array('enabled' => false));
+      echo json_encode($config);
+      Maestrano::configure(json_decode(json_encode($config),true));
+      
+      $this->assertFalse(Maestrano::param('sso.enabled'));
+    }
+    
     public function testConfigurationFromFile() {
       $path = "config.json";
       file_put_contents($path,json_encode($this->config));

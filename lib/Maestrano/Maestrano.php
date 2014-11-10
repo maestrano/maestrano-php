@@ -91,7 +91,7 @@ class Maestrano
     if (array_key_exists('sso', $settings) && array_key_exists('init_path', $settings['sso'])) {
       self::$config['sso.init_path'] = $settings['sso']['init_path'];
     } else {
-      self::$config['sso.init_path'] = '/maestrano/auth/saml/index.php';
+      self::$config['sso.init_path'] = '/maestrano/auth/saml/init.php';
     }
     
     if (array_key_exists('sso', $settings) && array_key_exists('consume_path', $settings['sso'])) {
