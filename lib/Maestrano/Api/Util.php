@@ -40,7 +40,7 @@ abstract class Maestrano_Api_Util
       } else if (is_array($v)) {
         $results[$k] = self::convertMaestranoObjectToArray($v);
       } else if ($v instanceOf DateTime) {
-        $results[$k] = $v->format(DateTime::ISO8601);
+        $results[$k] = $v->format(Maestrano_Helper_DateTime::ISO8601);
       } else {
         $results[$k] = $v;
       }
@@ -60,6 +60,7 @@ abstract class Maestrano_Api_Util
     $types = array(
       'account_bill' => 'Maestrano_Account_Bill',
       'account_recurring_bill' => 'Maestrano_Account_RecurringBill',
+      'account_group' => 'Maestrano_Account_Group',
     );
     
     if (self::isList($resp)) {

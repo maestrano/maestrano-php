@@ -93,10 +93,15 @@ abstract class Maestrano_Api_Resource extends Maestrano_Api_Object
 
   protected static function _scopedAll($class, $params=null, $apiToken=null)
   {
-    self::_validateCall('all', $params, $apiToken);
+    $realParams = $params;
+    if ($realParams && is_array($params)) {
+      $realParams = Maestrano_Api_Util::convertMaestranoObjectToArray($params);
+    }
+    
+    self::_validateCall('all', $realParams, $apiToken);
     $requestor = new Maestrano_Api_Requestor($apiToken);
     $url = self::_scopedLsb($class, 'classUrl', $class);
-    list($response, $apiToken) = $requestor->request('get', $url, $params);
+    list($response, $apiToken) = $requestor->request('get', $url, $realParams);
     return Maestrano_Api_Util::convertToMaestranoObject($response, $apiToken);
   }
 
