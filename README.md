@@ -108,12 +108,12 @@ The json file may look like this:
     
     # => enabled
     # Enable/Disable single sign-on. When troubleshooting authentication issues you might want to disable SSO temporarily
-    "enabled": "true",
+    "enabled": true,
     
     # => sloEnabled
     # Enable/Disable single logout. When troubleshooting authentication issues you might want to disable SLO temporarily. 
     # If set to false then MnoSession#isValid - which should be used in a controller action filter to check user session - always return true
-    "sloEnabled": "true",
+    "sloEnabled": true,
     
     # => idm
     # By default we consider that the domain managing user identification is the same as your application host (see above config.app.host parameter). 
