@@ -50,7 +50,7 @@ class Maestrano_Account_BillIntegrationTest extends PHPUnit_Framework_TestCase
   }
   
   public function testCreateNewBill() {
-    $attrs = array('group_id' => 'cld-3','price_cents' => 2000, 'description' => 'Product Purchase');
+    $attrs = array('groupId' => 'cld-3','priceCents' => 2000, 'description' => 'Product Purchase');
     $bill = Maestrano_Account_Bill::create($attrs);
     
     $this->assertFalse($bill->getId() == null);
@@ -60,7 +60,7 @@ class Maestrano_Account_BillIntegrationTest extends PHPUnit_Framework_TestCase
   }
   
   public function testCancelABill() {
-    $attrs = array('group_id' => 'cld-3','price_cents' => 2000, 'description' => 'Product Purchase');
+    $attrs = array('groupId' => 'cld-3','priceCents' => 2000, 'description' => 'Product Purchase');
     $bill = Maestrano_Account_Bill::create($attrs);
     
     $this->assertTrue($bill->cancel());

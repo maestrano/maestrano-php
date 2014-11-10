@@ -110,7 +110,10 @@ abstract class Maestrano_Api_Resource extends Maestrano_Api_Object
     self::_validateCall('create', $params, $apiToken);
     $requestor = new Maestrano_Api_Requestor($apiToken);
     $url = self::_scopedLsb($class, 'classUrl', $class);
-    list($response, $apiToken) = $requestor->request('post', $url, $params);
+    
+    $realParams = Maestrano_Api_Util::convertMaestranoObjectToArray($params);
+    
+    list($response, $apiToken) = $requestor->request('post', $url, $realParams);
     return Maestrano_Api_Util::convertToMaestranoObject($response, $apiToken);
   }
 
@@ -122,6 +125,7 @@ abstract class Maestrano_Api_Resource extends Maestrano_Api_Object
 
     if (count($params) > 0) {
       $url = $this->instanceUrl();
+      $realParams = Maestrano_Api_Util::convertMaestranoObjectToArray($params);
       list($response, $apiToken) = $requestor->request('post', $url, $params);
       $this->refreshFrom($response, $apiToken);
     }

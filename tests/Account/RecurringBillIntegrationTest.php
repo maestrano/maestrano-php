@@ -54,7 +54,7 @@ class Maestrano_Account_RecurringBillIntegrationTest extends PHPUnit_Framework_T
   }
   
   public function testCreateNewBill() {
-    $attrs = array('group_id' => 'cld-3','price_cents' => 2000, 'description' => 'Product Purchase');
+    $attrs = array('groupId' => 'cld-3','priceCents' => 2000, 'description' => 'Product Purchase');
     $recBill = Maestrano_Account_RecurringBill::create($attrs);
     
     $this->assertFalse($recBill->getId() == null);
@@ -64,7 +64,7 @@ class Maestrano_Account_RecurringBillIntegrationTest extends PHPUnit_Framework_T
   }
   
   public function testCancelABill() {
-    $attrs = array('group_id' => 'cld-3','price_cents' => 2000, 'description' => 'Product Purchase');
+    $attrs = array('groupId' => 'cld-3','priceCents' => 2000, 'description' => 'Product Purchase');
     $recBill = Maestrano_Account_RecurringBill::create($attrs);
     
     $this->assertTrue($recBill->cancel());

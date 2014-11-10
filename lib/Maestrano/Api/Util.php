@@ -20,6 +20,10 @@ abstract class Maestrano_Api_Util
     }
     return true;
   }
+  
+  public static function toUnderscore($string) {
+    return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $string));
+  }
 
   /**
    * Recursively converts the PHP Maestrano object to an array.
@@ -35,14 +39,18 @@ abstract class Maestrano_Api_Util
       if ($k[0] == '_') {
         continue;
       }
+      
+      // Convert key to underscore
+      $kReal = self::toUnderscore($k);
+      
       if ($v instanceof Maestrano_Api_Object) {
-        $results[$k] = $v->__toArray(true);
+        $results[$kReal] = $v->__toArray(true);
       } else if (is_array($v)) {
-        $results[$k] = self::convertMaestranoObjectToArray($v);
+        $results[$kReal] = self::convertMaestranoObjectToArray($v);
       } else if ($v instanceOf DateTime) {
-        $results[$k] = $v->format(Maestrano_Helper_DateTime::ISO8601);
+        $results[$kReal] = $v->format(Maestrano_Helper_DateTime::ISO8601);
       } else {
-        $results[$k] = $v;
+        $results[$kReal] = $v;
       }
     }
     return $results;

@@ -34,8 +34,8 @@ class Maestrano_Account_UserIntegrationTest extends PHPUnit_Framework_TestCase
     $dateAfter = new DateTime('2014-05-21T00:32:35+0000');
     $dateBefore = new DateTime('2014-05-21T00:32:55+0000');
     $userList = Maestrano_Account_User::all(array(
-      'created_at_after' => $dateAfter,
-      'created_at_before' => $dateBefore,
+      'createdAtAfter' => $dateAfter,
+      'createdAtBefore' => $dateBefore,
     ));
     
     $this->assertTrue(count($userList) == 1);
