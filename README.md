@@ -58,7 +58,7 @@ Then install via:
 composer install
 ```
 
-To use the bindings, either user Composer's autoload[https://getcomposer.org/doc/00-intro.md#autoloading]:
+To use the bindings, either user Composer's [autoload](https://getcomposer.org/doc/00-intro.md#autoloading):
 ```php
 require_once('vendor/autoload.php');
 ```
