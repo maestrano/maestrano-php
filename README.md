@@ -378,7 +378,7 @@ Maestrano_Account_Bill
 ##### Attributes
 All attributes are available via their getter/setter counterpart. E.g:
 ```php
-// for groupId field
+// for priceCents field
 $bill->getPriceCents();
 $bill->setPriceCents(2000);
 ```
@@ -531,7 +531,7 @@ Maestrano_Account_RecurringBill
 ##### Attributes
 All attributes are available via their getter/setter counterpart. E.g:
 ```php
-// for groupId field
+// for priceCents field
 $bill->getPriceCents();
 $bill->setPriceCents(2000);
 ```
