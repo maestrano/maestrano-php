@@ -247,7 +247,7 @@ header('Location: ' . $req->getRedirectUrl());
 ```
 
 Based on your application requirements the consume action might look like this:
-```jsp
+```php
 session_start();
 
 // Build SSO Response using SAMLResponse parameter value sent via
