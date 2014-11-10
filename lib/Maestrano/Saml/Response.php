@@ -78,14 +78,14 @@ class Maestrano_Saml_Response
         foreach ($entries as $entry) {
             $attributeName = $entry->attributes->getNamedItem('Name')->nodeValue;
             
-            $attributeValues = array();
+            // Keep only one value for each entry type
             foreach ($entry->childNodes as $childNode) {
                 if (preg_match('/AttributeValue/',$childNode->tagName)){
-                    $attributeValues[] = $childNode->nodeValue;
+                    $attributeValue = $childNode->nodeValue;
                 }
             }
 
-            $this->cachedAttributes[$attributeName] = $attributeValues;
+            $this->cachedAttributes[$attributeName] = $attributeValue;
         }
         return $this->cachedAttributes;
     }
