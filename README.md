@@ -343,7 +343,7 @@ The example below needs to be adapted depending on your application:
 ```php
 if (Maestrano::authenticate($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW'])) {
   $someGroup = MyGroupModel::findByMnoId(restfulIdFromUrl);
-  $someGroup.disableAccess();
+  $someGroup->disableAccess();
 }
 ```
 
