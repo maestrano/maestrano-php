@@ -302,7 +302,7 @@ Note that for the consume action you should disable CSRF authenticity if your fr
 If you want your users to benefit from single logout then you should define the following filter in a module and include it in all your controllers except the one handling single sign-on authentication.
 
 ```php
-$mnoSession = new Maestrano_Sso_Session(request.getSession());
+$mnoSession = new Maestrano_Sso_Session($_SESSION);
 
 // Trigger SSO handshake if session not valid anymore
 if (!$mnoSession->isValid()) {
