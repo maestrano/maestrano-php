@@ -48,7 +48,7 @@ To install maestrano-php using Composer, add this dependency to your project's c
 ```
 {
   "require": {
-    "stripe/stripe-php": "1.*"
+    "maestrano/maestrano-php": ">=0.4"
   }
 }
 ```
