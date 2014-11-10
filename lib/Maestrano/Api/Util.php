@@ -59,6 +59,7 @@ abstract class Maestrano_Api_Util
   {
     $types = array(
       'account_bill' => 'Maestrano_Account_Bill',
+      'account_recurring_bill' => 'Maestrano_Account_RecurringBill',
     );
     
     if (self::isList($resp)) {

@@ -50,3 +50,4 @@ require_once(dirname(__FILE__) . '/Maestrano/Api/Resource.php');
 
 // Account API
 require_once(dirname(__FILE__) . '/Maestrano/Account/Bill.php');
+require_once(dirname(__FILE__) . '/Maestrano/Account/RecurringBill.php');
