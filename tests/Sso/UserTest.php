@@ -35,5 +35,33 @@ class Maestrano_Sso_UserTest extends PHPUnit_Framework_TestCase
   		$this->assertEquals($att["country"], $this->subject->getCountry());
   		$this->assertEquals($att["company_name"], $this->subject->getCompanyName());
     }
+    
+  	public function testToIdWhenReal()
+  	{
+  		Maestrano::configure(array('environment' => 'production', 'sso' => array('creation_mode' => 'real')));
+
+  		$this->assertEquals($this->subject->getUid(),$this->subject->toId());
+  	}
+    
+  	public function testToIdWhenVirtual()
+  	{
+  		Maestrano::configure(array('environment' => 'production', 'sso' => array('creation_mode' => 'virtual')));
+		
+  		$this->assertEquals($this->subject->getVirtualUid(),$this->subject->toId());
+  	}
+    
+  	public function testToEmailWhenReal()
+  	{
+  		Maestrano::configure(array('environment' => 'production', 'sso' => array('creation_mode' => 'real')));
+
+  		$this->assertEquals($this->subject->getEmail(),$this->subject->toEmail());
+  	}
+    
+  	public function testToEmailWhenVirtual()
+  	{
+  		Maestrano::configure(array('environment' => 'production', 'sso' => array('creation_mode' => 'virtual')));
+
+  		$this->assertEquals($this->subject->getVirtualEmail(),$this->subject->toEmail());
+  	}
 }
 ?>

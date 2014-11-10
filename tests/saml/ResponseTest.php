@@ -21,12 +21,8 @@ class Maestrano_Saml_ResponseTest extends PHPUnit_Framework_TestCase
         $response = SamlTestHelper::buildSamlResponse('response1.xml.base64', $this->settings);
         
         $expectedAttributes = array(
-            'uid' => array(
-                'demo'
-            ),
-            'another_value' => array(
-                'value'
-            ),
+          'uid' => 'demo',
+          'another_value' =>'value'
         );
         $this->assertEquals($expectedAttributes, $response->getAttributes());
 

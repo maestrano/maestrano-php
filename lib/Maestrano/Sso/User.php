@@ -85,12 +85,10 @@ class Maestrano_Sso_User
 	 */
     public function toUid()
     {
-      $svc = Maestrano::sso();
-      
-    	if ($svc->getCreationMode() == "real") {
-    		return $this->this->uid;
+    	if (Maestrano::param('sso.creation_mode') == "real") {
+    		return $this->uid;
     	} else {
-    		return $this->this->virtualUid;
+    		return $this->virtualUid;
     	}
     }
     
@@ -101,12 +99,10 @@ class Maestrano_Sso_User
      */
     public function toEmail()
     {
-      $svc = Maestrano::sso();
-      
-    	if ($svc->getCreationMode() == "real") {
-    		return $this->this->email;
+    	if (Maestrano::param('sso.creation_mode') == "real") {
+    		return $this->email;
     	} else {
-    		return $this->this->virtualEmail;
+    		return $this->virtualEmail;
     	}
     }
 	
