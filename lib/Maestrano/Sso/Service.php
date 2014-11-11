@@ -67,7 +67,7 @@ class Maestrano_Sso_Service
    */
   public function getInitUrl()
   {
-    $host = Maestrano::param('sso.idp');
+    $host = Maestrano::param('app.host');
     $path = $this->getInitPath();
     return "${host}${path}";
   }
@@ -100,7 +100,7 @@ class Maestrano_Sso_Service
    */
   public function getLogoutUrl()
   {
-    $host = Maestrano::param('api.host');
+    $host = Maestrano::param('sso.idp');
     $endpoint = '/app_logout';
     
     return "${host}${endpoint}";
@@ -125,7 +125,7 @@ class Maestrano_Sso_Service
    * @var string
    */
   public function getIdpUrl() {
-    $host = Maestrano::param('api.host');
+    $host = Maestrano::param('sso.idp');
     $api_base = Maestrano::param('api.base');
     $endpoint = 'auth/saml';
     return "${host}${api_base}${endpoint}";
@@ -137,7 +137,7 @@ class Maestrano_Sso_Service
    */
   public function getSessionCheckUrl($user_id,$sso_session) 
   {
-    $host = Maestrano::param('api.host');
+    $host = Maestrano::param('sso.idp');
     $api_base = Maestrano::param('api.base');
     $endpoint = 'auth/saml';
     
