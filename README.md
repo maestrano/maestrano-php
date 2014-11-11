@@ -262,8 +262,8 @@ if ($resp->isValid()) {
   
   //-----------------------------------
 	// For the sake of simplicity we store everything in session. This
-  // step should actually involve link the Maestrano user/group to actual
-  // models in your application
+  // step should actually involve linking/creating the Maestrano user and group 
+  // as models in your application
   //-----------------------------------
   $_SESSION["loggedIn"] = true;
   $_SESSION["firstName"] = $user->getFirstName();
