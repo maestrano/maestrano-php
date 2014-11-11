@@ -114,10 +114,14 @@ class Maestrano_Sso_Session
   *
   * @return boolean the validity of the session
   */
-  public function isValid($httpClient = null) {
+  public function isValid($ifSession = false, $httpClient = null) {
     $svc = Maestrano::sso();
     
     if (!$svc->isSloEnabled()) return true;
+    
+    if ($ifSession && ($this->httpSession == null || $this->httpSession['maestrano'] == null)) {
+      return true;
+    }
     
     if ($this->isRemoteCheckRequired()) {
       if ($this->performRemoteCheck($httpClient)) {
@@ -136,7 +140,7 @@ class Maestrano_Sso_Session
     $sessObj = array();
     $sessObj['uid'] = $this->uid;
     $sessObj['group_uid'] = $this->groupUid;
-    $sessObj['session'] = $this->session;
+    $sessObj['session'] = $this->sessionToken;
     $sessObj['session_recheck'] = $this->recheck->format(DateTime::ISO8601);
     
     $sessionStr = json_encode($sessObj);

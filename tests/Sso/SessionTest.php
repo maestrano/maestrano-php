@@ -166,7 +166,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
   	}
 
   	
-  	public function isValid_WhenIfSessionSpecifiedAndNoMaestrano_Sso_Session_ItShouldReturnTrue()
+  	public function testIsValidWhenIfSessionSpecifiedAndNoMaestranoSsoSessionReturnsTrue()
   	{
   		// Http context
   		$this->httpSession["maestrano"] = null;
@@ -177,7 +177,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
   	}
 
   	
-  	public function isValid_WhenNoRecheckRequired_ItShouldReturnTrue()
+  	public function testIsValidWhenNoRecheckRequiredReturnsTrue()
   	{	
   		// Make sure any remote response is negative
   		$date = new DateTime();
@@ -199,7 +199,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
   	}
 
   	
-  	public function isValid_WhenRecheckRequiredAndValid_ItShouldReturnTrueAndSaveTheSession()
+  	public function testIsValidWhenRecheckRequiredAndValidReturnsTrueAndSaveTheSession()
   	{
   		// Make sure any remote response is negative
   		$date = new DateTime();
