@@ -26,8 +26,12 @@ Maestrano Cloud Integration is currently in closed beta. Want to know more? Send
   * [Groups Controller](#groups-controller-service-cancellation)
   * [Group Users Controller](#group-users-controller-business-member-removal)
 5. [API](#api)
-  * [Bill](#bill)
-  * [Recurring Bill](#recurring-bill)
+  * [Payment API](#payment-api)
+    * [Bill](#bill)
+    * [Recurring Bill](#recurring-bill)
+  * [Membership API](#membership-api)
+    * [User](#user)
+    * [Group](#group)
 
 - - -
 
