@@ -32,7 +32,9 @@ Maestrano Cloud Integration is currently in closed beta. Want to know more? Send
   * [Membership API](#membership-api)
     * [User](#user)
     * [Group](#group)
-
+6. [Connec!™ Data Sharing](#connec-data-sharing)
+  * [Making Requests](#making-requests)
+  * [Webhook Notifications](#webhook-notifications)
 - - -
 
 ## Getting Setup
