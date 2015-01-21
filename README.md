@@ -1008,10 +1008,10 @@ $resp['body'] # returns the raw response "{\"organizations\":[ ... ]}"
 $resp['code'] # returns the response code. E.g. "200"
 
 # Create a new organization
-$client->post('/organizations', array('organizations' => array( 'name' => "DoeCorp Inc.")) )
+$client->post('/organizations', array('organizations' => array('name' => "DoeCorp Inc.")) )
 
 # Update an organization
-$client->put('/organizations/e32303c1-5102-0132-661e-600308937d74', array('organizations' => array( 'is_customer_' => true)))
+$client->put('/organizations/e32303c1-5102-0132-661e-600308937d74', array('organizations' => array('is_customer_' => true)))
 ```
 
 
