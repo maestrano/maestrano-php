@@ -77,7 +77,7 @@ Maestrano::configure('/path/to/maestrano.json')
 ```
 
 The json file may look like this:
-```ruby
+```php
 {
   # ===> App Configuration
   #
@@ -692,6 +692,250 @@ Cancel a bill
 ```php
 $recBill = Maestrano_Account_RecurringBill::retrieve("bill-f1d2s54");
 $recBill->cancel();
+```
+
+### Membership API
+ 
+#### User
+A user is a member of a group having access to your application. Users are currently readonly.
+
+```php
+Maestrano_Account_User
+```
+
+##### Attributes
+
+<table>
+<tr>
+<th>Field</th>
+<th>Mode</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+<tr>
+
+<tr>
+<td><b>id</b></td>
+<td>readonly</td>
+<td>String</td>
+<td>-</td>
+<td>-</td>
+<td>The id of the user</td>
+<tr>
+
+<tr>
+<td><b>first_name</b></td>
+<td>readonly</td>
+<td>String</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>The user first name</td>
+<tr>
+
+<tr>
+<td><b>last_name</b></td>
+<td>readonly</td>
+<td>String</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>The user last name</td>
+<tr>
+
+<tr>
+<td><b>email</b></td>
+<td>readonly</td>
+<td>String</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>The user real email address</td>
+<tr>
+
+<tr>
+<td><b>company_name</b></td>
+<td>readonly</td>
+<td>String</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>The user company name as it was entered when they signed up. Nothing related to the user group name.</td>
+<tr>
+  
+<tr>
+<td><b>country</b></td>
+<td>readonly</td>
+<td>String</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>The country of the user in <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2 format</a> (2 letter code). E.g: 'US' for USA, 'AU' for Australia.</td>
+<tr>
+
+<tr>
+<td><b>created_at</b></td>
+<td>readonly</td>
+<td>DateTime</td>
+<td>-</td>
+<td>-</td>
+<td>When the user was created</td>
+<tr>
+  
+<tr>
+<td><b>updated_at</b></td>
+<td>readonly</td>
+<td>DateTime</td>
+<td>-</td>
+<td>-</td>
+<td>When the user was last updated</td>
+<tr>
+
+</table>
+
+##### Actions
+
+List all users having access to your application
+```php
+$users = Maestrano_Account_User::all();
+```
+
+Access a single user by id
+```php
+$user = Maestrano_Account_User::retrieve("usr-f1d2s54");
+$user->getFirstName();
+```
+
+#### Group
+A group represents a customer account and is composed of members (users) having access to your application. A group also represents a chargeable account (see Bill/RecurringBill). Typically you can remotely check if a group has entered a credit card on Maestrano.
+
+Groups are currently readonly.
+
+
+```php
+Maestrano_Account_Group
+```
+
+##### Attributes
+
+<table>
+<tr>
+<th>Field</th>
+<th>Mode</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+<tr>
+
+<tr>
+<td><b>id</b></td>
+<td>readonly</td>
+<td>String</td>
+<td>-</td>
+<td>-</td>
+<td>The id of the group</td>
+<tr>
+
+<tr>
+<td><b>name</b></td>
+<td>readonly</td>
+<td>String</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>The group name</td>
+<tr>
+
+<tr>
+<td><b>email</b></td>
+<td>readonly</td>
+<td>string</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>The principal email address for this group (admin email address)</td>
+<tr>
+
+<tr>
+<td><b>has_credit_card</b></td>
+<td>readonly</td>
+<td>Boolean</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>Whether the group has entered a credit card on Maestrano or not</td>
+<tr>
+  
+<tr>
+<td><b>free_trial_end_at</b></td>
+<td>readonly</td>
+<td>DateTime</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>When the group free trial will be finishing on Maestrano. You may optionally consider this date for your own free trial (optional)</td>
+<tr>
+
+<tr>
+<td><b>currency</b></td>
+<td>readonly</td>
+<td>String</td>
+<td>-</td>
+<td>-</td>
+<td>The currency used by this Group in <a href="http://en.wikipedia.org/wiki/ISO_4217#Active_codes">ISO 4217 format</a> (3 letter code)</td>
+<tr>
+
+<tr>
+<td><b>country</b></td>
+<td>readonly</td>
+<td>String</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>The country of the group in <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2 format</a> (2 letter code). E.g: 'US' for USA, 'AU' for Australia.</td>
+<tr>
+
+<tr>
+<td><b>city</b></td>
+<td>readonly</td>
+<td>String</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>The city of the group</td>
+<tr>
+
+<tr>
+<td><b>timezone</b></td>
+<td>readonly</td>
+<td>String</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>The group timezone in <a href="http://en.wikipedia.org/wiki/List_of_tz_database_time_zones">Olson format</a></td>
+<tr>
+
+<tr>
+<td><b>created_at</b></td>
+<td>readonly</td>
+<td>DateTime</td>
+<td>-</td>
+<td>-</td>
+<td>When the group was created</td>
+<tr>
+
+<tr>
+<td><b>updated_at</b></td>
+<td>readonly</td>
+<td>DateTime</td>
+<td>-</td>
+<td>-</td>
+<td>When the group was last updated</td>
+<tr>
+
+</table>
+
+##### Actions
+
+List all groups having access to your application
+```php
+$groups = Maestrano_Account_Group::all();
+```
+
+Access a single group by id
+```php
+$group = Maestrano_Account_Group::retrieve("usr-f1d2s54");
+$group->getName();
 ```
 
 ## Support
