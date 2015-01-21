@@ -39,16 +39,48 @@ class Maestrano_Account_Group extends Maestrano_Api_Resource
 	public function getId() {
 		return $this->id;
 	}
-	public function getCreatedAt() {
-		return $this->created_at;
+	
+  public function getName() {
+		return $this->name;
 	}
-	public function getUpdatedAt() {
+	
+  public function getEmail() {
+		return $this->email;
+	}
+  
+  public function getCurrency() {
+		return $this->currency;
+	}
+  
+  public function getCountry() {
+		return $this->country;
+	}
+  
+  public function getCity() {
+		return $this->city;
+	}
+	
+  public function getUpdatedAt() {
 		return $this->updated_at;
 	}
-	public function getHasCreditCard() {
+	
+  public function getHasCreditCard() {
 		return $this->has_credit_card;
 	}
+	
+  public function hasCreditCard() {
+		return $this->has_credit_card;
+	}
+  
 	public function getStatus() {
 		return $this->status;
+	}
+  
+  public function getTimezone() {
+		return $this->timezone;
+	}
+	
+	public function getCreatedAt() {
+		return $this->created_at;
 	}
 }
