@@ -107,7 +107,7 @@ class Maestrano
     }
     
     //-------------------------------
-    // Webhook Config
+    // Webhook Config - Account
     //-------------------------------
     if (array_key_exists('webhook', $settings) 
       && array_key_exists('account', $settings['webhook'])
@@ -123,6 +123,25 @@ class Maestrano
       self::$config['webhook.account.group_users_path'] = $settings['webhook']['account']['group_users_path'];
     } else {
       self::$config['webhook.account.group_users_path'] = '/maestrano/account/groups/:group_id/users/:id';
+    }
+    
+    //-------------------------------
+    // Webhook Config - Connec
+    //-------------------------------
+    if (array_key_exists('webhook', $settings) 
+      && array_key_exists('connec', $settings['webhook'])
+      && array_key_exists('notifications_path', $settings['webhook']['connec'])) {
+      self::$config['webhook.connec.notifications_path'] = $settings['webhook']['connec']['notifications_path'];
+    } else {
+      self::$config['webhook.connec.notifications_path'] = '/maestrano/connec/notifications';
+    }
+    
+    if (array_key_exists('webhook', $settings) 
+      && array_key_exists('connec', $settings['webhook'])
+      && array_key_exists('subscriptions', $settings['webhook']['connec'])) {
+      self::$config['webhook.connec.subscriptions'] = $settings['webhook']['connec']['subscriptions'];
+    } else {
+      self::$config['webhook.connec.subscriptions'] = array();
     }
     
     
@@ -196,6 +215,10 @@ class Maestrano
          'account' => array(
            'groups_path' => Maestrano::param('webhook.account.groups_path'),
            'group_users_path' => Maestrano::param('webhook.account.group_users_path'),
+         ),
+         'connec' => array(
+           'notifications_path' => Maestrano::param('webhook.connec.notifications_path'),
+           'subscriptions' => Maestrano::param('webhook.connec.subscriptions'),
          )
        )
      );
@@ -211,6 +234,8 @@ class Maestrano
     'test' => array(
       'api.host'               => 'http://api-sandbox.maestrano.io',
       'api.base'               => '/api/v1/',
+      'connec.host'            => 'http://api-sandbox.maestrano.io',
+      'connec.base_path'       => '/connec/api/v2',
       'sso.idp'                => 'http://api-sandbox.maestrano.io',
       'sso.name_id_format'     => Maestrano_Saml_Settings::NAMEID_PERSISTENT,
       'sso.x509_fingerprint'   => '01:06:15:89:25:7d:78:12:28:a6:69:c7:de:63:ed:74:21:f9:f5:36',
@@ -219,6 +244,8 @@ class Maestrano
     'production' => array(
       'api.host'               => 'https://maestrano.com',
       'api.base'               => '/api/v1/',
+      'connec.host'            => 'https://api-connec.maestrano.com',
+      'connec.base_path'       => '/api/v2',
       'sso.idp'                => 'https://maestrano.com',
       'sso.name_id_format'     => Maestrano_Saml_Settings::NAMEID_PERSISTENT,
       'sso.x509_fingerprint'   => '2f:57:71:e4:40:19:57:37:a6:2c:f0:c5:82:52:2f:2e:41:b7:9d:7e',

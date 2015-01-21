@@ -23,6 +23,13 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
           'account' => array(
             'groups_path' => "/mno/groups/:id",
             'group_users_path' => "/mno/groups/:group_id/users/:id"
+          ),
+          'connec' => array(
+            'notifications_path' => "/mno/connec/notifications",
+            'subscriptions' => array(
+              'organizations' => true,
+              'people' => true
+            )
           )
         )
       );
@@ -41,6 +48,8 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
       $this->assertEquals($this->config['sso']['consume_path'], Maestrano::param('sso.consume_path'));
       $this->assertEquals($this->config['webhook']['account']['groups_path'], Maestrano::param('webhook.account.groups_path'));
       $this->assertEquals($this->config['webhook']['account']['group_users_path'], Maestrano::param('webhook.account.group_users_path'));
+      $this->assertEquals($this->config['webhook']['connec']['notifications_path'], Maestrano::param('webhook.connec.notifications_path'));
+      $this->assertEquals($this->config['webhook']['connec']['subscriptions'], Maestrano::param('webhook.connec.subscriptions'));
     }
     
     public function testBindingConfigurationBooleanViaJson() {
@@ -113,6 +122,10 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
           'account' => array(
             'groups_path' => $this->config['webhook']['account']['groups_path'],
             'group_users_path' => $this->config['webhook']['account']['group_users_path'],
+          ),
+          'connec' => array(
+            'notifications_path' => $this->config['webhook']['connec']['notifications_path'],
+            'subscriptions' => $this->config['webhook']['connec']['subscriptions']
           )
         )
       );

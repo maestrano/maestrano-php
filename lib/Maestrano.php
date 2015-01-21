@@ -56,3 +56,6 @@ require_once(dirname(__FILE__) . '/Maestrano/Account/Bill.php');
 require_once(dirname(__FILE__) . '/Maestrano/Account/RecurringBill.php');
 require_once(dirname(__FILE__) . '/Maestrano/Account/Group.php');
 require_once(dirname(__FILE__) . '/Maestrano/Account/User.php');
+
+// Connec Client
+require_once(dirname(__FILE__) . '/Maestrano/Connec/Client.php');
