@@ -116,28 +116,28 @@ The json file may look like this:
     # Enable/Disable single sign-on. When troubleshooting authentication issues you might want to disable SSO temporarily
     "enabled": true,
     
-    # => sloEnabled
+    # => slo_enabled
     # Enable/Disable single logout. When troubleshooting authentication issues you might want to disable SLO temporarily. 
     # If set to false then MnoSession#isValid - which should be used in a controller action filter to check user session - always return true
-    "sloEnabled": true,
+    "slo_enabled": true,
     
     # => idm
     # By default we consider that the domain managing user identification is the same as your application host (see above config.app.host parameter). 
     # If you have a dedicated domain managing user identification and therefore responsible for the single sign-on handshake (e.g: https://idp.my-app.com) then you can specify it below
     "idm": "https://idp.myapp.com",
     
-    # => initPath
+    # => init_path
     # This is your application path to the SAML endpoint that allows users to initialize SSO authentication. 
     # Upon reaching this endpoint users your application will automatically create a SAML request and redirect the user to Maestrano. Maestrano will then authenticate and authorize the user. 
     # Upon authorization the user gets redirected to your application consumer endpoint (see below) for initial setup and/or login.
-    "initPath": "/maestrano/auth/saml/init.php"
+    "init_path": "/maestrano/auth/saml/init.php"
     
-    # => consumePath
+    # => consume_path
     #This is your application path to the SAML endpoint that allows users to finalize SSO authentication. 
     # During the 'consume' action your application sets users (and associated group) up and/or log them in.
-    "consumePath": "/maestrano/auth/saml/consume.php"
+    "consume_path": "/maestrano/auth/saml/consume.php"
     
-    # => creationMode
+    # => creation_mode
     # !IMPORTANT
     # On Maestrano users can take several "instances" of your service. You can consider
     # each "instance" as 1) a billing entity and 2) a collaboration group (this is
@@ -167,10 +167,18 @@ The json file may look like this:
     # in a whole new user account can be created for him without any validation problem. In this
     # mode the email we assign to him looks like "usr-sdf54.cld-45aa2@mail.maestrano.com". But don't
     # worry we take care of forwarding any email you would send to this address
-    "creationMode": "virtual",
+    "creation_mode": "virtual",
+  },
+
+  # ===> Connec! Configuration
+  #
+  # => host and base_path
+  # The Connec! endpoint to use if you need to overwrite it (i.e. if you want to proxy requests or use a stub) 
+  "connec": {
+    "host": "http://connec.maestrano.io",
+    "base_path": "/api/v2"
   },
     
-  
   # ===> Webhooks
   # This section describe how to configure the Account and Connec! webhooks
   
@@ -186,8 +194,8 @@ The json file may look like this:
     # to notify you of any service cancellation (group deletion) or any user being
     # removed from a group.
     "account": {
-      "groupsPath": "/maestrano/account/groups/:id",
-      "groupUsersPath": "/maestrano/account/groups/:group_id/users/:id"
+      "groups_path": "/maestrano/account/groups/:id",
+      "group_users_path": "/maestrano/account/groups/:group_id/users/:id"
     },
     
     # ==> Connec Subscriptions/Webhook
