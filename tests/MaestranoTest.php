@@ -18,6 +18,7 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
         'sso' => array(
           'init_path' => "/mno/init_path.php",
           'consume_path' => "/mno/consume_path.php",
+          'idp' => "https://mysuperidp.com"
         ),
         'webhook' => array(
           'account' => array(
@@ -33,8 +34,6 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
           )
         )
       );
-      
-      
     }
     
     public function testBindingConfiguration() {
@@ -113,10 +112,14 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
           'consume_path'     => $this->config['sso']['consume_path'],
           'creation_mode'    => 'real',
           'idm'              => $this->config['app']['host'],
-          'idp'              => Maestrano::$EVT_CONFIG[$this->config['environment']]['sso.idp'],
+          'idp'              => $this->config['sso']['idp'],
           'name_id_format'   => Maestrano::$EVT_CONFIG[$this->config['environment']]['sso.name_id_format'],
           'x509_fingerprint' => Maestrano::$EVT_CONFIG[$this->config['environment']]['sso.x509_fingerprint'],
           'x509_certificate' => Maestrano::$EVT_CONFIG[$this->config['environment']]['sso.x509_certificate'],
+        ),
+        'connec' => array(
+          'host'             => Maestrano::$EVT_CONFIG[$this->config['environment']]['connec.host'],
+          'base_path'        => Maestrano::$EVT_CONFIG[$this->config['environment']]['connec.base_path']
         ),
         'webhook' => array(
           'account' => array(

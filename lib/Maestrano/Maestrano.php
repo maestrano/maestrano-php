@@ -8,7 +8,7 @@
 class Maestrano
 {
   // Maestrano PHP API Version
-  const VERSION = '0.5.0';
+  const VERSION = '0.6.0';
 
   /* Internal Config Map */
   protected static $config = array();
@@ -32,7 +32,7 @@ class Maestrano
     if (is_string($settings)) {
       return self::configure(json_decode(file_get_contents($settings),true));
     }
-    
+
     //-------------------------------
     // App Config
     //-------------------------------
@@ -81,11 +81,17 @@ class Maestrano
     } else {
       self::$config['sso.slo_enabled'] = true;
     }
-    
+
     if (array_key_exists('sso', $settings) && array_key_exists('idm', $settings['sso'])) {
       self::$config['sso.idm'] = $settings['sso']['idm'];
     } else {
       self::$config['sso.idm'] = self::$config['app.host'];
+    }
+
+    if (array_key_exists('sso', $settings) && array_key_exists('idp', $settings['sso'])) {
+      self::$config['sso.idp'] = $settings['sso']['idp'];
+    } else {
+      self::$config['sso.idp'] = self::$config['app.host'];
     }
     
     if (array_key_exists('sso', $settings) && array_key_exists('init_path', $settings['sso'])) {
@@ -105,7 +111,18 @@ class Maestrano
     } else {
       self::$config['sso.creation_mode'] = 'real';
     }
+
+    //-------------------------------
+    // Connec Config
+    //-------------------------------
+    if (array_key_exists('connec', $settings) && array_key_exists('host', $settings['connec'])) {
+      self::$config['connec.host'] = $settings['connec']['host'];
+    }
     
+    if (array_key_exists('connec', $settings) && array_key_exists('base_path', $settings['connec'])) {
+      self::$config['connec.base_path'] = $settings['connec']['base_path'];
+    }
+
     //-------------------------------
     // Webhook Config - Account
     //-------------------------------
@@ -196,8 +213,7 @@ class Maestrano
          'lang'             => Maestrano::param('api.lang'),
          'lang_version'     => Maestrano::param('api.lang_version'),
          'host'             => Maestrano::param('api.host'),
-         'base'             => Maestrano::param('api.base'),
-         
+         'base'             => Maestrano::param('api.base')
        ),
        'sso' => array(
          'enabled'          => Maestrano::param('sso.enabled'),
@@ -209,16 +225,20 @@ class Maestrano
          'idp'              => Maestrano::param('sso.idp'),
          'name_id_format'   => Maestrano::param('sso.name_id_format'),
          'x509_fingerprint' => Maestrano::param('sso.x509_fingerprint'),
-         'x509_certificate' => Maestrano::param('sso.x509_certificate'),
+         'x509_certificate' => Maestrano::param('sso.x509_certificate')
+       ),
+       'connec' => array(
+         'host'             => Maestrano::param('connec.host'),
+         'base_path'        => Maestrano::param('connec.base_path')
        ),
        'webhook' => array(
          'account' => array(
            'groups_path' => Maestrano::param('webhook.account.groups_path'),
-           'group_users_path' => Maestrano::param('webhook.account.group_users_path'),
+           'group_users_path' => Maestrano::param('webhook.account.group_users_path')
          ),
          'connec' => array(
            'notifications_path' => Maestrano::param('webhook.connec.notifications_path'),
-           'subscriptions' => Maestrano::param('webhook.connec.subscriptions'),
+           'subscriptions' => Maestrano::param('webhook.connec.subscriptions')
          )
        )
      );
