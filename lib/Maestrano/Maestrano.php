@@ -18,7 +18,7 @@ class Maestrano
    * for authentication purpose
    * @return whether the pair is valid or not
    */
-  public static function authenticate($api_id,$api_key) {
+  public static function authenticate($api_id, $api_key) {
     return !is_null($api_id) && !is_null($api_key) && 
       self::param('api.id') == $api_id && self::param('api.key') == $api_key;
   }
@@ -57,6 +57,10 @@ class Maestrano
     
     if (array_key_exists('api', $settings) && array_key_exists('key', $settings['api'])) {
       self::$config['api.key'] = $settings['api']['key'];
+    }
+
+    if (array_key_exists('api', $settings) && array_key_exists('group_id', $settings['api'])) {
+      self::$config['api.group_id'] = $settings['api']['group_id'];
     }
     
     // Get lang/platform version
@@ -113,14 +117,24 @@ class Maestrano
     }
 
     //-------------------------------
-    // Connec Config
+    // Connec! Config
     //-------------------------------
+    if (array_key_exists('connec', $settings) && array_key_exists('enabled', $settings['connec'])) {
+      self::$config['connec.enabled'] = $settings['connec']['enabled'];
+    } else {
+      self::$config['connec.enabled'] = true;
+    }
+
     if (array_key_exists('connec', $settings) && array_key_exists('host', $settings['connec'])) {
       self::$config['connec.host'] = $settings['connec']['host'];
+    } else {
+      self::$config['connec.host'] = 'http://api-sandbox.maestrano.io';
     }
     
     if (array_key_exists('connec', $settings) && array_key_exists('base_path', $settings['connec'])) {
       self::$config['connec.base_path'] = $settings['connec']['base_path'];
+    } else {
+      self::$config['connec.base_path'] = '/connec/api/v2';
     }
 
     //-------------------------------
@@ -228,6 +242,7 @@ class Maestrano
          'x509_certificate' => Maestrano::param('sso.x509_certificate')
        ),
        'connec' => array(
+         'enabled'          => Maestrano::param('connec.enabled'),
          'host'             => Maestrano::param('connec.host'),
          'base_path'        => Maestrano::param('connec.base_path')
        ),
@@ -254,6 +269,7 @@ class Maestrano
     'test' => array(
       'api.host'               => 'http://api-sandbox.maestrano.io',
       'api.base'               => '/api/v1/',
+      'connec.enabled'         => true,
       'connec.host'            => 'http://api-sandbox.maestrano.io',
       'connec.base_path'       => '/connec/api/v2',
       'sso.idp'                => 'http://api-sandbox.maestrano.io',
@@ -264,6 +280,7 @@ class Maestrano
     'production' => array(
       'api.host'               => 'https://maestrano.com',
       'api.base'               => '/api/v1/',
+      'connec.enabled'         => true,
       'connec.host'            => 'https://api-connec.maestrano.com',
       'connec.base_path'       => '/api/v2',
       'sso.idp'                => 'https://maestrano.com',
