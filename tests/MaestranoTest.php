@@ -33,6 +33,7 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
           ),
           'connec' => array(
             'enabled' => true,
+            'initialization_path' => "/mno/connec/initialization",
             'notifications_path' => "/mno/connec/notifications",
             'subscriptions' => array(
               'organizations' => true,
@@ -58,6 +59,7 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
       $this->assertEquals($this->config['connec']['base_path'], Maestrano::param('connec.base_path'));
       $this->assertEquals($this->config['webhook']['account']['groups_path'], Maestrano::param('webhook.account.groups_path'));
       $this->assertEquals($this->config['webhook']['account']['group_users_path'], Maestrano::param('webhook.account.group_users_path'));
+      $this->assertEquals($this->config['webhook']['connec']['initialization_path'], Maestrano::param('webhook.connec.initialization_path'));
       $this->assertEquals($this->config['webhook']['connec']['notifications_path'], Maestrano::param('webhook.connec.notifications_path'));
       $this->assertEquals($this->config['webhook']['connec']['subscriptions'], Maestrano::param('webhook.connec.subscriptions'));
     }
@@ -86,6 +88,7 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
       $this->assertEquals($this->config['connec']['base_path'], Maestrano::param('connec.base_path'));
       $this->assertEquals($this->config['webhook']['account']['groups_path'], Maestrano::param('webhook.account.groups_path'));
       $this->assertEquals($this->config['webhook']['account']['group_users_path'], Maestrano::param('webhook.account.group_users_path'));
+      $this->assertEquals($this->config['webhook']['connec']['initialization_path'], Maestrano::param('webhook.connec.initialization_path'));
       $this->assertEquals($this->config['webhook']['connec']['notifications_path'], Maestrano::param('webhook.connec.notifications_path'));
       $this->assertEquals($this->config['webhook']['connec']['subscriptions'], Maestrano::param('webhook.connec.subscriptions'));
       
@@ -145,6 +148,7 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
             'group_users_path' => $this->config['webhook']['account']['group_users_path'],
           ),
           'connec' => array(
+            'initialization_path' => $this->config['webhook']['connec']['initialization_path'],
             'notifications_path' => $this->config['webhook']['connec']['notifications_path'],
             'subscriptions' => $this->config['webhook']['connec']['subscriptions']
           )

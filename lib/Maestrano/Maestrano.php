@@ -159,12 +159,18 @@ class Maestrano
     //-------------------------------
     // Webhook Config - Connec
     //-------------------------------
-    if (array_key_exists('webhook', $settings) 
-      && array_key_exists('connec', $settings['webhook'])
-      && array_key_exists('notifications_path', $settings['webhook']['connec'])) {
-      self::$config['webhook.connec.notifications_path'] = $settings['webhook']['connec']['notifications_path'];
-    } else {
-      self::$config['webhook.connec.notifications_path'] = '/maestrano/connec/notifications';
+    if (array_key_exists('webhook', $settings) && array_key_exists('connec', $settings['webhook'])) {
+      if(array_key_exists('notifications_path', $settings['webhook']['connec'])) {
+        self::$config['webhook.connec.notifications_path'] = $settings['webhook']['connec']['notifications_path'];
+      } else {
+        self::$config['webhook.connec.notifications_path'] = '/maestrano/connec/notifications';
+      }
+
+      if(array_key_exists('initialization_path', $settings['webhook']['connec'])) {
+        self::$config['webhook.connec.initialization_path'] = $settings['webhook']['connec']['initialization_path'];
+      } else {
+        self::$config['webhook.connec.initialization_path'] = '/maestrano/connec/initialization';
+      }
     }
     
     if (array_key_exists('webhook', $settings) 
@@ -252,6 +258,7 @@ class Maestrano
            'group_users_path' => Maestrano::param('webhook.account.group_users_path')
          ),
          'connec' => array(
+           'initialization_path' => Maestrano::param('webhook.connec.initialization_path'),
            'notifications_path' => Maestrano::param('webhook.connec.notifications_path'),
            'subscriptions' => Maestrano::param('webhook.connec.subscriptions')
          )
