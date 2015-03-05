@@ -88,14 +88,10 @@ class Maestrano
 
     if (array_key_exists('sso', $settings) && array_key_exists('idm', $settings['sso'])) {
       self::$config['sso.idm'] = $settings['sso']['idm'];
-    } else {
-      self::$config['sso.idm'] = self::$config['app.host'];
     }
 
     if (array_key_exists('sso', $settings) && array_key_exists('idp', $settings['sso'])) {
       self::$config['sso.idp'] = $settings['sso']['idp'];
-    } else {
-      self::$config['sso.idp'] = self::$config['app.host'];
     }
     
     if (array_key_exists('sso', $settings) && array_key_exists('init_path', $settings['sso'])) {
@@ -127,14 +123,10 @@ class Maestrano
 
     if (array_key_exists('connec', $settings) && array_key_exists('host', $settings['connec'])) {
       self::$config['connec.host'] = $settings['connec']['host'];
-    } else {
-      self::$config['connec.host'] = 'http://api-sandbox.maestrano.io';
     }
     
     if (array_key_exists('connec', $settings) && array_key_exists('base_path', $settings['connec'])) {
       self::$config['connec.base_path'] = $settings['connec']['base_path'];
-    } else {
-      self::$config['connec.base_path'] = '/connec/api/v2';
     }
 
     //-------------------------------

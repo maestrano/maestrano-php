@@ -19,7 +19,8 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
         'sso' => array(
           'init_path' => "/mno/init_path.php",
           'consume_path' => "/mno/consume_path.php",
-          'idp' => "https://mysuperidp.com"
+          'idp' => "https://mysuperidp.com",
+          'idm' => "https://mysuperidm.com"
         ),
         'connec' => array(
           'enabled' => true,
@@ -131,7 +132,7 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
           'init_path'        => $this->config['sso']['init_path'],
           'consume_path'     => $this->config['sso']['consume_path'],
           'creation_mode'    => 'real',
-          'idm'              => $this->config['app']['host'],
+          'idm'              => $this->config['sso']['idm'],
           'idp'              => $this->config['sso']['idp'],
           'name_id_format'   => Maestrano::$EVT_CONFIG[$this->config['environment']]['sso.name_id_format'],
           'x509_fingerprint' => Maestrano::$EVT_CONFIG[$this->config['environment']]['sso.x509_fingerprint'],
