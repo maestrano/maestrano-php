@@ -54,7 +54,7 @@ To install maestrano-php using Composer, add this dependency to your project's c
 ```
 {
   "require": {
-    "maestrano/maestrano-php": "~0.5"
+    "maestrano/maestrano-php": "~0.6"
   }
 }
 ```
@@ -100,12 +100,14 @@ The json file may look like this:
   
   # ===> Api Configuration
   #
-  # => id and key
+  # => id, key and group_id
   # Your application App ID and API key which you can retrieve on http://maestrano.com via your cloud partner dashboard. 
-  # For testing you can retrieve/generate an api.id and api.key from the API Sandbox directly on http://api-sandbox.maestrano.io
+  # For testing you can retrieve/generate an api.id and api.key from the API Sandbox directly on http://api-sandbox.maestrano.io.
+  # The group_id is optional and can be defined when instantiating your Connec!™ Client
   "api": {
     "id": "prod_or_sandbox_app_id",
-    "key": "prod_or_sandbox_api_key"
+    "key": "prod_or_sandbox_api_key",
+    "group_id": "group_id"
   },
   
   # ===> SSO Configuration
@@ -170,17 +172,18 @@ The json file may look like this:
     "creation_mode": "virtual",
   },
 
-  # ===> Connec! Configuration
+  # ===> Connec!™ Configuration
   #
   # => host and base_path
-  # The Connec! endpoint to use if you need to overwrite it (i.e. if you want to proxy requests or use a stub) 
+  # The Connec!™ endpoint to use if you need to overwrite it (i.e. if you want to proxy requests or use a stub) 
   "connec": {
+    "enabled": true,
     "host": "http://connec.maestrano.io",
     "base_path": "/api/v2"
   },
     
   # ===> Webhooks
-  # This section describe how to configure the Account and Connec! webhooks
+  # This section describe how to configure the Account and Connec!™ webhooks
   
   "webhook": {
     
@@ -205,6 +208,13 @@ The json file may look like this:
     #
     "connec": {
       
+      # == Initialization Path
+      # Only for applications hosted on Maestrano
+      # The endpoint to trigger when the application is started.
+      # This should be used as a hook to retrieve updates from Connec!™ whils the application was idle.
+      #
+      "initialization_path": "/maestrano/connec/initialization",
+
       # == Notification Path
       # This is the path of your application where notifications (created/updated entities) will
       # be POSTed to.
@@ -218,19 +228,30 @@ The json file may look like this:
       # notified upon creation/update in Connec!™
       # 
       "subscriptions": {
-        accounts: false,
-        company: false,
-        invoices: false,
-        items: false,
-        organizations: false,
-        people: false,
-        tax_codes: false,
-        tax_rates: false
+        "accounts": true,
+        "company": true,
+        "events": false,
+        "event_orders": false,
+        "invoices": true,
+        "items": true,
+        "journals": false,
+        "organizations": true,
+        "payments": false,
+        "pay_items": false,
+        "pay_schedules": false,
+        "pay_stubs": false,
+        "pay_runs": false,
+        "people": true,
+        "projects": false,
+        "tax_codes": true,
+        "tax_rates": false,
+        "time_activities": false,
+        "time_sheets": false,
+        "venues": false,
+        "work_locations": false
       }
     }
   }
-  
-  
 }
 
 ```
@@ -1007,7 +1028,7 @@ The Maestrano API provides a built-in client - based on CURL - for connecting to
 
 
 ```php
-# Pass the customer group id as argument
+# Pass the customer group id as argument or use the default one specified in the json configuration
 $client = new Maestrano_Connec_Client("cld-f7f5g4")
 
 # Retrieve all organizations (customers and suppliers) created in other applications

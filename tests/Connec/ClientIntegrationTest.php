@@ -16,10 +16,11 @@ class Maestrano_Connec_ClientIntegrationTest extends PHPUnit_Framework_TestCase
         'environment' => 'test', 
         'api' => array(
           'id' => 'app-1',
-          'key' => 'gfcmbu8269wyi0hjazk4t7o1sndpvrqxl53e1'
+          'key' => 'gfcmbu8269wyi0hjazk4t7o1sndpvrqxl53e1',
+          'group_id' => 'cld-3'
         )
       ));
-      $this->subject = new Maestrano_Connec_Client("cld-3");
+      $this->subject = new Maestrano_Connec_Client();
   }
   
   public function testRetrieveCollection() {
