@@ -282,7 +282,7 @@ class Maestrano
       'api.host'               => 'https://uat.maestrano.io',
       'api.base'               => '/api/v1/',
       'connec.enabled'         => true,
-      'connec.host'            => 'http://api-connec.internal.apse1.uat.maestrano.io',
+      'connec.host'            => 'https://api-connec-uat.maestrano.io',
       'connec.base_path'       => '/api/v2',
       'sso.idp'                => 'https://uat.maestrano.io',
       'sso.name_id_format'     => Maestrano_Saml_Settings::NAMEID_PERSISTENT,
