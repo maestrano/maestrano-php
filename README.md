@@ -174,7 +174,7 @@ The json file may look like this:
 
   # ===> Connec!™ Configuration
   #
-  # => host and base_path
+  # => host and API paths
   # The Connec!™ endpoint to use if you need to overwrite it (i.e. if you want to proxy requests or use a stub) 
   "connec": {
     "enabled": true,
@@ -183,7 +183,7 @@ The json file may look like this:
     "v2_path": "/v2",
     "reports_path": "/reports"
   },
-    
+
   # ===> Webhooks
   # This section describe how to configure the Account and Connec!™ webhooks
   
@@ -245,11 +245,15 @@ The json file may look like this:
         "pay_runs": false,
         "people": true,
         "projects": false,
+        "purchase_orders": false,
+        "quotes": false,
+        "sales_orders": false,
         "tax_codes": true,
         "tax_rates": false,
         "time_activities": false,
         "time_sheets": false,
         "venues": false,
+        "warehouses": false,
         "work_locations": false
       }
     }
@@ -1046,8 +1050,10 @@ $client->post('/organizations', array('organizations' => array('name' => "DoeCor
 
 # Update an organization
 $client->put('/organizations/e32303c1-5102-0132-661e-600308937d74', array('organizations' => array('is_customer_' => true)))
-```
 
+# Retrieve a report
+$client->getReport('/profit_and_loss', array('from' => '2015-01-01', 'to' => '2015-01-01', 'period' => 'MONTHLY'))
+```
 
 
 ### Webhook Notifications
@@ -1080,4 +1086,3 @@ So if you have any question or need help integrating with us just let us know at
 MIT License. Copyright 2014 Maestrano Pty Ltd. https://maestrano.com
 
 You are not granted rights or licenses to the trademarks of Maestrano.
-
