@@ -10,7 +10,7 @@ Maestrano Cloud Integration is currently in closed beta. Want to know more? Send
   
 - - -
 
-1.  [Getting Setup](#getting-setup)
+1. [Getting Setup](#getting-setup)
 2. [Getting Started](#getting-started)
   * [Installation](#installation)
   * [Configuration](#configuration)
@@ -179,7 +179,9 @@ The json file may look like this:
   "connec": {
     "enabled": true,
     "host": "http://connec.maestrano.io",
-    "base_path": "/api/v2"
+    "base_path": "/api",
+    "v2_path": "/v2",
+    "reports_path": "/reports"
   },
     
   # ===> Webhooks
