@@ -129,6 +129,14 @@ class Maestrano
       self::$config['connec.base_path'] = $settings['connec']['base_path'];
     }
 
+    if (array_key_exists('connec', $settings) && array_key_exists('v2_path', $settings['connec'])) {
+      self::$config['connec.v2_path'] = $settings['connec']['v2_path'];
+    }
+
+    if (array_key_exists('connec', $settings) && array_key_exists('reports_path', $settings['connec'])) {
+      self::$config['connec.reports_path'] = $settings['connec']['reports_path'];
+    }
+
     //-------------------------------
     // Webhook Config - Account
     //-------------------------------
@@ -244,7 +252,9 @@ class Maestrano
        'connec' => array(
          'enabled'          => Maestrano::param('connec.enabled'),
          'host'             => Maestrano::param('connec.host'),
-         'base_path'        => Maestrano::param('connec.base_path')
+         'base_path'        => Maestrano::param('connec.base_path'),
+         'v2_path'          => Maestrano::param('connec.v2_path'),
+         'reports_path'     => Maestrano::param('connec.reports_path')
        ),
        'webhook' => array(
          'account' => array(
@@ -272,7 +282,9 @@ class Maestrano
       'api.base'               => '/api/v1/',
       'connec.enabled'         => true,
       'connec.host'            => 'http://api-sandbox.maestrano.io',
-      'connec.base_path'       => '/connec/api/v2',
+      'connec.base_path'       => '/connec/api',
+      'connec.v2_path'         => '/v2',
+      'connec.reports_path'    => '/reports',
       'sso.idp'                => 'http://api-sandbox.maestrano.io',
       'sso.name_id_format'     => Maestrano_Saml_Settings::NAMEID_PERSISTENT,
       'sso.x509_fingerprint'   => '01:06:15:89:25:7d:78:12:28:a6:69:c7:de:63:ed:74:21:f9:f5:36',
@@ -283,7 +295,9 @@ class Maestrano
       'api.base'               => '/api/v1/',
       'connec.enabled'         => true,
       'connec.host'            => 'https://api-connec-uat.maestrano.io',
-      'connec.base_path'       => '/api/v2',
+      'connec.base_path'       => '/api',
+      'connec.v2_path'         => '/v2',
+      'connec.reports_path'    => '/reports',
       'sso.idp'                => 'https://uat.maestrano.io',
       'sso.name_id_format'     => Maestrano_Saml_Settings::NAMEID_PERSISTENT,
       'sso.x509_fingerprint'   => '8a:1e:2e:76:c4:67:80:68:6c:81:18:f7:d3:29:5d:77:f8:79:54:2f',
@@ -294,7 +308,9 @@ class Maestrano
       'api.base'               => '/api/v1/',
       'connec.enabled'         => true,
       'connec.host'            => 'https://api-connec.maestrano.com',
-      'connec.base_path'       => '/api/v2',
+      'connec.base_path'       => '/api',
+      'connec.v2_path'         => '/v2',
+      'connec.reports_path'    => '/reports',
       'sso.idp'                => 'https://maestrano.com',
       'sso.name_id_format'     => Maestrano_Saml_Settings::NAMEID_PERSISTENT,
       'sso.x509_fingerprint'   => '2f:57:71:e4:40:19:57:37:a6:2c:f0:c5:82:52:2f:2e:41:b7:9d:7e',
