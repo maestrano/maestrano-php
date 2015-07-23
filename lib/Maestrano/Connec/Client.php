@@ -119,12 +119,19 @@ class Maestrano_Connec_Client
 
 
   /**
+   * Scope the relative path to the Connec base URL
+   * If the path is preserved if an absolute URL is send.
+   *
    * @param $api the API to use (eg. v2 or reports)
-   * @param $relativePath the API resource path. E.g. '/organizations'
+   * @param $path the API resource path. E.g. '/organizations'
    * @return string the absolute url to the resource
    */
-  private function scopedUrl($api, $relativePath) {
-    return $this->base_url . $api . $this->scopedPath($relativePath);
+  private function scopedUrl($api, $path) {
+    if (preg_match("/https?\:\/\/.*/i", $path)) {
+      return $path;
+    } else {
+      return $this->base_url . $api . $this->scopedPath($path);
+    }
   }
 
   /**

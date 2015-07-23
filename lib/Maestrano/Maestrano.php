@@ -288,7 +288,7 @@ class Maestrano
         'api.base'               => '/api/v1/',
         'connec.enabled'         => true,
         'connec.host'            => 'http://connec.maestrano.io',
-        'connec.base_path'       => '/connec/api',
+        'connec.base_path'       => '/api',
         'connec.v2_path'         => '/v2',
         'connec.reports_path'    => '/reports',
         'connec.timeout'         => 60,
