@@ -177,11 +177,19 @@ The json file may look like this:
   # => host and API paths
   # The Connec!™ endpoint to use if you need to overwrite it (i.e. if you want to proxy requests or use a stub) 
   "connec": {
+    # == Connec!™ enabled
+    # Data-sharing can be enabled/disabled
     "enabled": true,
+
+    # == Connec!™ API endpoint configuration
     "host": "http://connec.maestrano.io",
     "base_path": "/api",
     "v2_path": "/v2",
-    "reports_path": "/reports"
+    "reports_path": "/reports",
+
+    # == Connec!™ client timeout
+    # Timeout value in seconds when connecting to the Connec!™ API
+    "timeout": 180
   },
 
   # ===> Webhooks

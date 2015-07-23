@@ -8,7 +8,7 @@
 class Maestrano
 {
   // Maestrano PHP API Version
-  const VERSION = '0.7.0';
+  const VERSION = '0.8.2';
 
   /* Internal Config Map */
   protected static $config = array();
@@ -135,6 +135,12 @@ class Maestrano
 
     if (array_key_exists('connec', $settings) && array_key_exists('reports_path', $settings['connec'])) {
       self::$config['connec.reports_path'] = $settings['connec']['reports_path'];
+    }
+
+    if (array_key_exists('connec', $settings) && array_key_exists('timeout', $settings['connec'])) {
+      self::$config['connec.timeout'] = $settings['connec']['timeout'];
+    } else {
+      self::$config['connec.timeout'] = 180;
     }
 
     //-------------------------------
@@ -285,6 +291,7 @@ class Maestrano
         'connec.base_path'       => '/connec/api',
         'connec.v2_path'         => '/v2',
         'connec.reports_path'    => '/reports',
+        'connec.timeout'         => 60,
         'sso.idp'                => 'http://application.maestrano.io',
         'sso.name_id_format'     => Maestrano_Saml_Settings::NAMEID_PERSISTENT,
         'sso.x509_fingerprint'   => '01:06:15:89:25:7d:78:12:28:a6:69:c7:de:63:ed:74:21:f9:f5:36',
@@ -298,6 +305,7 @@ class Maestrano
         'connec.base_path'       => '/connec/api',
         'connec.v2_path'         => '/v2',
         'connec.reports_path'    => '/reports',
+        'connec.timeout'         => 60,
         'sso.idp'                => 'http://api-sandbox.maestrano.io',
         'sso.name_id_format'     => Maestrano_Saml_Settings::NAMEID_PERSISTENT,
         'sso.x509_fingerprint'   => '01:06:15:89:25:7d:78:12:28:a6:69:c7:de:63:ed:74:21:f9:f5:36',
@@ -311,6 +319,7 @@ class Maestrano
         'connec.base_path'       => '/api',
         'connec.v2_path'         => '/v2',
         'connec.reports_path'    => '/reports',
+        'connec.timeout'         => 180,
         'sso.idp'                => 'https://uat.maestrano.io',
         'sso.name_id_format'     => Maestrano_Saml_Settings::NAMEID_PERSISTENT,
         'sso.x509_fingerprint'   => '8a:1e:2e:76:c4:67:80:68:6c:81:18:f7:d3:29:5d:77:f8:79:54:2f',
@@ -324,6 +333,7 @@ class Maestrano
         'connec.base_path'       => '/api',
         'connec.v2_path'         => '/v2',
         'connec.reports_path'    => '/reports',
+        'connec.timeout'         => 180,
         'sso.idp'                => 'https://maestrano.com',
         'sso.name_id_format'     => Maestrano_Saml_Settings::NAMEID_PERSISTENT,
         'sso.x509_fingerprint'   => '2f:57:71:e4:40:19:57:37:a6:2c:f0:c5:82:52:2f:2e:41:b7:9d:7e',
