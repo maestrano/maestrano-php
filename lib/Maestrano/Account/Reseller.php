@@ -33,15 +33,26 @@ class Maestrano_Account_Reseller extends Maestrano_Api_Resource
   }
 
   /**
+   * @param string $preset
+   * @param string $id The ID of the reseller to instantiate.
+   *
+   * @return Maestrano_Account_Reseller
+   */
+  public static function newWithPreset($preset,$id=null)
+  {
+    return new Maestrano_Account_Reseller($id,$preset);
+  }
+
+  /**
   * @param string $id The ID of the reseller to retrieve.
   * @param string|null $apiToken
   *
   * @return Maestrano_Account_Reseller
   */
-  public static function retrieve($id, $apiToken=null)
+  public static function retrieveWithPreset($preset,$id)
   {
     $class = get_class();
-    return self::_scopedRetrieve($class, $id, $apiToken);
+    return self::_scopedRetrieve($class, $id, $preset);
   }
 
   /**
@@ -50,10 +61,10 @@ class Maestrano_Account_Reseller extends Maestrano_Api_Resource
   *
   * @return array An array of Maestrano_Account_Reseller.
   */
-  public static function all($params=null, $apiToken=null)
+  public static function allWithPreset($preset,$params=null)
   {
     $class = get_class();
-    return self::_scopedAll($class, $params, $apiToken);
+    return self::_scopedAll($class, $params, $preset);
   }
 
   /**

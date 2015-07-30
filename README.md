@@ -84,7 +84,7 @@ Maestrano::configure('/path/to/maestrano.json');
 
 You can add other configuration presets by doing the following:
 ```php
-Maestrano::configure('/path/to/some-other-preset.json','my-preset');
+Maestrano::with('my-preset')->configure('/path/to/some-other-preset.json');
 ```
 Additional presets can then be specified when doing particular action, such as initializing a Connec!™ client or triggering a SSO handshake. These presets are particularly useful if you are dealing with multiple Maestrano-style marketplaces (multi-enterprise integration).
 
@@ -92,7 +92,7 @@ Note that the following two commands are equivalent:
 ```php
 Maestrano::configure('/path/to/config.json');
 // equivalent to
-Maestrano::configure('/path/to/config.json','default');
+Maestrano::with('default')->configure('/path/to/config.json');
 ```
 
 The json file may look like this:
@@ -302,7 +302,7 @@ Maestrano::configure(array(
 
 You can also define a specific configuration preset at runtime:
 ```php
-Maestrano::configure(array('sso' => array('creation_mode' => 'real')),"my-config-preset");
+Maestrano::with('my-config-preset')->configure(array('sso' => array('creation_mode' => 'real')));
 ```
 
 ### Metadata Endpoint
@@ -426,10 +426,10 @@ Note that for the consume action you should disable CSRF authenticity if your fr
 If you want your users to benefit from single logout then you should define the following filter in a module and include it in all your controllers except the one handling single sign-on authentication.
 
 ```php
-$mnoSession = Maestrano::sso()->getSession($_SESSION);
+$mnoSession = new Maestrano_Sso_Session($_SESSION);
 
 // With a configuration preset
-// $mnoSession = Maestrano::with('my-config-preset')->sso()->getSession($_SESSION);
+// $mnoSession = Maestrano_Sso_Session::with('my-config-preset')->new($_SESSION);
 
 // Trigger SSO handshake if session not valid anymore
 if (!$mnoSession->isValid()) {
@@ -478,7 +478,7 @@ The controller example below reimplements the authenticate_maestrano! method see
 The example below needs to be adapted depending on your application:
 
 ```php
-if (Maestrano::svc()->authenticate($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW'])) {
+if (Maestrano::authenticate($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW'])) {
   $someGroup = MyGroupModel::findByMnoId(restfulIdFromUrl);
   $someGroup->disableAccess();
 }
@@ -500,13 +500,13 @@ The controller example below reimplements the authenticate_maestrano! method see
 The example below needs to be adapted depending on your application:
 
 ```php
-if (Maestrano::svc()->authenticate($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW'])) {
+if (Maestrano::authenticate($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW'])) {
   $someGroup = MyGroupModel::findByMnoId(restfulGroupIdFromUrl);
   $someGroup->removeUserById(restfulIdFromUrl);
 }
 
 // With a configuration preset
-// if (Maestrano::svc('my-config-preset')->authenticate($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW'])) {
+// if (Maestrano::with('my-config-preset')->authenticate($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW'])) {
 //  $someGroup = MyGroupModel::findByMnoId(restfulGroupIdFromUrl);
 //  $someGroup->removeUserById(restfulIdFromUrl);
 // }

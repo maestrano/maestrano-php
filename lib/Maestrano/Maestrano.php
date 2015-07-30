@@ -5,7 +5,7 @@
  *
  * These settings need to be filled in by the user prior to being used.
  */
-class Maestrano
+class Maestrano extends Maestrano_Util_PresetObject
 {
   // Maestrano PHP API Version
   const VERSION = '0.8.0';
@@ -18,9 +18,33 @@ class Maestrano
    * for authentication purpose
    * @return whether the pair is valid or not
    */
-  public static function authenticate($api_id, $api_key) {
+  public static function authenticateWithPreset($preset,$api_id, $api_key) {
     return !is_null($api_id) && !is_null($api_key) &&
-      self::param('api.id') == $api_id && self::param('api.key') == $api_key;
+      self::param('api.id',$preset) == $api_id && self::param('api.key',$preset) == $api_key;
+  }
+
+  /**
+   * Return a configuration parameter
+   */
+  public static function paramWithPreset($preset,$parameter) {
+    if (!array_key_exists($preset, self::$config)) { return null; }
+
+    if (array_key_exists($parameter, self::$config[$preset])) {
+      return self::$config[$preset][$parameter];
+    } else if (array_key_exists($parameter, self::$EVT_CONFIG[self::$config[$preset]['environment']])) {
+      return self::$EVT_CONFIG[self::$config[$preset]['environment']][$parameter];
+    }
+
+    return null;
+  }
+
+  /**
+   * Return the SSO service
+   *
+   * @return Maestrano_Sso_Service singleton
+   */
+  public static function ssoWithPreset($preset) {
+    return Maestrano_Sso_Service::instance();
   }
 
   /**
@@ -28,7 +52,7 @@ class Maestrano
   *
   * @return true
   */
-  public static function configure($settings, $preset = 'default') {
+  public static function configureWithPreset($preset,$settings) {
     // Load from JSON file if string provided
     if (is_string($settings)) {
       return self::configure(json_decode(file_get_contents($settings),true),$preset);
@@ -201,78 +225,53 @@ class Maestrano
     return true;
   }
 
-
-   /**
-    * Return a configuration parameter
-    */
-   public static function param($parameter, $preset = 'default') {
-     if (!array_key_exists($preset, self::$config)) { return null; }
-
-     if (array_key_exists($parameter, self::$config[$preset])) {
-       return self::$config[$preset][$parameter];
-     } else if (array_key_exists($parameter, self::$EVT_CONFIG[self::$config[$preset]['environment']])) {
-       return self::$EVT_CONFIG[self::$config[$preset]['environment']][$parameter];
-     }
-
-     return null;
-   }
-
-   /**
-    * Return the SSO service
-    *
-    * @return Maestrano_Sso_Service singleton
-    */
-   public static function sso() {
-     return Maestrano_Sso_Service::instance();
-   }
-
    /**
     * Return a json string describing the configuration
     * currently used by the PHP bindings
     */
-   public static function toMetadata() {
+   public static function toMetadataWithPreset($preset) {
      $config = array(
-       'environment'        => Maestrano::param('environment'),
+       'environment'        => Maestrano::with($preset)->param('environment'),
        'app' => array(
-         'host'             => Maestrano::param('app.host')
+         'host'             => Maestrano::with($preset)->param('app.host')
        ),
        'api' => array(
-         'id'               => Maestrano::param('api.id'),
-         'version'          => Maestrano::param('api.version'),
+         'id'               => Maestrano::with($preset)->param('api.id'),
+         'version'          => Maestrano::with($preset)->param('api.version'),
          'verify_ssl_certs' => false,
-         'lang'             => Maestrano::param('api.lang'),
-         'lang_version'     => Maestrano::param('api.lang_version'),
-         'host'             => Maestrano::param('api.host'),
-         'base'             => Maestrano::param('api.base')
+         'lang'             => Maestrano::with($preset)->param('api.lang'),
+         'lang_version'     => Maestrano::with($preset)->param('api.lang_version'),
+         'host'             => Maestrano::with($preset)->param('api.host'),
+         'base'             => Maestrano::with($preset)->param('api.base')
        ),
        'sso' => array(
-         'enabled'          => Maestrano::param('sso.enabled'),
-         'slo_enabled'      => Maestrano::param('sso.slo_enabled'),
-         'init_path'        => Maestrano::param('sso.init_path'),
-         'consume_path'     => Maestrano::param('sso.consume_path'),
-         'creation_mode'    => Maestrano::param('sso.creation_mode'),
-         'idm'              => Maestrano::param('sso.idm'),
-         'idp'              => Maestrano::param('sso.idp'),
-         'name_id_format'   => Maestrano::param('sso.name_id_format'),
-         'x509_fingerprint' => Maestrano::param('sso.x509_fingerprint'),
-         'x509_certificate' => Maestrano::param('sso.x509_certificate')
+         'enabled'          => Maestrano::with($preset)->param('sso.enabled'),
+         'slo_enabled'      => Maestrano::with($preset)->param('sso.slo_enabled'),
+         'init_path'        => Maestrano::with($preset)->param('sso.init_path'),
+         'consume_path'     => Maestrano::with($preset)->param('sso.consume_path'),
+         'creation_mode'    => Maestrano::with($preset)->param('sso.creation_mode'),
+         'idm'              => Maestrano::with($preset)->param('sso.idm'),
+         'idp'              => Maestrano::with($preset)->param('sso.idp'),
+         'name_id_format'   => Maestrano::with($preset)->param('sso.name_id_format'),
+         'x509_fingerprint' => Maestrano::with($preset)->param('sso.x509_fingerprint'),
+         'x509_certificate' => Maestrano::with($preset)->param('sso.x509_certificate')
        ),
        'connec' => array(
-         'enabled'          => Maestrano::param('connec.enabled'),
-         'host'             => Maestrano::param('connec.host'),
-         'base_path'        => Maestrano::param('connec.base_path'),
-         'v2_path'          => Maestrano::param('connec.v2_path'),
-         'reports_path'     => Maestrano::param('connec.reports_path')
+         'enabled'          => Maestrano::with($preset)->param('connec.enabled'),
+         'host'             => Maestrano::with($preset)->param('connec.host'),
+         'base_path'        => Maestrano::with($preset)->param('connec.base_path'),
+         'v2_path'          => Maestrano::with($preset)->param('connec.v2_path'),
+         'reports_path'     => Maestrano::with($preset)->param('connec.reports_path')
        ),
        'webhook' => array(
          'account' => array(
-           'groups_path' => Maestrano::param('webhook.account.groups_path'),
-           'group_users_path' => Maestrano::param('webhook.account.group_users_path')
+           'groups_path' => Maestrano::with($preset)->param('webhook.account.groups_path'),
+           'group_users_path' => Maestrano::with($preset)->param('webhook.account.group_users_path')
          ),
          'connec' => array(
-           'initialization_path' => Maestrano::param('webhook.connec.initialization_path'),
-           'notifications_path' => Maestrano::param('webhook.connec.notifications_path'),
-           'subscriptions' => Maestrano::param('webhook.connec.subscriptions')
+           'initialization_path' => Maestrano::with($preset)->param('webhook.connec.initialization_path'),
+           'notifications_path' => Maestrano::with($preset)->param('webhook.connec.notifications_path'),
+           'subscriptions' => Maestrano::with($preset)->param('webhook.connec.subscriptions')
          )
        )
      );
