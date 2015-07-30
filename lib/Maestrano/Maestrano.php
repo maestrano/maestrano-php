@@ -59,7 +59,7 @@ class Maestrano extends Maestrano_Util_PresetObject
     }
 
     // Ensure preset is initialized
-    if (is_null(self::$config[$preset])) {
+    if (!array_key_exists($preset, self::$config) || is_null(self::$config[$preset])) {
       self::$config[$preset] = array();
     }
 
