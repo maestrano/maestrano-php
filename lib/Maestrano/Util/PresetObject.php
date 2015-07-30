@@ -15,7 +15,7 @@ class Maestrano_Util_PresetObject
     }
 
     if (is_null($preset_cache[$preset])) {
-      $preset_cache[$preset] = new Maestrano_Util_PresetProxy(get_called_class());
+      $preset_cache[$preset] = new Maestrano_Util_PresetProxy(get_called_class(),$preset);
     }
 
     return $preset_cache[$preset];

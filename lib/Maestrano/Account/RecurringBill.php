@@ -25,8 +25,8 @@ class Maestrano_Account_RecurringBill extends Maestrano_Api_Resource
   }
 
   /**
+   * @param string|null $preset
    * @param string $id The ID of the bill to retrieve.
-   * @param string|null $apiToken
    *
    * @return Maestrano_Account_RecurringBill
    */
@@ -37,8 +37,8 @@ class Maestrano_Account_RecurringBill extends Maestrano_Api_Resource
   }
 
   /**
+   * @param string|null $preset
    * @param array|null $params
-   * @param string|null $apiToken
    *
    * @return array An array of Maestrano_Account_RecurringBills.
    */
@@ -49,8 +49,8 @@ class Maestrano_Account_RecurringBill extends Maestrano_Api_Resource
   }
 
   /**
+   * @param string|null $preset
    * @param array|null $params
-   * @param string|null $apiToken
    *
    * @return Maestrano_Account_RecurringBill The created bill.
    */

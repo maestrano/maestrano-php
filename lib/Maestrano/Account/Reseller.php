@@ -44,11 +44,11 @@ class Maestrano_Account_Reseller extends Maestrano_Api_Resource
   }
 
   /**
-  * @param string $id The ID of the reseller to retrieve.
-  * @param string|null $apiToken
-  *
-  * @return Maestrano_Account_Reseller
-  */
+   * @param string|null $preset
+   * @param string $id The ID of the reseller to retrieve.
+   *
+   * @return Maestrano_Account_Reseller
+   */
   public static function retrieveWithPreset($preset,$id)
   {
     $class = get_class();
@@ -56,11 +56,11 @@ class Maestrano_Account_Reseller extends Maestrano_Api_Resource
   }
 
   /**
-  * @param array|null $params
-  * @param string|null $apiToken
-  *
-  * @return array An array of Maestrano_Account_Reseller.
-  */
+   * @param string|null $preset
+   * @param array|null $params
+   *
+   * @return array An array of Maestrano_Account_Reseller.
+   */
   public static function allWithPreset($preset,$params=null)
   {
     $class = get_class();
@@ -69,11 +69,10 @@ class Maestrano_Account_Reseller extends Maestrano_Api_Resource
 
   /**
   * @param array|null $params
-  * @param string|null $apiToken
   *
   * @return array An array of Maestrano_Account_Group belonging to the reseller.
   */
-  public function groups($params=null, $apiToken=null) {
-    return $this->getRelated('/groups',$params,$apiToken);
+  public function groups($params=null) {
+    return $this->getRelated('/groups',$params,$this->_preset);
   }
 }

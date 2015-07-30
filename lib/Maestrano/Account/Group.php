@@ -24,8 +24,8 @@ class Maestrano_Account_Group extends Maestrano_Api_Resource
   }
 
   /**
+   * @param string|null $preset
    * @param string $id The ID of the bill to retrieve.
-   * @param string|null $apiToken
    *
    * @return Maestrano_Billing_Bill
    */
@@ -36,8 +36,8 @@ class Maestrano_Account_Group extends Maestrano_Api_Resource
   }
 
   /**
+   * @param string|null $preset
    * @param array|null $params
-   * @param string|null $apiToken
    *
    * @return array An array of Maestrano_Billing_Bills.
    */
