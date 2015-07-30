@@ -21,10 +21,10 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
    * @return Maestrano_Sso_Service
    */
   public static function instanceWithPreset($preset) {
-      if (is_null($_instances[$preset])) {
-          $_instances[$preset] = new self($preset);
+      if (!array_key_exists($preset, self::$_instances) || is_null(self::$_instances[$preset])) {
+          self::$_instances[$preset] = new self($preset);
       }
-      return $_instances[$preset];
+      return self::$_instances[$preset];
   }
 
   public function __construct($preset)
