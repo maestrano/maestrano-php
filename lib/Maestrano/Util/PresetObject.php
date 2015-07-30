@@ -15,7 +15,7 @@ class Maestrano_Util_PresetObject
       $preset = 'default';
     }
 
-    if (!array_key_exists($preset, self::$preset_cache) || is_null($preset_cache[$preset])) {
+    if (!array_key_exists($preset, self::$preset_cache) || is_null(self::$preset_cache[$preset])) {
       self::$preset_cache[$preset] = new Maestrano_Util_PresetProxy(get_called_class(),$preset);
     }
 
