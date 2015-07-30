@@ -11,15 +11,20 @@ class Maestrano_Util_PresetObject
    * @return a preset proxy
    */
   public static function with($preset) {
+    $cname = get_called_class();
     if (is_null($preset)) {
       $preset = 'default';
     }
 
-    if (!array_key_exists($preset, self::$preset_cache) || is_null(self::$preset_cache[$preset])) {
-      self::$preset_cache[$preset] = new Maestrano_Util_PresetProxy(get_called_class(),$preset);
+    if (!array_key_exists($cname, self::$preset_cache) || is_null(self::$preset_cache[$cname])) {
+      self::$preset_cache[$cname] = array();
     }
 
-    return self::$preset_cache[$preset];
+    if (!array_key_exists($preset, self::$preset_cache[$cname]) || is_null(self::$preset_cache[$cname][$preset])) {
+      self::$preset_cache[$cname][$preset] = new Maestrano_Util_PresetProxy(get_called_class(),$preset);
+    }
+
+    return self::$preset_cache[$cname][$preset];
   }
 
   public static function __callStatic($name, $arguments)
