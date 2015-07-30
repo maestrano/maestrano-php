@@ -29,7 +29,7 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
 
   public function __construct($preset)
   {
-    $this->preset = $preset;
+    $this->_preset = $preset;
   }
 
   /**
@@ -38,7 +38,7 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
    * @return boolean
    */
    public function isSsoEnabled() {
-     return Maestrano::with($this->preset)->param('sso.enabled');
+     return Maestrano::with($this->_preset)->param('sso.enabled');
    }
 
    /**
@@ -47,7 +47,7 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
     * @return boolean
     */
     public function isSloEnabled() {
-      return Maestrano::with($this->preset)->param('sso.slo_enabled');
+      return Maestrano::with($this->_preset)->param('sso.slo_enabled');
     }
 
   /**
@@ -57,7 +57,7 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
    * @return boolean
    */
   public function getInitPath() {
-    return Maestrano::with($this->preset)->param('sso.init_path');
+    return Maestrano::with($this->_preset)->param('sso.init_path');
   }
 
   /**
@@ -67,7 +67,7 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
    * @return boolean
    */
   public function getInitUrl() {
-    $host = Maestrano::with($this->preset)->param('app.host');
+    $host = Maestrano::with($this->_preset)->param('app.host');
     $path = $this->getInitPath();
     return "${host}${path}";
   }
@@ -77,7 +77,7 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
    * @var string
    */
   public function getConsumePath() {
-    return Maestrano::with($this->preset)->param('sso.consume_path');
+    return Maestrano::with($this->_preset)->param('sso.consume_path');
   }
 
   /**
@@ -85,7 +85,7 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
    * @var string
    */
   public function getConsumeUrl() {
-    $host = Maestrano::with($this->preset)->param('app.host');
+    $host = Maestrano::with($this->_preset)->param('app.host');
     $path = $this->getConsumePath();
     return "${host}${path}";
   }
@@ -97,7 +97,7 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
    * @return string url
    */
   public function getLogoutUrl() {
-    $host = Maestrano::with($this->preset)->param('sso.idp');
+    $host = Maestrano::with($this->_preset)->param('sso.idp');
     $endpoint = '/app_logout';
 
     return "${host}${endpoint}";
@@ -110,7 +110,7 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
    * @return string url
    */
   public function getUnauthorizedUrl() {
-    $host = Maestrano::with($this->preset)->param('api.host');
+    $host = Maestrano::with($this->_preset)->param('api.host');
     $endpoint = '/app_access_unauthorized';
 
     return "${host}${endpoint}";
@@ -121,8 +121,8 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
    * @var string
    */
   public function getIdpUrl() {
-    $host = Maestrano::with($this->preset)->param('sso.idp');
-    $api_base = Maestrano::with($this->preset)->param('api.base');
+    $host = Maestrano::with($this->_preset)->param('sso.idp');
+    $api_base = Maestrano::with($this->_preset)->param('api.base');
     $endpoint = 'auth/saml';
     return "${host}${api_base}${endpoint}";
   }
@@ -132,8 +132,8 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
    * @var string
    */
   public function getSessionCheckUrl($user_id,$sso_session)  {
-    $host = Maestrano::with($this->preset)->param('sso.idp');
-    $api_base = Maestrano::with($this->preset)->param('api.base');
+    $host = Maestrano::with($this->_preset)->param('sso.idp');
+    $api_base = Maestrano::with($this->_preset)->param('api.base');
     $endpoint = 'auth/saml';
 
     return "${host}${api_base}${endpoint}/${user_id}?session=${sso_session}";
@@ -148,9 +148,9 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
     $settings = new Maestrano_Saml_Settings();
 
     // Configure SAML
-    $settings->idpPublicCertificate = Maestrano::with($this->preset)->param('sso.x509_certificate');
-    $settings->spIssuer = Maestrano::with($this->preset)->param('api.id');
-    $settings->requestedNameIdFormat = Maestrano::with($this->preset)->param('sso.name_id_format');
+    $settings->idpPublicCertificate = Maestrano::with($this->_preset)->param('sso.x509_certificate');
+    $settings->spIssuer = Maestrano::with($this->_preset)->param('api.id');
+    $settings->requestedNameIdFormat = Maestrano::with($this->_preset)->param('sso.name_id_format');
     $settings->idpSingleSignOnUrl = $this->getIdpUrl();
     $settings->spReturnUrl = $this->getConsumeUrl();
 
