@@ -28,113 +28,119 @@ class Maestrano
   *
   * @return true
   */
-  public static function configure($settings) {
+  public static function configure($settings, $preset = 'default') {
+    // Load from JSON file if string provided
     if (is_string($settings)) {
-      return self::configure(json_decode(file_get_contents($settings),true));
+      return self::configure(json_decode(file_get_contents($settings),true),$preset);
+    }
+
+    // Ensure preset is initialized
+    if (is_null(self::$config[$preset])) {
+      self::$config[$preset] = array();
     }
 
     //-------------------------------
     // App Config
     //-------------------------------
     if (array_key_exists('environment', $settings)) {
-      self::$config['environment'] = $settings['environment'];
+      self::$config[$preset]['environment'] = $settings['environment'];
     } else {
-      self::$config['environment'] = 'test';
+      self::$config[$preset]['environment'] = 'test';
     }
 
     if (array_key_exists('app', $settings) && array_key_exists('host', $settings['app'])) {
-      self::$config['app.host'] = $settings['app']['host'];
+      self::$config[$preset]['app.host'] = $settings['app']['host'];
     } else {
-      self::$config['app.host'] = 'http://localhost:8888';
+      self::$config[$preset]['app.host'] = 'http://localhost:8888';
     }
 
     //-------------------------------
     // API Config
     //-------------------------------
     if (array_key_exists('api', $settings) && array_key_exists('id', $settings['api'])) {
-      self::$config['api.id'] = $settings['api']['id'];
+      self::$config[$preset]['api.id'] = $settings['api']['id'];
     }
 
     if (array_key_exists('api', $settings) && array_key_exists('key', $settings['api'])) {
-      self::$config['api.key'] = $settings['api']['key'];
+      self::$config[$preset]['api.key'] = $settings['api']['key'];
     }
 
     if (array_key_exists('api', $settings) && array_key_exists('group_id', $settings['api'])) {
-      self::$config['api.group_id'] = $settings['api']['group_id'];
+      self::$config[$preset]['api.group_id'] = $settings['api']['group_id'];
     }
 
     // Get lang/platform version
-    self::$config['api.version'] = Maestrano::VERSION;
-    self::$config['api.lang'] = 'php';
-    self::$config['api.lang_version'] = phpversion() . " " . php_uname();
+    self::$config[$preset]['api.version'] = Maestrano::VERSION;
+    self::$config[$preset]['api.lang'] = 'php';
+    self::$config[$preset]['api.lang_version'] = phpversion() . " " . php_uname();
 
     // Build api.token from api.id and api.key
-    self::$config['api.token'] = self::$config['api.id'] . ":" . self::$config['api.key'];
+    self::$config[$preset]['api.token'] = self::$config[$preset]['api.id'] . ":" . self::$config[$preset]['api.key'];
 
     //-------------------------------
     // SSO Config
     //-------------------------------
     if (array_key_exists('sso', $settings) && array_key_exists('enabled', $settings['sso'])) {
-      self::$config['sso.enabled'] = $settings['sso']['enabled'];
+      self::$config[$preset]['sso.enabled'] = $settings['sso']['enabled'];
     } else {
-      self::$config['sso.enabled'] = true;
+      self::$config[$preset]['sso.enabled'] = true;
     }
 
     if (array_key_exists('sso', $settings) && array_key_exists('slo_enabled', $settings['sso'])) {
-      self::$config['sso.slo_enabled'] = $settings['sso']['slo_enabled'];
+      self::$config[$preset]['sso.slo_enabled'] = $settings['sso']['slo_enabled'];
     } else {
-      self::$config['sso.slo_enabled'] = true;
+      self::$config[$preset]['sso.slo_enabled'] = true;
     }
 
     if (array_key_exists('sso', $settings) && array_key_exists('idm', $settings['sso'])) {
-      self::$config['sso.idm'] = $settings['sso']['idm'];
+      self::$config[$preset]['sso.idm'] = $settings['sso']['idm'];
     }
 
     if (array_key_exists('sso', $settings) && array_key_exists('idp', $settings['sso'])) {
-      self::$config['sso.idp'] = $settings['sso']['idp'];
+      self::$config[$preset]['sso.idp'] = $settings['sso']['idp'];
     }
 
     if (array_key_exists('sso', $settings) && array_key_exists('init_path', $settings['sso'])) {
-      self::$config['sso.init_path'] = $settings['sso']['init_path'];
+      self::$config[$preset]['sso.init_path'] = $settings['sso']['init_path'];
     } else {
-      self::$config['sso.init_path'] = '/maestrano/auth/saml/init.php';
+      self::$config[$preset]['sso.init_path'] = '/maestrano/auth/saml/init.php';
     }
 
     if (array_key_exists('sso', $settings) && array_key_exists('consume_path', $settings['sso'])) {
-      self::$config['sso.consume_path'] = $settings['sso']['consume_path'];
+      self::$config[$preset]['sso.consume_path'] = $settings['sso']['consume_path'];
     } else {
-      self::$config['sso.consume_path'] = '/maestrano/auth/saml/consume.php';
+      self::$config[$preset]['sso.consume_path'] = '/maestrano/auth/saml/consume.php';
     }
 
     if (array_key_exists('sso', $settings) && array_key_exists('creation_mode', $settings['sso'])) {
-      self::$config['sso.creation_mode'] = $settings['sso']['creation_mode'];
+      self::$config[$preset]['sso.creation_mode'] = $settings['sso']['creation_mode'];
     } else {
-      self::$config['sso.creation_mode'] = 'real';
+      self::$config[$preset]['sso.creation_mode'] = 'real';
     }
 
     //-------------------------------
     // Connec! Config
     //-------------------------------
     if (array_key_exists('connec', $settings) && array_key_exists('enabled', $settings['connec'])) {
-      self::$config['connec.enabled'] = $settings['connec']['enabled'];
+      self::$config[$preset]['connec.enabled'] = $settings['connec']['enabled'];
     } else {
-      self::$config['connec.enabled'] = true;
+      self::$config[$preset]['connec.enabled'] = true;
     }
 
     if (array_key_exists('connec', $settings) && array_key_exists('host', $settings['connec'])) {
-      self::$config['connec.host'] = $settings['connec']['host'];
+      self::$config[$preset]['connec.host'] = $settings['connec']['host'];
     }
 
     if (array_key_exists('connec', $settings) && array_key_exists('base_path', $settings['connec'])) {
-      self::$config['connec.base_path'] = $settings['connec']['base_path'];
+      self::$config[$preset]['connec.base_path'] = $settings['connec']['base_path'];
     }
 
     if (array_key_exists('connec', $settings) && array_key_exists('v2_path', $settings['connec'])) {
-      self::$config['connec.v2_path'] = $settings['connec']['v2_path'];
+      self::$config[$preset]['connec.v2_path'] = $settings['connec']['v2_path'];
     }
 
     if (array_key_exists('connec', $settings) && array_key_exists('reports_path', $settings['connec'])) {
-      self::$config['connec.reports_path'] = $settings['connec']['reports_path'];
+      self::$config[$preset]['connec.reports_path'] = $settings['connec']['reports_path'];
     }
 
     //-------------------------------
@@ -143,17 +149,17 @@ class Maestrano
     if (array_key_exists('webhook', $settings)
       && array_key_exists('account', $settings['webhook'])
       && array_key_exists('groups_path', $settings['webhook']['account'])) {
-      self::$config['webhook.account.groups_path'] = $settings['webhook']['account']['groups_path'];
+      self::$config[$preset]['webhook.account.groups_path'] = $settings['webhook']['account']['groups_path'];
     } else {
-      self::$config['webhook.account.groups_path'] = '/maestrano/account/groups/:id';
+      self::$config[$preset]['webhook.account.groups_path'] = '/maestrano/account/groups/:id';
     }
 
     if (array_key_exists('webhook', $settings)
       && array_key_exists('account', $settings['webhook'])
       && array_key_exists('group_users_path', $settings['webhook']['account'])) {
-      self::$config['webhook.account.group_users_path'] = $settings['webhook']['account']['group_users_path'];
+      self::$config[$preset]['webhook.account.group_users_path'] = $settings['webhook']['account']['group_users_path'];
     } else {
-      self::$config['webhook.account.group_users_path'] = '/maestrano/account/groups/:group_id/users/:id';
+      self::$config[$preset]['webhook.account.group_users_path'] = '/maestrano/account/groups/:group_id/users/:id';
     }
 
     //-------------------------------
@@ -162,34 +168,34 @@ class Maestrano
     if (array_key_exists('webhook', $settings)
       && array_key_exists('connec', $settings['webhook'])
       && array_key_exists('initialization_path', $settings['webhook']['connec'])) {
-      self::$config['webhook.connec.initialization_path'] = $settings['webhook']['connec']['initialization_path'];
+      self::$config[$preset]['webhook.connec.initialization_path'] = $settings['webhook']['connec']['initialization_path'];
     } else {
-      self::$config['webhook.connec.initialization_path'] = '/maestrano/connec/initialization';
+      self::$config[$preset]['webhook.connec.initialization_path'] = '/maestrano/connec/initialization';
     }
 
     if (array_key_exists('webhook', $settings)
       && array_key_exists('connec', $settings['webhook'])
       && array_key_exists('notifications_path', $settings['webhook']['connec'])) {
-      self::$config['webhook.connec.notifications_path'] = $settings['webhook']['connec']['notifications_path'];
+      self::$config[$preset]['webhook.connec.notifications_path'] = $settings['webhook']['connec']['notifications_path'];
     } else {
-      self::$config['webhook.connec.notifications_path'] = '/maestrano/connec/notifications';
+      self::$config[$preset]['webhook.connec.notifications_path'] = '/maestrano/connec/notifications';
     }
 
     if (array_key_exists('webhook', $settings)
       && array_key_exists('connec', $settings['webhook'])
       && array_key_exists('subscriptions', $settings['webhook']['connec'])) {
-      self::$config['webhook.connec.subscriptions'] = $settings['webhook']['connec']['subscriptions'];
+      self::$config[$preset]['webhook.connec.subscriptions'] = $settings['webhook']['connec']['subscriptions'];
     } else {
-      self::$config['webhook.connec.subscriptions'] = array();
+      self::$config[$preset]['webhook.connec.subscriptions'] = array();
     }
 
 
     // Not in use for now
     // Check SSL certificate on API requests
     if (array_key_exists('verify_ssl_certs', $settings)) {
-      self::$config['verify_ssl_certs'] = $settings['verify_ssl_certs'];
+      self::$config[$preset]['verify_ssl_certs'] = $settings['verify_ssl_certs'];
     } else {
-      self::$config['verify_ssl_certs'] = false;
+      self::$config[$preset]['verify_ssl_certs'] = false;
     }
 
     return true;
@@ -199,11 +205,13 @@ class Maestrano
    /**
     * Return a configuration parameter
     */
-   public static function param($parameter) {
-     if (array_key_exists($parameter, self::$config)) {
-       return self::$config[$parameter];
-     } else if (array_key_exists($parameter, self::$EVT_CONFIG[self::$config['environment']])) {
-       return self::$EVT_CONFIG[self::$config['environment']][$parameter];
+   public static function param($parameter, $preset = 'default') {
+     if (!array_key_exists($preset, self::$config)) { return null; }
+
+     if (array_key_exists($parameter, self::$config[$preset])) {
+       return self::$config[$preset][$parameter];
+     } else if (array_key_exists($parameter, self::$EVT_CONFIG[self::$config[$preset]['environment']])) {
+       return self::$EVT_CONFIG[self::$config[$preset]['environment']][$parameter];
      }
 
      return null;
