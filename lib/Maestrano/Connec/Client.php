@@ -24,7 +24,7 @@ class Maestrano_Connec_Client extends Maestrano_Util_PresetObject
    */
   public static function newWithPreset($preset, $group_id = null)
   {
-    $obj = new Maestrano_Connec_Client($group_id, $preset);
+    $obj = new Maestrano_Connec_Client($group_id);
     $obj->_preset = $preset;
     return $obj;
   }
