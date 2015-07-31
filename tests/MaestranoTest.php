@@ -115,6 +115,29 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
       $this->assertFalse(Maestrano::authenticate($this->config['api']['id'],$this->config['api']['key'] . "aaa"));
     }
 
+    public function testBindingConfigurationWithPreset() {
+      $preset = 'some-marketplace';
+      Maestrano::with($preset)->configure($this->config);
+
+      $this->assertEquals($this->config['environment'], Maestrano::with($preset)->param('environment'));
+      $this->assertEquals($this->config['app']['host'], Maestrano::with($preset)->param('app.host'));
+      $this->assertEquals($this->config['api']['id'], Maestrano::with($preset)->param('api.id'));
+      $this->assertEquals($this->config['api']['key'], Maestrano::with($preset)->param('api.key'));
+      $this->assertEquals($this->config['api']['group_id'], Maestrano::with($preset)->param('api.group_id'));
+      $this->assertEquals($this->config['sso']['init_path'], Maestrano::with($preset)->param('sso.init_path'));
+      $this->assertEquals($this->config['sso']['consume_path'], Maestrano::with($preset)->param('sso.consume_path'));
+      $this->assertEquals($this->config['connec']['enabled'], Maestrano::with($preset)->param('connec.enabled'));
+      $this->assertEquals($this->config['connec']['host'], Maestrano::with($preset)->param('connec.host'));
+      $this->assertEquals($this->config['connec']['base_path'], Maestrano::with($preset)->param('connec.base_path'));
+      $this->assertEquals($this->config['connec']['v2_path'], Maestrano::with($preset)->param('connec.v2_path'));
+      $this->assertEquals($this->config['connec']['reports_path'], Maestrano::with($preset)->param('connec.reports_path'));
+      $this->assertEquals($this->config['webhook']['account']['groups_path'], Maestrano::with($preset)->param('webhook.account.groups_path'));
+      $this->assertEquals($this->config['webhook']['account']['group_users_path'], Maestrano::with($preset)->param('webhook.account.group_users_path'));
+      $this->assertEquals($this->config['webhook']['connec']['initialization_path'], Maestrano::with($preset)->param('webhook.connec.initialization_path'));
+      $this->assertEquals($this->config['webhook']['connec']['notifications_path'], Maestrano::with($preset)->param('webhook.connec.notifications_path'));
+      $this->assertEquals($this->config['webhook']['connec']['subscriptions'], Maestrano::with($preset)->param('webhook.connec.subscriptions'));
+    }
+
     public function testToMetadata() {
       Maestrano::configure($this->config);
 
