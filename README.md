@@ -1097,6 +1097,15 @@ Maestrano_Account_Group
 <tr>
 
 <tr>
+<td><b>main_accounting</b></td>
+<td>readonly</td>
+<td>String</td>
+<td><b>-</b></td>
+<td>-</td>
+<td>Main accounting package used by this group. Possible values: 'quickbooks', 'xero', 'myob'</td>
+<tr>
+
+<tr>
 <td><b>timezone</b></td>
 <td>readonly</td>
 <td>String</td>
