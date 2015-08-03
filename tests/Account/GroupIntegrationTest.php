@@ -25,7 +25,7 @@ class Maestrano_Account_GroupIntegrationTest extends PHPUnit_Framework_TestCase
     $group = $groupList[0];
 
     $this->assertEquals('cld-4',$group->getId());
-    $this->assertEquals('default',$group->getPreset());
+    $this->assertEquals('maestrano',$group->getPreset());
     $this->assertEquals('2014-05-21T04:04:53+0000',$group->getCreatedAt()->format(DateTime::ISO8601));
   }
 
@@ -39,14 +39,14 @@ class Maestrano_Account_GroupIntegrationTest extends PHPUnit_Framework_TestCase
 
     $this->assertTrue(count($groupList) == 1);
     $this->assertEquals('cld-3',$groupList[0]->getId());
-    $this->assertEquals('default',$groupList[0]->getPreset());
+    $this->assertEquals('maestrano',$groupList[0]->getPreset());
   }
 
   public function testRetrieveSingleGroup() {
     $group = Maestrano_Account_Group::retrieve("cld-3");
 
     $this->assertEquals('cld-3',$group->getId());
-    $this->assertEquals('default',$group->getPreset());
+    $this->assertEquals('maestrano',$group->getPreset());
     $this->assertEquals('2014-05-21T00:31:26+0000',$group->getCreatedAt()->format(DateTime::ISO8601));
   }
 

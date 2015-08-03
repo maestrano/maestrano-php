@@ -3,7 +3,7 @@
 class Maestrano_Util_PresetProxy
 {
 
-  public function __construct($class_name, $preset = 'default')
+  public function __construct($class_name, $preset = 'maestrano')
   {
     $this->class_name = $class_name;
     $this->preset = $preset;

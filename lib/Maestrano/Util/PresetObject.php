@@ -13,7 +13,7 @@ class Maestrano_Util_PresetObject
   public static function with($preset) {
     $cname = get_called_class();
     if (is_null($preset)) {
-      $preset = 'default';
+      $preset = 'maestrano';
     }
 
     if (!array_key_exists($cname, self::$preset_cache) || is_null(self::$preset_cache[$cname])) {
@@ -30,7 +30,7 @@ class Maestrano_Util_PresetObject
   public static function __callStatic($name, $arguments)
   {
     if (method_exists(get_called_class(),$name . 'WithPreset')) {
-      array_unshift($arguments,'default');
+      array_unshift($arguments,'maestrano');
       return call_user_func_array(get_called_class() . '::' . $name . 'WithPreset',$arguments);
     } else {
       throw new BadMethodCallException('Method ' . $name . ' does not exist');

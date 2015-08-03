@@ -25,7 +25,7 @@ class Maestrano_Account_RecurringBillIntegrationTest extends PHPUnit_Framework_T
     $recBill = $recBillList[0];
 
     $this->assertEquals('rbill-1',$recBill->getId());
-    $this->assertEquals('default',$recBill->getPreset());
+    $this->assertEquals('maestrano',$recBill->getPreset());
     $this->assertEquals('cld-3',$recBill->getGroupId());
     $this->assertEquals("year",$recBill->getPeriod());
     $this->assertEquals("1",$recBill->getFrequency());
@@ -40,7 +40,7 @@ class Maestrano_Account_RecurringBillIntegrationTest extends PHPUnit_Framework_T
 
     foreach ($recBillList as $recBill) {
       $this->assertEquals('cancelled',$recBill->getStatus());
-      $this->assertEquals('default',$recBill->getPreset());
+      $this->assertEquals('maestrano',$recBill->getPreset());
     }
   }
 
@@ -48,7 +48,7 @@ class Maestrano_Account_RecurringBillIntegrationTest extends PHPUnit_Framework_T
     $recBill = Maestrano_Account_RecurringBill::retrieve("rbill-1");
 
     $this->assertEquals('rbill-1',$recBill->getId());
-    $this->assertEquals('default',$recBill->getPreset());
+    $this->assertEquals('maestrano',$recBill->getPreset());
     $this->assertEquals('cld-3',$recBill->getGroupId());
     $this->assertEquals("year",$recBill->getPeriod());
     $this->assertEquals("1",$recBill->getFrequency());
@@ -61,7 +61,7 @@ class Maestrano_Account_RecurringBillIntegrationTest extends PHPUnit_Framework_T
     $recBill = Maestrano_Account_RecurringBill::create($attrs);
 
     $this->assertFalse($recBill->getId() == null);
-    $this->assertEquals('default',$recBill->getPreset());
+    $this->assertEquals('maestrano',$recBill->getPreset());
     $this->assertEquals('cld-3',$recBill->getGroupId());
     $this->assertEquals(2000,$recBill->getPriceCents());
     $this->assertFalse($recBill->getCreatedAt() == null);

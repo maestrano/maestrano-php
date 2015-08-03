@@ -25,7 +25,7 @@ class Maestrano_Account_UserIntegrationTest extends PHPUnit_Framework_TestCase
     }
 
     $this->assertEquals('usr-1',$user->getId());
-    $this->assertEquals('default',$user->getPreset());
+    $this->assertEquals('maestrano',$user->getPreset());
     $this->assertEquals('John',$user->getFirstName());
     $this->assertEquals('Doe',$user->getLastName());
     $this->assertEquals('2014-05-21T00:32:35+0000',$user->getCreatedAt()->format(DateTime::ISO8601));
@@ -40,7 +40,7 @@ class Maestrano_Account_UserIntegrationTest extends PHPUnit_Framework_TestCase
     ));
 
     $this->assertTrue(count($userList) == 1);
-    $this->assertEquals('default',$userList[0]->getPreset());
+    $this->assertEquals('maestrano',$userList[0]->getPreset());
     $this->assertEquals('usr-1',$userList[0]->getId());
   }
 
@@ -48,7 +48,7 @@ class Maestrano_Account_UserIntegrationTest extends PHPUnit_Framework_TestCase
     $user = Maestrano_Account_User::retrieve("usr-1");
 
     $this->assertEquals('usr-1',$user->getId());
-    $this->assertEquals('default',$user->getPreset());
+    $this->assertEquals('maestrano',$user->getPreset());
     $this->assertEquals('John',$user->getFirstName());
     $this->assertEquals('Doe',$user->getLastName());
     $this->assertEquals('2014-05-21T00:32:35+0000',$user->getCreatedAt()->format(DateTime::ISO8601));
