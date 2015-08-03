@@ -55,7 +55,7 @@ To install maestrano-php using Composer, add this dependency to your project's c
 ```
 {
   "require": {
-    "maestrano/maestrano-php": "~0.9"
+    "maestrano/maestrano-php": "~0.9.1"
   }
 }
 ```
@@ -93,7 +93,7 @@ Note that the following two commands are equivalent:
 ```php
 Maestrano::configure('/path/to/config.json');
 // equivalent to
-Maestrano::with('default')->configure('/path/to/config.json');
+Maestrano::with('maestrano')->configure('/path/to/config.json');
 ```
 
 The json file may look like this:

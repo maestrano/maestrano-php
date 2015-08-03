@@ -101,7 +101,7 @@ class Maestrano_Api_Object extends Maestrano_Util_PresetObject implements ArrayA
 
   public function getPreset() {
     if (is_null($this->_preset)) {
-      return 'default';
+      return 'maestrano';
     } else {
       return $this->_preset;
     }

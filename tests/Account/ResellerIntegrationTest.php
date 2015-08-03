@@ -25,7 +25,7 @@ class Maestrano_Account_ResellerIntegrationTest extends PHPUnit_Framework_TestCa
     }
 
     $this->assertEquals('rsl-449s8fsd',$reseller->getId());
-    $this->assertEquals('default',$reseller->getPreset());
+    $this->assertEquals('maestrano',$reseller->getPreset());
     $this->assertEquals('Blue Consulting',$reseller->getName());
     $this->assertEquals('US-204512-BCL',$reseller->getCode());
     $this->assertEquals('AU',$reseller->getCountry());
@@ -35,7 +35,7 @@ class Maestrano_Account_ResellerIntegrationTest extends PHPUnit_Framework_TestCa
     $reseller = Maestrano_Account_Reseller::retrieve("rsl-449s8fsd");
 
     $this->assertEquals('rsl-449s8fsd',$reseller->getId());
-    $this->assertEquals('default',$reseller->getPreset());
+    $this->assertEquals('maestrano',$reseller->getPreset());
     $this->assertEquals('Blue Consulting',$reseller->getName());
     $this->assertEquals('US-204512-BCL',$reseller->getCode());
     $this->assertEquals('AU',$reseller->getCountry());
@@ -47,7 +47,7 @@ class Maestrano_Account_ResellerIntegrationTest extends PHPUnit_Framework_TestCa
     $group = $groupList[0];
 
     $this->assertEquals('cld-4',$group->getId());
-    $this->assertEquals('default',$group->getPreset());
+    $this->assertEquals('maestrano',$group->getPreset());
     $this->assertEquals('2014-05-21T04:04:53+0000',$group->getCreatedAt()->format(DateTime::ISO8601));
   }
 
@@ -61,7 +61,7 @@ class Maestrano_Account_ResellerIntegrationTest extends PHPUnit_Framework_TestCa
     ));
 
     $this->assertTrue(count($groupList) == 1);
-    $this->assertEquals('default',$reseller->getPreset());
+    $this->assertEquals('maestrano',$reseller->getPreset());
     $this->assertEquals('cld-3',$groupList[0]->getId());
   }
 }
