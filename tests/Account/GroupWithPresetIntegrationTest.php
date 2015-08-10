@@ -48,6 +48,7 @@ class Maestrano_Account_GroupWithPresetIntegrationTest extends PHPUnit_Framework
     $this->assertEquals('cld-3',$group->getId());
     $this->assertEquals('some-preset',$group->getPreset());
     $this->assertEquals('2014-05-21T00:31:26+0000',$group->getCreatedAt()->format(DateTime::ISO8601));
+    $this->assertEquals('quickbooks', $group->getMainAccounting());
   }
 
 }

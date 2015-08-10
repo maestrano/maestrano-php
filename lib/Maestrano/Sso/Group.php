@@ -41,7 +41,6 @@ class Maestrano_Sso_Group
       $this->timezone = new DateTimeZone($att["group_timezone"]);
       $this->country = $att["group_country"];
       $this->city = $att["group_city"];
-			$this->mainAccounting = $att["main_accounting"];
   }
 
   /**
@@ -133,6 +132,11 @@ class Maestrano_Sso_Group
 		return $this->city;
 	}
 
+	/**
+	 * Return the main accounting package used by this
+	 * group
+	 * @return String group city
+	 */
 	public function getMainAccounting() {
 		return $this->mainAccounting;
 	}

@@ -33,7 +33,6 @@ class Maestrano_Sso_GroupTest extends PHPUnit_Framework_TestCase
   		$this-> assertEquals(new DateTimeZone($att["group_timezone"]), $this->subject->getTimezone());
   		$this-> assertEquals($att["group_country"], $this->subject->getCountry());
   		$this-> assertEquals($att["group_city"], $this->subject->getCity());
-      $this-> assertEquals($att["main_accounting"], $this->subject->getMainAccounting());
     }
 }
 ?>

@@ -94,4 +94,13 @@ class Maestrano_Account_Group extends Maestrano_Api_Resource
 	public function getCreatedAt() {
 		return $this->created_at;
 	}
+
+  /**
+	 * Return the main accounting package used by this
+	 * group
+	 * @return String group city
+	 */
+	public function getMainAccounting() {
+		return $this->main_accounting;
+	}
 }
