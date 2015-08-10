@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Properly format a User received from Maestrano 
+ * Properly format a User received from Maestrano
  * SAML IDP
  */
 class Maestrano_Sso_Group
@@ -16,17 +16,18 @@ class Maestrano_Sso_Group
 	private $timezone;
 	private $country;
 	private $city;
-    
-    
+	private $mainAccounting;
+
+
   /**
    * Constructor
    * @param samlResponse a SAML Response from Maestrano IDP
-   * @throws ParseException 
+   * @throws ParseException
    */
   public function __construct($saml_response)
   {
       $att = $saml_response->getAttributes();
-      
+
       // General info
       $this->uid = $att["group_uid"];
       $this->name = $att["group_name"];
@@ -40,8 +41,9 @@ class Maestrano_Sso_Group
       $this->timezone = new DateTimeZone($att["group_timezone"]);
       $this->country = $att["group_country"];
       $this->city = $att["group_city"];
+			$this->mainAccounting = $att["main_accounting"];
   }
-  
+
   /**
    * Return the group ID (UID)
    * @return String group ID (UID)
@@ -49,7 +51,7 @@ class Maestrano_Sso_Group
 	public function getId() {
 		return $this->uid;
 	}
-  
+
   /**
    * Return the group UID
    * @return String group UID
@@ -67,7 +69,7 @@ class Maestrano_Sso_Group
 	}
 
 	/**
-	 * Return the principal contact email for this group 
+	 * Return the principal contact email for this group
 	 * @return String principal email address
 	 */
 	public function getEmail() {
@@ -130,5 +132,9 @@ class Maestrano_Sso_Group
 	public function getCity() {
 		return $this->city;
 	}
-  
+
+	public function getMainAccounting() {
+		return $this->mainAccounting;
+	}
+
 }
