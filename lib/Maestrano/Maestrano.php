@@ -93,6 +93,10 @@ class Maestrano extends Maestrano_Util_PresetObject
       self::$config[$preset]['api.group_id'] = $settings['api']['group_id'];
     }
 
+    if (array_key_exists('api', $settings) && array_key_exists('host', $settings['api'])) {
+      self::$config[$preset]['api.host'] = $settings['api']['host'];
+    }
+
     // Get lang/platform version
     self::$config[$preset]['api.version'] = Maestrano::VERSION;
     self::$config[$preset]['api.lang'] = 'php';
@@ -140,6 +144,14 @@ class Maestrano extends Maestrano_Util_PresetObject
       self::$config[$preset]['sso.creation_mode'] = $settings['sso']['creation_mode'];
     } else {
       self::$config[$preset]['sso.creation_mode'] = 'real';
+    }
+
+    if (array_key_exists('sso', $settings) && array_key_exists('x509_fingerprint', $settings['sso'])) {
+      self::$config[$preset]['sso.x509_fingerprint'] = $settings['sso']['x509_fingerprint'];
+    }
+
+    if (array_key_exists('sso', $settings) && array_key_exists('x509_certificate', $settings['sso'])) {
+      self::$config[$preset]['sso.x509_certificate'] = $settings['sso']['x509_certificate'];
     }
 
     //-------------------------------
