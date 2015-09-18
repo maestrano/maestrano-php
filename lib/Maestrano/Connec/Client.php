@@ -149,7 +149,7 @@ class Maestrano_Connec_Client extends Maestrano_Util_PresetObject
     if (preg_match("/https?\:\/\/.*/i", $path)) {
       return $path;
     } else {
-      return $this->base_url . $api . $this->scopedPath($path);
+      return $this->getBaseUrl() . $api . $this->scopedPath($path);
     }
   }
 
