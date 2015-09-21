@@ -89,6 +89,8 @@ Maestrano::with('my-preset')->configure('/path/to/some-other-preset.json');
 ```
 Additional presets can then be specified when doing particular action, such as initializing a Connec!™ client or triggering a SSO handshake. These presets are particularly useful if you are dealing with multiple Maestrano-style marketplaces (multi-enterprise integration).
 
+More information about multi-tenant integration can be found on [Our Multi-Tenant Integration Guide](https://maestrano.atlassian.net/wiki/display/CONNECAPIV2/Multi-Tenant+Integration)
+
 Note that the following two commands are equivalent:
 ```php
 Maestrano::configure('/path/to/config.json');
