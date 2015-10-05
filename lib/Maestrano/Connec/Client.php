@@ -38,7 +38,7 @@ class Maestrano_Connec_Client extends Maestrano_Util_PresetObject
   }
 
   public function getReportsPath() {
-    return Maestrano::with($this->_preset)->param('connec.v2_path');
+    return Maestrano::with($this->_preset)->param('connec.reports_path');
   }
 
   public function getGroupId() {
