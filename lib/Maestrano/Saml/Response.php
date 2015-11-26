@@ -48,7 +48,7 @@ class Maestrano_Saml_Response extends Maestrano_Util_PresetObject
       if ($settings == null) {
         $settings = Maestrano::with($preset)->sso()->getSamlSettings();
       }
-      return new Maestrano_Saml_Response($get_params,$settings);
+      return new Maestrano_Saml_Response($saml_response,$settings);
     }
 
     /**
