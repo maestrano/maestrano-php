@@ -8,7 +8,7 @@
 class Maestrano extends Maestrano_Util_PresetObject
 {
   // Maestrano PHP API Version
-  const VERSION = '0.11.2';
+  const VERSION = '0.11.4';
 
   /* Internal Config Map */
   protected static $config = array();
