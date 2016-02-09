@@ -20,7 +20,7 @@ class Maestrano extends Maestrano_Util_PresetObject
    */
   public static function authenticateWithPreset($preset,$api_id, $api_key) {
     return !is_null($api_id) && !is_null($api_key) &&
-      self::param('api.id',$preset) == $api_id && self::param('api.key',$preset) == $api_key;
+      Maestrano::with($preset)->param('api.id') == $api_id && Maestrano::with($preset)->param('api.key') == $api_key;
   }
 
   /**
