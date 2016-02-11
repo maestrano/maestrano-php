@@ -44,7 +44,7 @@ class Maestrano extends Maestrano_Util_PresetObject
    * @return Maestrano_Sso_Service singleton
    */
   public static function ssoWithPreset($preset) {
-    return Maestrano_Sso_Service::instance();
+    return Maestrano_Sso_Service::instanceWithPreset($preset);
   }
 
   /**
