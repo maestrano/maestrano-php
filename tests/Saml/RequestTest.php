@@ -6,6 +6,7 @@
 class Maestrano_Saml_RequestTest extends PHPUnit_Framework_TestCase
 {
     private $settings;
+    private $myTenantSettings;
     
     /**
     * Initializes the Test Suite
@@ -13,6 +14,7 @@ class Maestrano_Saml_RequestTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->settings = SamlTestHelper::getXmlSecSamlTestSettings();
+        $this->myTenantSettings = SamlTestHelper::getXmlSecSamlTestSettings('mytenant');
     }
     
     /**
@@ -108,6 +110,18 @@ class Maestrano_Saml_RequestTest extends PHPUnit_Framework_TestCase
                 $this->assertContains('Maestrano', $id);
             }
         }
+    }
+
+    /**
+    * Test the SAML settings with presets
+    *
+    * @covers Maestrano_Saml_Request::newWithPreset
+    */
+    public function testRedirectURLWithPreset()
+    {
+        $request = Maestrano_Saml_Request::newWithPreset('mytenant', array(), $this->myTenantSettings);
+
+        $this->assertRegExp('#^http://idp\.example\.com\/SSOService\.phpmytenant\?SAMLRequest=#', $request->getRedirectUrl());
     }
 }
 ?>
