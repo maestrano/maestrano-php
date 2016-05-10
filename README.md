@@ -4,7 +4,7 @@
 <br/>
 </p>
 
-Maestrano Cloud Integration is currently in closed beta. Want to know more? Send us an email to <contact@maestrano.com>.
+Maestrano Cloud Integration is currently in closed beta. Want to know more? Send us an email to <developers@maestrano.com>.
 
 
 
@@ -123,12 +123,12 @@ The json file may look like this:
     "id": "prod_or_sandbox_app_id",
     "key": "prod_or_sandbox_api_key",
 
-    # => Default group id (optional)
+    # => Default group id
     # Setting a default group_id is only useful if your application is SINGLE TENANT (max one customer per instance of your application).
     # Otherwise, the group_id should be specified at runtime when making API calls. (e.g.: instantiating a Connec!™ Client)
     "group_id": "some-maestrano-group-id",
 
-    # => Account API host (optional)
+    # => Account API host
     # This is the host and base path that should be used for any API call related to account management (billing, fetch users/groups)
     "host": "https://maestrano.com",
     "base": "/api/v1/",
@@ -147,7 +147,7 @@ The json file may look like this:
     # If set to false then MnoSession#isValid - which should be used in a controller action filter to check user session - always return true
     "slo_enabled": true,
 
-    # => idp (optional)
+    # => idp
     # This is the URL of the identity provider to use when triggering a SSO handshake
     "idp": "https://maestrano.com",
 
@@ -202,7 +202,7 @@ The json file may look like this:
 
   # ===> Connec!™ Configuration
   #
-  # => host and API paths (optional)
+  # => host and API paths
   # The Connec!™ endpoint to use if you need to overwrite it (i.e. if you want to proxy requests or use a stub)
   "connec": {
     # == Connec!™ enabled
