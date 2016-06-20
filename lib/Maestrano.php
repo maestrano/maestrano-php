@@ -18,6 +18,10 @@ require_once(dirname(__FILE__) . '/Maestrano/Util/Set.php');
 require_once(dirname(__FILE__) . '/Maestrano/Util/PresetProxy.php');
 require_once(dirname(__FILE__) . '/Maestrano/Util/PresetObject.php');
 
+// Dev-platform Client
+require_once(dirname(__FILE__) . '/Maestrano/Config/Error.php');
+require_once(dirname(__FILE__) . '/Maestrano/Config/Client.php');
+
 // Maestrano wrapper
 require_once(dirname(__FILE__) . '/Maestrano/Maestrano.php');
 

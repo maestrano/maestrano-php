@@ -8,7 +8,7 @@
 class Maestrano extends Maestrano_Util_PresetObject
 {
   // Maestrano PHP API Version
-  const VERSION = '0.11.4';
+  const VERSION = '0.12.0';
 
   /* Internal Config Map */
   protected static $config = array();
@@ -18,7 +18,7 @@ class Maestrano extends Maestrano_Util_PresetObject
    * for authentication purpose
    * @return whether the pair is valid or not
    */
-  public static function authenticateWithPreset($preset,$api_id, $api_key) {
+  public static function authenticateWithPreset($preset,$api_id,$api_key) {
     return !is_null($api_id) && !is_null($api_key) &&
       Maestrano::with($preset)->param('api.id') == $api_id && Maestrano::with($preset)->param('api.key') == $api_key;
   }
@@ -45,6 +45,15 @@ class Maestrano extends Maestrano_Util_PresetObject
    */
   public static function ssoWithPreset($preset) {
     return Maestrano_Sso_Service::instanceWithPreset($preset);
+  }
+
+  /**
+   * Method to fetch config from the dev-platform
+   * @param $configFile String: dev-platform configuration file
+   */
+  public static function autoConfigure($configFile) {
+    Maestrano_Config_Client::with('dev-platform')->configure($configFile);
+    Maestrano_Config_Client::with('dev-platform')->loadEnvironmentsConfig();
   }
 
   /**
@@ -224,7 +233,6 @@ class Maestrano extends Maestrano_Util_PresetObject
     } else {
       self::$config[$preset]['webhook.connec.subscriptions'] = array();
     }
-
 
     // Not in use for now
     // Check SSL certificate on API requests

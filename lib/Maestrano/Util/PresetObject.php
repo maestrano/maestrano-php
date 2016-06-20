@@ -8,7 +8,8 @@ class Maestrano_Util_PresetObject
 
   /**
    * Create a preset proxy
-   * @return a preset proxy
+   * @param $preset String: Name of the preset
+   * @return Maestrano_Util_PresetProxy: a preset proxy
    */
   public static function with($preset) {
     $cname = get_called_class();
