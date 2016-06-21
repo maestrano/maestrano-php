@@ -78,8 +78,16 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
         // Httpful is dumb and doesn't allow you to get json as an associative array but only as an object
         $json_body = json_decode($response->raw_body, true);
 
+        self::with($preset)->loadMultipleEnvironments($json_body['environments']);
+    }
+
+    /**
+     * @param $conf_array array Array containing the environments to load
+     */
+    public static function loadMultipleEnvironmentsWithPreset($preset, $conf_array)
+    {
         // Load every environments
-        foreach ($json_body['environments'] as $env) {
+        foreach ($conf_array as $env) {
             Maestrano::with($env['marketplace'])->configure($env);
         }
     }
