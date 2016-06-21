@@ -8,7 +8,7 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
     /**
      * @param $preset
      * @param $settings
-     * @return Maestrano_Config_Client
+     * @return array
      * @throws Maestrano_Config_Error
      */
     public static function configureWithPreset($preset, $settings) {
@@ -55,7 +55,7 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
             self::throwMissingParameterError('app.api_secret', $settings);
         }
 
-        return true;
+        return self::$config[$preset];
     }
 
     /**
