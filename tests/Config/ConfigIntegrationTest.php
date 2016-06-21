@@ -1,5 +1,4 @@
 <?php
-require_once "MockRequest.php";
 
 /**
  * Unit tests for dev-platform auto config
