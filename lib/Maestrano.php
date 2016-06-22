@@ -57,6 +57,13 @@ class Maestrano extends Maestrano_Util_PresetObject
   }
 
   /**
+   * @return array List of configured marketplaces
+   */
+  public static function getMarketplacesList() {
+    return array_keys(self::$config);
+  }
+
+  /**
   * Configure Maestrano API from array or file (string path)
   *
   * @return true

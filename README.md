@@ -76,7 +76,7 @@ There is several ways to configure Maestrano. You can either use our developer p
 
 #### Via the developer platform
 
-The [developer platform](https://dev-platform.maestrano.com) is the easiest way to configure Maestrano. The only actions needed from your part is to create your application and environments on the developer platform anf to create a config file. The framework will then contact the developer platform and retrieve the configuration for your app environment.
+The [developer platform](https://dev-platform.maestrano.com) is the easiest way to configure Maestrano. The only actions needed from your part is to create your application and environments on the developer platform and to create a config file. The framework will then contact the developer platform and retrieve the configuration for your app environment.
 
 A `dev-platform.json` config file is loaded using:
 ```php
