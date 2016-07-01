@@ -25,12 +25,6 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
         //-------------------------------
         // Dev Platform Config
         //-------------------------------
-        if (array_key_exists('environment', $settings)) {
-            self::$config[$preset]['environment'] = $settings['environment'];
-        } else {
-            self::throwMissingParameterError('environment', $settings);
-        }
-        
         if (array_key_exists('dev-platform', $settings) && array_key_exists('host', $settings['dev-platform'])) {
             self::$config[$preset]['dev-platform.host'] = $settings['dev-platform']['host'];
         } else {
@@ -43,16 +37,22 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
             self::throwMissingParameterError('dev-platform.v1_path', $settings);
         }
 
-        if (array_key_exists('app', $settings) && array_key_exists('api_key', $settings['app'])) {
-            self::$config[$preset]['app.api_key'] = $settings['app']['api_key'];
+        if (array_key_exists('environment', $settings) && array_key_exists('name', $settings['environment'])) {
+            self::$config[$preset]['environment.name'] = $settings['environment']['name'];
         } else {
-            self::throwMissingParameterError('app.api_key', $settings);
+            self::throwMissingParameterError('environment.name', $settings);
         }
 
-        if (array_key_exists('app', $settings) && array_key_exists('api_secret', $settings['app'])) {
-            self::$config[$preset]['app.api_secret'] = $settings['app']['api_secret'];
+        if (array_key_exists('environment', $settings) && array_key_exists('api_key', $settings['environment'])) {
+            self::$config[$preset]['environment.api_key'] = $settings['environment']['api_key'];
         } else {
-            self::throwMissingParameterError('app.api_secret', $settings);
+            self::throwMissingParameterError('environment.api_key', $settings);
+        }
+
+        if (array_key_exists('environment', $settings) && array_key_exists('api_secret', $settings['environment'])) {
+            self::$config[$preset]['environment.api_secret'] = $settings['environment']['api_secret'];
+        } else {
+            self::throwMissingParameterError('environment.api_secret', $settings);
         }
 
         return self::$config[$preset];
@@ -63,32 +63,31 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
      *
      * @return Maestrano_Config_Client
      */
-    public static function loadEnvironmentsConfigWithPreset($preset) {
-        $environment = self::$config[$preset]['environment'];
-        $apiKey = self::$config[$preset]['app.api_key'];
-        $apiSecret = self::$config[$preset]['app.api_secret'];
+    public static function loadMarketplacesConfigWithPreset($preset) {
+        $apiKey = self::$config[$preset]['environment.api_key'];
+        $apiSecret = self::$config[$preset]['environment.api_secret'];
         $host = self::$config[$preset]['dev-platform.host'];
         $v1_path = self::$config[$preset]['dev-platform.v1_path'];
 
         // Call to the dev-platform
-        $response = \Httpful\Request::get($host.$v1_path."?nid=$environment")
+        $response = \Httpful\Request::get($host.$v1_path)
             ->authenticateWith($apiKey, $apiSecret)
             ->send();
 
         // Httpful is dumb and doesn't allow you to get json as an associative array but only as an object
         $json_body = json_decode($response->raw_body, true);
 
-        self::with($preset)->loadMultipleEnvironments($json_body['environments']);
+        self::with($preset)->loadMultipleMarketplaces($json_body['marketplaces']);
     }
 
     /**
      * @param $conf_array array Array containing the environments to load
      */
-    public static function loadMultipleEnvironmentsWithPreset($preset, $conf_array)
+    public static function loadMultipleMarketplacesWithPreset($preset, $conf_array)
     {
         // Load every environments
-        foreach ($conf_array as $env) {
-            Maestrano::with($env['marketplace'])->configure($env);
+        foreach ($conf_array as $marketplace) {
+            Maestrano::with($marketplace['marketplace'])->configure($marketplace);
         }
     }
 

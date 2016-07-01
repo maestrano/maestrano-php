@@ -53,7 +53,7 @@ class Maestrano extends Maestrano_Util_PresetObject
    */
   public static function autoConfigure($configFile) {
     Maestrano_Config_Client::with('dev-platform')->configure($configFile);
-    Maestrano_Config_Client::with('dev-platform')->loadEnvironmentsConfig();
+    Maestrano_Config_Client::with('dev-platform')->loadMarketplacesConfig();
   }
 
   /**
