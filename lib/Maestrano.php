@@ -51,7 +51,7 @@ class Maestrano extends Maestrano_Util_PresetObject
    * Method to fetch config from the dev-platform
    * @param $configFile String: dev-platform configuration file
    */
-  public static function autoConfigure($configFile) {
+  public static function autoConfigure($configFile = null) {
     Maestrano_Config_Client::with('dev-platform')->configure($configFile);
     Maestrano_Config_Client::with('dev-platform')->loadMarketplacesConfig();
   }

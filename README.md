@@ -76,7 +76,7 @@ There is several ways to configure Maestrano. You can either use our developer p
 
 #### Via the developer platform
 
-The [developer platform](https://dev-platform.maestrano.com) is the easiest way to configure Maestrano. The only actions needed from your part is to create your application and environments on the developer platform and to create a config file. The framework will then contact the developer platform and retrieve the configuration for your app environment.
+The [developer platform](https://dev-platform.maestrano.com) is the easiest way to configure Maestrano. The only actions needed from your part is to create your application and environments on the developer platform and to create a config file. The framework will then contact the developer platform and retrieve the marketplaces configuration for your app environment.
 
 A `dev-platform.json` config file is loaded using:
 ```php
@@ -86,26 +86,28 @@ Maestrano::autoConfigure('/path/to/dev-platform.json');
 The json file may look like this:
 ```php
 {
-  # ===> App Configuration
-  #
-  # => Environment
-  # This is the environment of your app. The framework will then retrieve a list of of the marketplaces this environment is listed on.
-  "environment": "local",
-
-  # => App credentials
-  # These are your app credentials, you can get them by connecting on the developer platform, then go on your app, they will be display under the technical view.
-  "app": {
-    "api_key": "5e351c6a-b385-425d-b7d2-baadb22f9476",
-    "api_secret": "SFHrk0XVRZXfQS9hO8stYA"
-  },
   # ===> Developer Platform Configuration
-  # This is the host and base path that should be used by your app to retrieve its configuration.
+  # This is the host and base path that should be used by your environment to retrieve its marketplaces configuration.
   "dev-platform": {
     "host": "https://dev-platform.maestrano.com",
-    "v1_path": "/api/config/v1/environments"
+    "v1_path": "/api/config/v1/marketplaces"
+  },
+  # => Environment credentials
+  # These are your environment credentials, you can get them by connecting on the developer platform, then go on your app, they will be display under the technical view on each environment.
+  "environment": {
+    "name": "<your environment nid>"
+    "api_key": "<your environment key>",
+    "api_secret": "<your environment secret>"
   }
 }
 
+You can also use environment variables as follow to configure your app environment:
+```
+export DEVPL_HOST=<developer platform host>
+export DEVPL_V1_PATH=<developer platform host>
+export ENVIRONMENT_NAME=<your environment nid>
+export ENVIRONMENT_KEY=<your environment key>
+export ENVIRONMENT_SECRET=<your environment secret>
 ```
 
 #### Via config file

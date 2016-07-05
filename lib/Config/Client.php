@@ -11,7 +11,7 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
      * @return array
      * @throws Maestrano_Config_Error
      */
-    public static function configureWithPreset($preset, $settings) {
+    public static function configureWithPreset($preset, $settings = null) {
         // Load from JSON file if string provided
         if (is_string($settings)) {
             return self::configureWithPreset($preset, json_decode(file_get_contents($settings), true));
@@ -21,36 +21,46 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
         if (!array_key_exists($preset, self::$config) || is_null(self::$config[$preset])) {
             self::$config[$preset] = array();
         }
-        
+
         //-------------------------------
         // Dev Platform Config
         //-------------------------------
         if (array_key_exists('dev-platform', $settings) && array_key_exists('host', $settings['dev-platform'])) {
             self::$config[$preset]['dev-platform.host'] = $settings['dev-platform']['host'];
+        } elseif (getenv('DEVPL_HOST') != false) {
+            self::$config[$preset]['dev-platform.host'] = getenv('DEVPL_HOST');
         } else {
             self::throwMissingParameterError('dev-platform.host', $settings);
         }
 
         if (array_key_exists('dev-platform', $settings) && array_key_exists('v1_path', $settings['dev-platform'])) {
             self::$config[$preset]['dev-platform.v1_path'] = $settings['dev-platform']['v1_path'];
+        } elseif (getenv('DEVPL_V1_PATH') != false) {
+            self::$config[$preset]['dev-platform.v1_path'] = getenv('DEVPL_V1_PATH');
         } else {
             self::throwMissingParameterError('dev-platform.v1_path', $settings);
         }
 
         if (array_key_exists('environment', $settings) && array_key_exists('name', $settings['environment'])) {
             self::$config[$preset]['environment.name'] = $settings['environment']['name'];
+        } elseif (getenv('ENVIRONMENT_NAME') != false) {
+            self::$config[$preset]['environment.name'] = getenv('ENVIRONMENT_NAME');
         } else {
             self::throwMissingParameterError('environment.name', $settings);
         }
 
         if (array_key_exists('environment', $settings) && array_key_exists('api_key', $settings['environment'])) {
             self::$config[$preset]['environment.api_key'] = $settings['environment']['api_key'];
+        } elseif (getenv('ENVIRONMENT_KEY') != false) {
+            self::$config[$preset]['environment.api_key'] = getenv('ENVIRONMENT_KEY');
         } else {
             self::throwMissingParameterError('environment.api_key', $settings);
         }
 
         if (array_key_exists('environment', $settings) && array_key_exists('api_secret', $settings['environment'])) {
             self::$config[$preset]['environment.api_secret'] = $settings['environment']['api_secret'];
+        } elseif (getenv('ENVIRONMENT_SECRET') != false) {
+            self::$config[$preset]['environment.api_secret'] = getenv('ENVIRONMENT_SECRET');
         } else {
             self::throwMissingParameterError('environment.api_secret', $settings);
         }
