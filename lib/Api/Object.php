@@ -157,7 +157,7 @@ class Maestrano_Api_Object extends Maestrano_Util_PresetObject implements ArrayA
    */
   public static function constructFrom($values, $preset=null)
   {
-    $class = get_class($this);
+    $class = get_called_class();
     return self::scopedConstructFrom($class, $values, $preset);
   }
 

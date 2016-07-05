@@ -51,7 +51,7 @@ class Maestrano_Sso_Session extends Maestrano_Util_PresetObject
    *
    * @return Maestrano_Billing_Bill
    */
-  public static function newWithPreset($preset, &$http_session, $user = null)
+  public static function newWithPreset($preset, $http_session, $user = null)
   {
     $obj = new Maestrano_Sso_Session($http_session, $user, $preset);
     $obj->_preset = $preset;

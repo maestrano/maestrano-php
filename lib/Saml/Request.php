@@ -48,7 +48,6 @@ class Maestrano_Saml_Request extends Maestrano_Util_PresetObject
      */
     public function getRedirectUrl()
     {
-
         // Build the request
         $id = $this->_generateUniqueID();
         $issueInstant = $this->_getTimestamp();
