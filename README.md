@@ -55,7 +55,7 @@ To install maestrano-php using Composer, add this dependency to your project's c
 ```
 {
   "require": {
-    "maestrano/maestrano-php": "~0.12.0"
+    "maestrano/maestrano-php": "1.0.0-RC5"
   }
 }
 ```
@@ -100,6 +100,7 @@ The json file may look like this:
     "api_secret": "<your environment secret>"
   }
 }
+```
 
 You can also use environment variables as follow to configure your app environment:
 ```
