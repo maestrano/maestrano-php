@@ -113,6 +113,10 @@ class Maestrano extends Maestrano_Util_PresetObject
       self::$config[$preset]['api.host'] = $settings['api']['host'];
     }
 
+    if (array_key_exists('api', $settings) && array_key_exists('base', $settings['api'])) {
+      self::$config[$preset]['api.base'] = $settings['api']['base'];
+    }
+
     // Get lang/platform version
     self::$config[$preset]['api.version'] = Maestrano::VERSION;
     self::$config[$preset]['api.lang'] = 'php';
