@@ -87,6 +87,10 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
         // Httpful is dumb and doesn't allow you to get json as an associative array but only as an object
         $json_body = json_decode($response->raw_body, true);
 
+        // Error management
+        if (array_key_exists('error', $json_body))
+            throw new Maestrano_Config_Error("An error occurred while retrieving the marketplaces. Body content: " . print_r($json_body, true));
+
         self::with($preset)->loadMultipleMarketplaces($json_body['marketplaces']);
     }
 
