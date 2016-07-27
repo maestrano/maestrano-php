@@ -182,8 +182,7 @@ class Maestrano_Sso_User
 	/**
 	 * Virtual email that can be used instead of regular email fields
 	 * This email is unique across users and groups
-	 * All emails sent to this email address are redirected to the real
-	 * user email
+	 * Do not use this email address to send emails to the user
 	 * @return String virtual email
 	 */
 	public function getVirtualEmail() {
