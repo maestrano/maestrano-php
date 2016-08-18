@@ -29,9 +29,9 @@ class Maestrano_Util_PresetObject
 
   public static function __callStatic($name, $arguments)
   {
-    if (method_exists(get_called_class(),$name . 'WithPreset')) {
-      array_unshift($arguments,'maestrano');
-      return call_user_func_array(get_called_class() . '::' . $name . 'WithPreset',$arguments);
+    if (method_exists(get_called_class(), $name . 'WithPreset')) {
+      array_unshift($arguments, 'maestrano');
+      return call_user_func_array(get_called_class() . '::' . $name . 'WithPreset', $arguments);
     } else {
       throw new BadMethodCallException('Method ' . $name . ' does not exist');
     }
