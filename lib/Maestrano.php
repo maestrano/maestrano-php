@@ -68,10 +68,10 @@ class Maestrano extends Maestrano_Util_PresetObject
   *
   * @return true
   */
-  public static function configureWithPreset($preset,$settings) {
+  public static function configureWithPreset($preset, $settings) {
     // Load from JSON file if string provided
     if (is_string($settings)) {
-      return self::configure(json_decode(file_get_contents($settings),true),$preset);
+      return self::configureWithPreset($preset, json_decode(file_get_contents($settings),true));
     }
 
     // Ensure preset is initialized
