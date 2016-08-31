@@ -61,13 +61,13 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
         if (array_key_exists('error', $json_body))
             throw new Maestrano_Config_Error("An error occurred while retrieving the marketplaces. Body content: " . print_r($json_body, true));
 
-        self::with($preset)->loadMultipleMarketplaces($json_body['marketplaces']);
+        self::loadMultipleMarketplaces($json_body['marketplaces']);
     }
 
     /**
      * @param $conf_array array Array containing the environments to load
      */
-    public static function loadMultipleMarketplacesWithPreset($preset, $conf_array)
+    public static function loadMultipleMarketplaces($conf_array)
     {
         // Load every environments
         foreach ($conf_array as $marketplace) {

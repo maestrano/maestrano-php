@@ -87,7 +87,7 @@ class ConfigIntegrationTest extends PHPUnit_Framework_TestCase
             }
           ]', true);
 
-        Maestrano_Config_Client::with('dev-platform')->loadMultipleMarketplaces($fromServer);
+        Maestrano_Config_Client::loadMultipleMarketplaces($fromServer);
 
         $this->assertEquals(Maestrano::with('maestrano-uat')->param('environment'), 'local');
         $this->assertEquals(Maestrano::with('maestrano-prod')->param('environment'), 'local');
