@@ -55,7 +55,7 @@ To install maestrano-php using Composer, add this dependency to your project's c
 ```
 {
   "require": {
-    "maestrano/maestrano-php": "1.0.0-RC2"
+    "maestrano/maestrano-php": "1.0.0-RC3"
   }
 }
 ```
@@ -87,10 +87,10 @@ The json file may look like this:
 ```php
 {
   # ===> Developer Platform Configuration
-  # This is the host and base path that should be used by your environment to retrieve its marketplaces configuration.
+  # This is the host and base path that should be used by your environment to connect to the developer platform API.
   "dev-platform": {
     "host": "https://dev-platform.maestrano.com",
-    "v1_path": "/api/config/v1/marketplaces"
+    "api_path": "/api/config/v1/"
   },
   # => Environment credentials
   # These are your environment credentials, you can get them by connecting on the developer platform, then go on your app, they will be display under the technical view on each environment.
@@ -102,13 +102,18 @@ The json file may look like this:
 }
 ```
 
-You can also use environment variables as follow to configure your app environment:
+You can also use environment variables to configure your app environment:
 ```
-export DEVPL_HOST=<developer platform host>
-export DEVPL_V1_PATH=<developer platform host>
-export ENVIRONMENT_NAME=<your environment nid>
-export ENVIRONMENT_KEY=<your environment key>
-export ENVIRONMENT_SECRET=<your environment secret>
+export MNO_DEVPL_HOST=<developer platform host>
+export MNO_DEVPL_API_PATH=<developer platform host>
+export MNO_DEVPL_ENV_NAME=<your environment nid>
+export MNO_DEVPL_ENV_KEY=<your environment key>
+export MNO_DEVPL_ENV_SECRET=<your environment secret>
+```
+
+To use configure the Developer Platform using environment variables, omit the file argument:
+```php
+Maestrano::autoConfigure();
 ```
 
 #### Via config file

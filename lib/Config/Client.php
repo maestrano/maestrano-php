@@ -6,9 +6,11 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
     protected static $config = array();
 
     /**
-     * @param $preset
-     * @param $settings
-     * @return array
+     * Configure the Maestrano PHP SDK using the Developer Platform
+     *
+     * @param $preset string Dev-Platform configuration preset
+     * @param $settings string Configuration file path (optional)
+     * @return array Parsed configuration
      * @throws Maestrano_Config_Error
      */
     public static function configureWithPreset($preset, $settings = null) {
@@ -35,9 +37,11 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
     }
 
     /**
-     * Fetch the dynamic endpoints configuration
+     * Fetch the dynamic marketplaces configuration for this environment
+     * and configure the Maestrano presets
      *
-     * @return Maestrano_Config_Client
+     * @param $preset string Dev-Platform configuration preset
+     * @throws Maestrano_Config_Error
      */
     public static function loadMarketplacesConfigWithPreset($preset) {
         $apiKey = self::$config[$preset]['environment.api_key'];
@@ -65,6 +69,8 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
     }
 
     /**
+     * Configure Maestrano presets with fetched marketplaces
+     *
      * @param $conf_array array Array containing the environments to load
      */
     public static function loadMultipleMarketplaces($conf_array)
