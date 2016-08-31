@@ -50,10 +50,14 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
             ->authenticateWith($apiKey, $apiSecret)
             ->send();
 
+        // Connection error management
+        if ($response->code >= 400)
+            throw new Maestrano_Config_Error("An error occurred while retrieving the marketplaces. HTTP Error code: $response->code", $response->code);
+
         // Httpful is dumb and doesn't allow you to get json as an associative array but only as an object
         $json_body = json_decode($response->raw_body, true);
 
-        // Error management
+        // Dev-platform error management
         if (array_key_exists('error', $json_body))
             throw new Maestrano_Config_Error("An error occurred while retrieving the marketplaces. Body content: " . print_r($json_body, true));
 
