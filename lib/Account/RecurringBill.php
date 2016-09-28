@@ -149,7 +149,16 @@ class Maestrano_Account_RecurringBill extends Maestrano_Api_Resource
 		return $this->description;
 	}
 	public function setDescription($description) {
-		$this->description = $this->description;
+		$this->description = $description;
 	}
-
+	// Read only fields
+	public function getNextExecutionAt() {
+		return $this->next_execution_at;
+	}
+	public function getLastExecutionAt() {
+		return $this->last_execution_at;
+	}
+	public function getRemainingCycles() {
+		return $this->remaining_cycles;
+	}
 }
