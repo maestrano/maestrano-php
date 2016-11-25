@@ -55,7 +55,7 @@ To install maestrano-php using Composer, add this dependency to your project's c
 ```
 {
   "require": {
-    "maestrano/maestrano-php": "1.0.0-RC3"
+    "maestrano/maestrano-php": "1.0.0"
   }
 }
 ```
