@@ -6,9 +6,11 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
     protected static $config = array();
 
     /**
-     * @param $preset
-     * @param $settings
-     * @return array
+     * Configure the Maestrano PHP SDK using the Developer Platform
+     *
+     * @param $preset string Dev-Platform configuration preset
+     * @param $settings string Configuration file path (optional)
+     * @return array Parsed configuration
      * @throws Maestrano_Config_Error
      */
     public static function configureWithPreset($preset, $settings = null) {
@@ -25,75 +27,53 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
         //-------------------------------
         // Dev Platform Config
         //-------------------------------
-        if (array_key_exists('dev-platform', $settings) && array_key_exists('host', $settings['dev-platform'])) {
-            self::$config[$preset]['dev-platform.host'] = $settings['dev-platform']['host'];
-        } elseif (getenv('DEVPL_HOST') != false) {
-            self::$config[$preset]['dev-platform.host'] = getenv('DEVPL_HOST');
-        } else {
-            self::throwMissingParameterError('dev-platform.host', $settings);
-        }
-
-        if (array_key_exists('dev-platform', $settings) && array_key_exists('v1_path', $settings['dev-platform'])) {
-            self::$config[$preset]['dev-platform.v1_path'] = $settings['dev-platform']['v1_path'];
-        } elseif (getenv('DEVPL_V1_PATH') != false) {
-            self::$config[$preset]['dev-platform.v1_path'] = getenv('DEVPL_V1_PATH');
-        } else {
-            self::throwMissingParameterError('dev-platform.v1_path', $settings);
-        }
-
-        if (array_key_exists('environment', $settings) && array_key_exists('name', $settings['environment'])) {
-            self::$config[$preset]['environment.name'] = $settings['environment']['name'];
-        } elseif (getenv('ENVIRONMENT_NAME') != false) {
-            self::$config[$preset]['environment.name'] = getenv('ENVIRONMENT_NAME');
-        } else {
-            self::throwMissingParameterError('environment.name', $settings);
-        }
-
-        if (array_key_exists('environment', $settings) && array_key_exists('api_key', $settings['environment'])) {
-            self::$config[$preset]['environment.api_key'] = $settings['environment']['api_key'];
-        } elseif (getenv('ENVIRONMENT_KEY') != false) {
-            self::$config[$preset]['environment.api_key'] = getenv('ENVIRONMENT_KEY');
-        } else {
-            self::throwMissingParameterError('environment.api_key', $settings);
-        }
-
-        if (array_key_exists('environment', $settings) && array_key_exists('api_secret', $settings['environment'])) {
-            self::$config[$preset]['environment.api_secret'] = $settings['environment']['api_secret'];
-        } elseif (getenv('ENVIRONMENT_SECRET') != false) {
-            self::$config[$preset]['environment.api_secret'] = getenv('ENVIRONMENT_SECRET');
-        } else {
-            self::throwMissingParameterError('environment.api_secret', $settings);
-        }
+        self::configureDevPlatformSetting('dev-platform', 'host', 'MNO_DEVPL_HOST', $preset, $settings);
+        self::configureDevPlatformSetting('dev-platform', 'api_path', 'MNO_DEVPL_API_PATH', $preset, $settings);
+        self::configureDevPlatformSetting('environment', 'name', 'MNO_DEVPL_ENV_NAME', $preset, $settings);
+        self::configureDevPlatformSetting('environment', 'api_key', 'MNO_DEVPL_ENV_KEY', $preset, $settings);
+        self::configureDevPlatformSetting('environment', 'api_secret', 'MNO_DEVPL_ENV_SECRET', $preset, $settings);
 
         return self::$config[$preset];
     }
 
     /**
-     * Fetch the dynamic endpoints configuration
+     * Fetch the dynamic marketplaces configuration for this environment
+     * and configure the Maestrano presets
      *
-     * @return Maestrano_Config_Client
+     * @param $preset string Dev-Platform configuration preset
+     * @throws Maestrano_Config_Error
      */
     public static function loadMarketplacesConfigWithPreset($preset) {
         $apiKey = self::$config[$preset]['environment.api_key'];
         $apiSecret = self::$config[$preset]['environment.api_secret'];
         $host = self::$config[$preset]['dev-platform.host'];
-        $v1_path = self::$config[$preset]['dev-platform.v1_path'];
+        $api_path = self::$config[$preset]['dev-platform.api_path'];
 
         // Call to the dev-platform
-        $response = \Httpful\Request::get($host.$v1_path)
+        $response = \Httpful\Request::get($host.$api_path."marketplaces")
             ->authenticateWith($apiKey, $apiSecret)
             ->send();
+
+        // Connection error management
+        if ($response->code >= 400)
+            throw new Maestrano_Config_Error("An error occurred while retrieving the marketplaces. HTTP Error code: $response->code", $response->code);
 
         // Httpful is dumb and doesn't allow you to get json as an associative array but only as an object
         $json_body = json_decode($response->raw_body, true);
 
-        self::with($preset)->loadMultipleMarketplaces($json_body['marketplaces']);
+        // Dev-platform error management
+        if (array_key_exists('error', $json_body))
+            throw new Maestrano_Config_Error("An error occurred while retrieving the marketplaces. Body content: " . print_r($json_body, true));
+
+        self::loadMultipleMarketplaces($json_body['marketplaces']);
     }
 
     /**
+     * Configure Maestrano presets with fetched marketplaces
+     *
      * @param $conf_array array Array containing the environments to load
      */
-    public static function loadMultipleMarketplacesWithPreset($preset, $conf_array)
+    public static function loadMultipleMarketplaces($conf_array)
     {
         // Load every environments
         foreach ($conf_array as $marketplace) {
@@ -102,11 +82,34 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
     }
 
     /**
-     * @param $parameter
-     * @param $file
+     * Configure a dev platform setting in the dev platform settings preset
+     *
+     * @param $setting_bloc string Setting bloc name
+     * @param $var_name string Variable name
+     * @param $env_var string Environment variable name
+     * @param $preset string Dev-Platform configuration preset
+     * @param $settings array Configuration file content
+     */
+    private static function configureDevPlatformSetting($setting_bloc, $var_name, $env_var, $preset, $settings)
+    {
+        if ($settings != null && array_key_exists($setting_bloc, $settings) && array_key_exists($var_name, $settings[$setting_bloc])) {
+            self::$config[$preset]["$setting_bloc.$var_name"] = $settings[$setting_bloc][$var_name];
+        } elseif ($host = getenv($env_var)) {
+            self::$config[$preset]["$setting_bloc.$var_name"] = $host;
+        } else {
+            self::throwMissingParameterError("$setting_bloc.$var_name");
+        }
+    }
+
+    /**
+     * Throw a missing parameter error
+     *
+     * @param $parameter string Name of the missing parameter
      * @throws Maestrano_Config_Error
      */
-    public static function throwMissingParameterError($parameter, $file) {
-        throw new Maestrano_Config_Error("Missing '$parameter' parameter in dev-platform config file.");
+    public static function throwMissingParameterError($parameter) {
+        throw new Maestrano_Config_Error("Missing '$parameter' parameter in dev-platform config.");
     }
+
+
 }

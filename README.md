@@ -55,7 +55,7 @@ To install maestrano-php using Composer, add this dependency to your project's c
 ```
 {
   "require": {
-    "maestrano/maestrano-php": "0.11.5"
+    "maestrano/maestrano-php": "1.0.0-RC3"
   }
 }
 ```
@@ -74,7 +74,49 @@ require_once('vendor/autoload.php');
 
 There is several ways to configure Maestrano. You can either use our developer platform, load config files or at runtime using an associative array. Maestrano configuration is flexible and you can combine any of those methods to configure the app.
 
-#### Via config file
+#### Via the developer platform (Recommended)
+
+The [developer platform](https://dev-platform.maestrano.com) is the easiest way to configure Maestrano. The only actions needed from your part is to create your application and environments on the developer platform and to create a config file. The framework will then contact the developer platform and retrieve the marketplaces configuration for your app environment.
+
+A `dev-platform.json` config file is loaded using:
+```php
+Maestrano::autoConfigure('/path/to/dev-platform.json');
+```
+
+The json file may look like this:
+```php
+{
+  # ===> Developer Platform Configuration
+  # This is the host and base path that should be used by your environment to connect to the developer platform API.
+  "dev-platform": {
+    "host": "https://dev-platform.maestrano.com",
+    "api_path": "/api/config/v1/"
+  },
+  # => Environment credentials
+  # These are your environment credentials, you can get them by connecting on the developer platform, then go on your app, they will be display under the technical view on each environment.
+  "environment": {
+    "name": "<your environment nid>"
+    "api_key": "<your environment key>",
+    "api_secret": "<your environment secret>"
+  }
+}
+```
+
+You can also use environment variables to configure your app environment:
+```
+export MNO_DEVPL_HOST=<developer platform host>
+export MNO_DEVPL_API_PATH=<developer platform host>
+export MNO_DEVPL_ENV_NAME=<your environment nid>
+export MNO_DEVPL_ENV_KEY=<your environment key>
+export MNO_DEVPL_ENV_SECRET=<your environment secret>
+```
+
+To use configure the Developer Platform using environment variables, omit the file argument:
+```php
+Maestrano::autoConfigure();
+```
+
+#### Via config file (deprecated)
 
 You can configure maestrano via json using a configuration file like "maestrano.json" which you can load using:
 ```php
@@ -297,7 +339,7 @@ The json file may look like this:
 }
 ```
 
-#### At runtime
+#### At runtime (deprecated)
 
 You can configure maestrano using an associative array if you prefer. The structure is the same as for the json above:
 
@@ -315,7 +357,7 @@ You can also define a specific configuration preset at runtime:
 Maestrano::with('my-config-preset')->configure(array('sso' => array('creation_mode' => 'real')));
 ```
 
-### Metadata Endpoint
+### Metadata Endpoint (deprecated)
 Your configuration initializer is now all setup and shiny. Great! But we need to know about it. Of course
 we could propose a long and boring form on maestrano.com for you to fill all these details (especially the webhooks) but we thought it would be more convenient to fetch that automatically.
 

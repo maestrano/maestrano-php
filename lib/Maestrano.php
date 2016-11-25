@@ -8,7 +8,7 @@
 class Maestrano extends Maestrano_Util_PresetObject
 {
   // Maestrano PHP API Version
-  const VERSION = '1.0.0-RC1';
+  const VERSION = '1.0.0-RC2';
 
   /* Internal Config Map */
   protected static $config = array();
@@ -111,6 +111,10 @@ class Maestrano extends Maestrano_Util_PresetObject
 
     if (array_key_exists('api', $settings) && array_key_exists('host', $settings['api'])) {
       self::$config[$preset]['api.host'] = $settings['api']['host'];
+    }
+
+    if (array_key_exists('api', $settings) && array_key_exists('base', $settings['api'])) {
+      self::$config[$preset]['api.base'] = $settings['api']['base'];
     }
 
     // Get lang/platform version
