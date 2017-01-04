@@ -87,7 +87,7 @@ The json file may look like this:
   # ===> Developer Platform Configuration
   # This is the host and base path that should be used by your environment to connect to the developer platform API.
   "dev-platform": {
-    "host": "https://dev-platform.maestrano.com",
+    "host": "https://developer.maestrano.com",
     "api_path": "/api/config/v1/"
   },
   # => Environment credentials
