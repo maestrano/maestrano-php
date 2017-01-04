@@ -27,7 +27,9 @@ class Maestrano extends Maestrano_Util_PresetObject
    * Return a configuration parameter
    */
   public static function paramWithPreset($preset,$parameter) {
-    if (!array_key_exists($preset, self::$config)) { return null; }
+    if (!array_key_exists($preset, self::$config)) {
+      throw new Maestrano_Config_Error("Maestrano was not configured for preset ".$preset);
+    }
 
     if (array_key_exists($parameter, self::$config[$preset])) {
       return self::$config[$preset][$parameter];
