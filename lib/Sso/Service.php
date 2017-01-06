@@ -74,7 +74,8 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
 
   /**
    * The path where the SSO response will be posted and consumed.
-   * @var string
+   *
+   * @return string
    */
   public function getConsumePath() {
     return Maestrano::with($this->_preset)->param('sso.consume_path');
@@ -82,7 +83,8 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
 
   /**
    * The URL where the SSO response will be posted and consumed.
-   * @var string
+   *
+   * @return string
    */
   public function getConsumeUrl() {
     $host = Maestrano::with($this->_preset)->param('app.host');
@@ -114,6 +116,15 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
     $endpoint = '/app_access_unauthorized';
 
     return "${host}${endpoint}";
+  }
+
+  /**
+   * Return the host of the marketplace
+   *
+   * @return string url
+   */
+  public function getHost() {
+    return Maestrano::with($this->_preset)->param('api.host');
   }
 
   /**
