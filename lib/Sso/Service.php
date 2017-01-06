@@ -93,8 +93,8 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
   }
 
   /**
-   * Return where the app should redirect after logging user
-   * out
+   * @deprecated Use getLogoutUrlWithUserUid($userUid) instead
+   * Return where the app should redirect after logging user out
    *
    * @return string url
    */
@@ -103,6 +103,19 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
     $endpoint = '/app_logout';
 
     return "${host}${endpoint}";
+  }
+
+  /**
+
+   * Return where the app should redirect after logging user out
+   *
+   * @return string url
+   */
+  public function getLogoutUrlWithUserUid($userUid) {
+    $host = Maestrano::with($this->_preset)->param('sso.idp');
+    $endpoint = '/app_logout';
+
+    return "${host}${endpoint}?user_uid=${userUid}";
   }
 
   /**

@@ -135,6 +135,14 @@ class Maestrano_Sso_Session extends Maestrano_Util_PresetObject
       return false;
     }
 
+    /**
+     * @return the Idp logout url where users should be redirected to upon logging out
+     */
+    public function getLogoutUrl()
+    {
+      return Maestrano::with($this->_preset)->sso()->getLogoutUrlWithUserUid($this->uid);
+    }
+
   /**
   * Perform check to see if session is valid
   * Check is only performed if current time is after
