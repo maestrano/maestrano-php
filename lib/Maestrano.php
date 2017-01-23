@@ -87,7 +87,7 @@ class Maestrano extends Maestrano_Util_PresetObject
     if (array_key_exists('environment', $settings)) {
       self::$config[$preset]['environment'] = $settings['environment'];
     } else {
-      self::$config[$preset]['environment'] = 'test';
+      self::$config[$preset]['environment'] = 'production';
     }
 
     if (array_key_exists('app', $settings) && array_key_exists('host', $settings['app'])) {
