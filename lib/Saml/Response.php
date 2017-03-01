@@ -72,6 +72,10 @@ class Maestrano_Saml_Response extends Maestrano_Util_PresetObject
         return $entries->item(0)->nodeValue;
     }
 
+    /**
+     * Return the attributes of a SAML response
+     * @return array
+     */
     public function getAttributes()
     {
         if ($this->cachedAttributes != null) {

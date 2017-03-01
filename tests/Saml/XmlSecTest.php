@@ -2,11 +2,10 @@
 
 class Maestrano_Saml_XmlSecTest extends PHPUnit_Framework_TestCase
 {
-    private $_settings;
-    
     public function setUp()
     {
-        Maestrano::configure(array('environment' => 'production'));
+        $this->config = MaestranoTestHelper::getConfig();
+        Maestrano::with('some-marketplace')->configure($this->config['marketplaces'][0]);
         $this->settings = SamlTestHelper::getXmlSecSamlTestSettings();
     }
 
