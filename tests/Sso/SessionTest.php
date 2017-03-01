@@ -44,7 +44,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
     {
         $samlResp = new SamlMnoRespStub();
         $user = new Maestrano_Sso_User($samlResp);
-        $this->subject = new Maestrano_Sso_Session($this->httpSession, $user);
+        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession, $user);
 
         $this->assertEquals($this->httpSession, $this->subject->getHttpSession());
         $this->assertEquals($user->getUid(), $this->subject->getUid());

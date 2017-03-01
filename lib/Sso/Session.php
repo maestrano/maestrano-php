@@ -15,7 +15,7 @@ class Maestrano_Sso_Session extends Maestrano_Util_PresetObject
     /**
      * Construct the Maestrano_Sso_Session object
      */
-    public function __construct(&$http_session, $user = null)
+    private function __construct(&$http_session, $user = null)
     {
         // Populate attributes from params
         $this->httpSession = &$http_session;
