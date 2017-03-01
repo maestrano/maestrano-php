@@ -57,7 +57,7 @@ To install maestrano-php using Composer, add this dependency to your project's c
 ```
 {
   "require": {
-    "maestrano/maestrano-php": "1.0.0"
+    "maestrano/maestrano-php": "2.0.1"
   }
 }
 ```
@@ -114,9 +114,9 @@ Maestrano::autoConfigure();
 
 ## Single Sign-On Setup
 
-It will require you to write a controller for the init phase and consume phase of the single sign-on handshake. You will receive 3 informations when logging in a user: the user, his group and the merketplace he's coming from.
+It will require you to write a controller for the init phase and consume phase of the single sign-on handshake. You will receive 3 informations when logging in a user: the user, his group and the marketplace he's coming from.
 
-You might wonder why we need a 'group' on top of a user. Well Maestrano works with businesses and as such expects your service to be able to manage groups of users. A group represents 1) a billing entity 2) a collaboration group. During the first single sign-on handshake both a user and a group should be created. Additional users logging in via the same group should then be added to this existing group (see controller setup below)
+You might wonder why we need a 'group' on top of a user. Well, Maestrano works with businesses and as such expects your service to be able to manage groups of users. A group represents 1) a billing entity 2) a collaboration group. During the first single sign-on handshake both a user and a group should be created. Additional users logging in via the same group should then be added to this existing group (see controller setup below).
 
 For more information, please consult [Multi-Marketplace Ingration](https://maestrano.atlassian.net/wiki/display/DEV/Multi-Marketplace+Integration).
 
@@ -132,30 +132,31 @@ You will need two controller action init and consume. The init action will initi
 The init action is all handled via Maestrano methods and should look like this:
 ```php
 <?php
-  require_once '../../../init.php';
-  
-  // Build SSO request - Make sure GET parameters gets passed to the constructor
-  $marketplace = $_GET['marketplace'];
-  $req = Maestrano_Saml_Request::with($marketplace)->new($_GET);
-  
-  // Redirect the user to Maestrano Identity Provider
-  header('Location: ' . $req->getRedirectUrl());
+// Build SSO request - Make sure GET parameters gets passed
+// to the constructor
+$marketplace = $_GET['marketplace'];
+$req = Maestrano_Saml_Request::with($marketplace)->new($_GET);
+
+// Redirect the user to Maestrano Identity Provider
+header('Location: ' . $req->getRedirectUrl());
 ```
 
 Based on your application requirements the consume action might look like this:
 ```php
 <?php
-  session_start();
+session_start();
 
-  // Build SSO Response using SAMLResponse parameter value sent via POST request
-  $marketplace = $_GET['marketplace'];
-  $resp = Maestrano_Saml_Response::with($marketplace)->new($_POST['SAMLResponse']);
-  
-  if ($resp->isValid()) {
+$marketplace = $_GET['marketplace'];
+
+// Build SSO Response using SAMLResponse parameter value sent via
+// POST request
+$resp = Maestrano_Saml_Response::with($marketplace)->new($_POST['SAMLResponse']);
+
+if ($resp->isValid()) {
     // Get the user as well as the user group
     $user = new Maestrano_Sso_User($resp);
     $group = new Maestrano_Sso_Group($resp);
-    
+
     //-----------------------------------
     // No database model in this project. We just keep the
     // relevant details in session
@@ -164,30 +165,31 @@ Based on your application requirements the consume action might look like this:
     $_SESSION["firstName"] = $user->getFirstName();
     $_SESSION["lastName"] = $user->getLastName();
     $_SESSION["marketplace"] = $_GET['marketplace'];
-    
+
+    // TODO: Update this comment
     // Important - toId() and toEmail() have different behaviour compared to
     // getId() and getEmail(). In you maestrano configuration file, if your sso > creation_mode 
     // is set to 'real' then toId() and toEmail() return the actual id and email of the user which
     // are only unique across users.
     // If you chose 'virtual' then toId() and toEmail() will return a virtual (or composite) attribute
     // which is truly unique across users and groups
-    $_SESSION["id"] = $user->toId();
-    $_SESSION["email"] = $user->toEmail();
-    
+    $_SESSION["id"] = $user->getId();
+    $_SESSION["email"] = $user->getEmail();
+
     // Store group details
-    $_SESSION["groupName"] = $group->getName();
     $_SESSION["groupId"] = $group->getId();
-    
+    $_SESSION["groupName"] = $group->getName();
+
     // Once the user is created/identified, we store the maestrano
     // session. This session will be used for single logout
-    $mnoSession = new Maestrano_Sso_Session($_SESSION, $user);
+    $mnoSession = Maestrano_Sso_Session::create($_SESSION["marketplace"], $_SESSION, $user);
     $mnoSession->save();
-    
+
     // Redirect the user to home page
     header('Location: /');
-  } else {
+} else {
     echo "Holy Banana! Saml Response does not seem to be valid";
-  }
+}
 ```
 
 Note that for the consume action you should disable CSRF authenticity if your framework is using it by default. If CSRF authenticity is enabled then your app will complain on the fact that it is receiving a form without CSRF token.
@@ -196,7 +198,7 @@ Note that for the consume action you should disable CSRF authenticity if your fr
 If you want your users to benefit from single logout then you should define the following filter in a module and include it in all your controllers except the one handling single sign-on authentication.
 
 ```php
-$mnoSession = new Maestrano_Sso_Session($_SESSION);
+$mnoSession = Maestrano_Sso_Session::create($_SESSION["marketplace"], $_SESSION);
 
 // Trigger SSO handshake if session not valid anymore
 if (!$mnoSession->isValid()) {
@@ -215,8 +217,16 @@ If you start seing session check requests on every page load it means something 
 When Maestrano users sign out of your application you can redirect them to the Maestrano logout page. You can get the url of this page by calling:
 
 ```php
-// With a configuration preset
-Maestrano::with($_SESSION['marketplace'])->sso()->getLogoutUrl()
+<?php
+session_start();
+session_destroy();
+
+// Redirect to IDP logout url
+$mnoSession = Maestrano_Sso_Session::create($_SESSION["marketplace"], $_SESSION);
+$logoutUrl = $mnoSession->getLogoutUrl();
+
+header("Location: $logoutUrl");
+
 ```
 
 ## Account Webhooks
@@ -861,7 +871,7 @@ $client->getReport('/profit_and_loss', array('from' => '2015-01-01', 'to' => '20
 ```
 
 ### Webhook Notifications
-If you have configured the Maestrano API to receive update notifications (see 'subscriptions' configuration at the top) from Connec!™ then you can expect to receive regular POST requests on the notification_path you have configured.
+If you have configured the Maestrano API to receive update notifications from Connec!™ then you can expect to receive regular POST requests on the notification_path you have configured.
 
 Notifications are JSON messages containing the list of entities that have recently changed in other systems. You will only receive notifications for entities you have subscribed to.
 
@@ -886,6 +896,6 @@ So if you have any question or need help integrating with us just let us know at
 
 ## License
 
-MIT License. Copyright 2014 Maestrano Pty Ltd. https://maestrano.com
+MIT License. Copyright 2017 Maestrano Pty Ltd. https://maestrano.com
 
 You are not granted rights or licenses to the trademarks of Maestrano.
