@@ -219,16 +219,6 @@ When Maestrano users sign out of your application you can redirect them to the M
 Maestrano::with($_SESSION['marketplace'])->sso()->getLogoutUrl()
 ```
 
-### Redirecting on error
-If any error happens during the SSO handshake, you can redirect users to the following URL:
-
-```php
-Maestrano::sso()->getUnauthorizedUrl()
-
-// With a configuration preset
-// Maestrano::with('my-config-preset')->sso()->getUnauthorizedUrl()
-```
-
 ## Account Webhooks
 Single sign on has been setup into your app and Maestrano users are now able to use your service. Great! Wait what happens when a business (group) decides to stop using your service? Also what happens when a user gets removed from a business? Well the controllers describes in this section are for Maestrano to be able to notify you of such events.
 

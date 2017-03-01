@@ -26,7 +26,6 @@ class Maestrano_Sso_ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('/maestrano/auth/saml/consume.php?marketplace=some-marketplace', $this->ssoService->getConsumePath());
         $this->assertEquals('http://php-demoapp.maestrano.dev/maestrano/auth/saml/consume.php?marketplace=some-marketplace', $this->ssoService->getConsumeUrl());
         $this->assertEquals('https://api-hub.maestrano.com/app_logout?user_uid=uid-fd45s', $this->ssoService->getLogoutUrl('uid-fd45s'));
-        $this->assertEquals('https://api-hub.maestrano.com/app_access_unauthorized', $this->ssoService->getUnauthorizedUrl());
         $this->assertEquals('https://api-hub.maestrano.com/api/v1/auth/saml', $this->ssoService->getIdpUrl());
         $this->assertEquals('https://api-hub.maestrano.com/api/v1/auth/saml/user?session=token', $this->ssoService->getSessionCheckUrl('user', 'token'));
     }

@@ -85,19 +85,6 @@ class Maestrano_Sso_Service extends Maestrano_Util_PresetObject
     }
 
     /**
-     * Return where the app should redirect if user does
-     * not have access to it
-     *
-     * @return string url
-     */
-    public function getUnauthorizedUrl() {
-        $host = Maestrano::with($this->_preset)->param('api.host');
-        $endpoint = '/app_access_unauthorized';
-
-        return "${host}${endpoint}";
-    }
-
-    /**
      * Return the host of the marketplace
      *
      * @return string url
