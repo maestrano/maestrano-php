@@ -26,7 +26,6 @@ class ConfigIntegrationTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($result['dev-platform.host'], 'https://dev-platform.maestrano.com');
         $this->assertEquals($result['dev-platform.api_path'], '/api/config/v1/');
-        $this->assertEquals($result['environment.name'], 'local');
         $this->assertEquals($result['environment.api_key'], '5e351c6a-b385-425d-b7d2-bafdb22f9476');
         $this->assertEquals($result['environment.api_secret'], 'SFHrk0XVRZXfQS9hO8stYA');
     }
@@ -40,12 +39,6 @@ class ConfigIntegrationTest extends PHPUnit_Framework_TestCase
     public function testConfigurePathError() {
         unset($this->config['dev-platform']['api_path']);
         $this->setExpectedException('Maestrano_Config_Error', 'Missing \'dev-platform.api_path\' parameter in dev-platform config.');
-        Maestrano_Config_Client::with('dev-platform')->configure($this->config);
-    }
-
-    public function testConfigureEnvironmentNameError() {
-        unset($this->config['environment']['name']);
-        $this->setExpectedException('Maestrano_Config_Error', 'Missing \'environment.name\' parameter in dev-platform config.');
         Maestrano_Config_Client::with('dev-platform')->configure($this->config);
     }
 
