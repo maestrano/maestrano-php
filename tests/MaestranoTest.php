@@ -41,7 +41,7 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
 
     public function testConfigurationFromFile()
     {
-        $this->setExpectedException(Maestrano_Config_Error::class);
+        $this->setExpectedException('Maestrano_Config_Error');
 
         $path = "config.json";
         file_put_contents($path, json_encode($this->config['marketplaces'][0]));
@@ -70,21 +70,21 @@ class MaestranoTest extends PHPUnit_Framework_TestCase
 
     public function testPresetWithNullPreset()
     {
-        $this->setExpectedException(Maestrano_Config_Error::class, 'Empty preset name, make sure you are using \'Maestrano::with($marketplace)->someMethod()\'');
+        $this->setExpectedException('Maestrano_Config_Error', 'Empty preset name, make sure you are using \'Maestrano::with($marketplace)->someMethod()\'');
 
         Maestrano::paramWithPreset(null, 'api.key');
     }
 
     public function testPresetWithEmptyStringPreset()
     {
-        $this->setExpectedException(Maestrano_Config_Error::class, 'Empty preset name, make sure you are using \'Maestrano::with($marketplace)->someMethod()\'');
+        $this->setExpectedException('Maestrano_Config_Error', 'Empty preset name, make sure you are using \'Maestrano::with($marketplace)->someMethod()\'');
 
         Maestrano::paramWithPreset('', 'api.key');
     }
 
     public function testPresetNotConfigured()
     {
-        $this->setExpectedException(Maestrano_Config_Error::class, "Maestrano was not configured for preset 'another-marketplace'");
+        $this->setExpectedException('Maestrano_Config_Error', "Maestrano was not configured for preset 'another-marketplace'");
 
         Maestrano::with('some-marketplace')->configure($this->config['marketplaces'][0]);
         Maestrano::paramWithPreset('another-marketplace', 'api.key');
