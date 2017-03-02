@@ -166,13 +166,11 @@ if ($resp->isValid()) {
     $_SESSION["lastName"] = $user->getLastName();
     $_SESSION["marketplace"] = $_GET['marketplace'];
 
-    // TODO: Update this comment
-    // Important - toId() and toEmail() have different behaviour compared to
-    // getId() and getEmail(). In you maestrano configuration file, if your sso > creation_mode 
-    // is set to 'real' then toId() and toEmail() return the actual id and email of the user which
-    // are only unique across users.
-    // If you chose 'virtual' then toId() and toEmail() will return a virtual (or composite) attribute
-    // which is truly unique across users and groups
+    // Important - Real id/email and Virtual id/email (recommended)
+    // getId() and getEmail() return the actual id and email of the user which are only unique across users.
+    // If you chose to use the 'virtual mode' then use getVirtualId() and getVirtualEmail().
+    // They return a virtual (or composite) attribute which is truly unique across users and groups
+    // Do not use the virtual email address to send emails to the user
     $_SESSION["id"] = $user->getId();
     $_SESSION["email"] = $user->getEmail();
 
