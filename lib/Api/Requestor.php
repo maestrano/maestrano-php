@@ -242,8 +242,7 @@ class Maestrano_Api_Requestor
     $opts[CURLOPT_TIMEOUT] = 80;
     $opts[CURLOPT_RETURNTRANSFER] = true;
     $opts[CURLOPT_HTTPHEADER] = $headers;
-    if (!Maestrano::with($this->_preset)->param('verify_ssl_certs'))
-      $opts[CURLOPT_SSL_VERIFYPEER] = false;
+    $opts[CURLOPT_SSL_VERIFYPEER] = false;
 
     curl_setopt_array($curl, $opts);
     $rbody = curl_exec($curl);

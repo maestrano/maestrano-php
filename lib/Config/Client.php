@@ -13,7 +13,8 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
      * @return array Parsed configuration
      * @throws Maestrano_Config_Error
      */
-    public static function configureWithPreset($preset, $settings = null) {
+    public static function configureWithPreset($preset, $settings = null)
+    {
         // Load from JSON file if string provided
         if (is_string($settings)) {
             return self::configureWithPreset($preset, json_decode(file_get_contents($settings), true));
@@ -29,7 +30,6 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
         //-------------------------------
         self::configureDevPlatformSetting('dev-platform', 'host', 'MNO_DEVPL_HOST', $preset, $settings);
         self::configureDevPlatformSetting('dev-platform', 'api_path', 'MNO_DEVPL_API_PATH', $preset, $settings);
-        self::configureDevPlatformSetting('environment', 'name', 'MNO_DEVPL_ENV_NAME', $preset, $settings);
         self::configureDevPlatformSetting('environment', 'api_key', 'MNO_DEVPL_ENV_KEY', $preset, $settings);
         self::configureDevPlatformSetting('environment', 'api_secret', 'MNO_DEVPL_ENV_SECRET', $preset, $settings);
 
@@ -43,14 +43,15 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
      * @param $preset string Dev-Platform configuration preset
      * @throws Maestrano_Config_Error
      */
-    public static function loadMarketplacesConfigWithPreset($preset) {
+    public static function loadMarketplacesConfigWithPreset($preset)
+    {
         $apiKey = self::$config[$preset]['environment.api_key'];
         $apiSecret = self::$config[$preset]['environment.api_secret'];
         $host = self::$config[$preset]['dev-platform.host'];
         $api_path = self::$config[$preset]['dev-platform.api_path'];
 
         // Call to the dev-platform
-        $response = \Httpful\Request::get($host.$api_path."marketplaces")
+        $response = \Httpful\Request::get($host . $api_path . "marketplaces")
             ->authenticateWith($apiKey, $apiSecret)
             ->send();
 
@@ -107,9 +108,8 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
      * @param $parameter string Name of the missing parameter
      * @throws Maestrano_Config_Error
      */
-    public static function throwMissingParameterError($parameter) {
+    public static function throwMissingParameterError($parameter)
+    {
         throw new Maestrano_Config_Error("Missing '$parameter' parameter in dev-platform config.");
     }
-
-
 }
