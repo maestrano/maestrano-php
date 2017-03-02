@@ -13,10 +13,17 @@ class Maestrano_Sso_Session extends Maestrano_Util_PresetObject
     private $recheck = null;
 
     /**
-     * Construct the Maestrano_Sso_Session object
+     * Construct the Maestrano_Sso_Session object, creating a new session
+     *
+     * @param $preset string Marketplace associated to this session
+     * @param $http_session array HTTP Session
+     * @param $user Maestrano_Sso_User
      */
-    private function __construct(&$http_session, $user = null)
+    public function __construct($preset, &$http_session, $user = null)
     {
+        // Save preset to use
+        $this->_preset = $preset;
+
         // Populate attributes from params
         $this->httpSession = &$http_session;
 
@@ -41,21 +48,6 @@ class Maestrano_Sso_Session extends Maestrano_Util_PresetObject
                 $this->recheck = new DateTime($sessionObj['session_recheck']);
             }
         }
-    }
-
-    /**
-     * Create a new session
-     *
-     * @param $preset string Marketplace to log in
-     * @param $http_session array HTTP Session
-     * @param $user Maestrano_Sso_User
-     * @return Maestrano_Sso_Session Session created
-     */
-    public static function create($preset, &$http_session, $user = null)
-    {
-        $obj = new Maestrano_Sso_Session($http_session, $user, $preset);
-        $obj->_preset = $preset;
-        return $obj;
     }
 
     /**

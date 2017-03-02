@@ -182,7 +182,7 @@ if ($resp->isValid()) {
 
     // Once the user is created/identified, we store the maestrano
     // session. This session will be used for single logout
-    $mnoSession = Maestrano_Sso_Session::create($_SESSION["marketplace"], $_SESSION, $user);
+    $mnoSession = new Maestrano_Sso_Session($_SESSION["marketplace"], $_SESSION, $user);
     $mnoSession->save();
 
     // Redirect the user to home page
@@ -198,7 +198,7 @@ Note that for the consume action you should disable CSRF authenticity if your fr
 If you want your users to benefit from single logout then you should define the following filter in a module and include it in all your controllers except the one handling single sign-on authentication.
 
 ```php
-$mnoSession = Maestrano_Sso_Session::create($_SESSION["marketplace"], $_SESSION);
+$mnoSession = new Maestrano_Sso_Session($_SESSION["marketplace"], $_SESSION);
 
 // Trigger SSO handshake if session not valid anymore
 if (!$mnoSession->isValid()) {
@@ -222,7 +222,7 @@ session_start();
 session_destroy();
 
 // Redirect to IDP logout url
-$mnoSession = Maestrano_Sso_Session::create($_SESSION["marketplace"], $_SESSION);
+$mnoSession = new Maestrano_Sso_Session($_SESSION["marketplace"], $_SESSION);
 $logoutUrl = $mnoSession->getLogoutUrl();
 
 header("Location: $logoutUrl");

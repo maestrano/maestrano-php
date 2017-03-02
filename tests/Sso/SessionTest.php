@@ -31,7 +31,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
 
     public function testContructsAnInstanceFromHttpSession()
     {
-        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
 
         $this->assertEquals($this->httpSession, $this->subject->getHttpSession());
         $this->assertEquals($this->mnoSession["uid"], $this->subject->getUid());
@@ -44,7 +44,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
     {
         $samlResp = new SamlMnoRespStub();
         $user = new Maestrano_Sso_User($samlResp);
-        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession, $user);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession, $user);
 
         $this->assertEquals($this->httpSession, $this->subject->getHttpSession());
         $this->assertEquals($user->getUid(), $this->subject->getUid());
@@ -60,7 +60,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
         $this->mnoSession["session_recheck"] = $date->format(DateTime::ISO8601);
         SessionTestHelper::setMnoEntry($this->httpSession, $this->mnoSession, $this->marketplace);
 
-        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
 
         // test
         $this->assertTrue($this->subject->isRemoteCheckRequired());
@@ -73,7 +73,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
         $this->mnoSession["session_recheck"] = $date->format(DateTime::ISO8601);
         SessionTestHelper::setMnoEntry($this->httpSession, $this->mnoSession, $this->marketplace);
 
-        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
 
         // test
         $this->assertFalse($this->subject->isRemoteCheckRequired());
@@ -90,7 +90,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
         $resp["recheck"] = $date->format(DateTime::ISO8601);
 
         $this->httpClient->setResponseStub($resp);
-        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
 
         // Tests
         $this->assertTrue($this->subject->performRemoteCheck($this->httpClient));
@@ -107,7 +107,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
         $resp["recheck"] = $date->format(DateTime::ISO8601);
 
         $this->httpClient->setResponseStub($resp);
-        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
         $recheck = $this->subject->getRecheck();
 
         $this->assertFalse($this->subject->performRemoteCheck($this->httpClient));
@@ -117,7 +117,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
     public function testSaveSavesTheMaestranoSessionInHttpSession()
     {
 
-        $oldSubject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $oldSubject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
         $oldSubject->setUid($oldSubject->getUid() + "aaa");
         $oldSubject->setGroupUid($oldSubject->getGroupUid() + "aaa");
         $oldSubject->setSessionToken($oldSubject->getSessionToken() + "aaa");
@@ -126,7 +126,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
         $oldSubject->setRecheck($date);
         $oldSubject->save();
 
-        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
 
         $this->assertEquals($oldSubject->getUid(), $this->subject->getUid());
         $this->assertEquals($oldSubject->getGroupUid(), $this->subject->getGroupUid());
@@ -140,7 +140,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
         $this->httpSession["some-marketplace"] = null;
 
         // test
-        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
         $this->assertTrue($this->subject->isValid(true));
     }
 
@@ -158,7 +158,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
         $localRecheck = new DateTime();
         $localRecheck->add(new DateInterval('PT1M'));
 
-        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
         $this->subject->setRecheck($localRecheck);
 
         // test
@@ -179,14 +179,14 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
         // Set local recheck in the past
         $localRecheck = new DateTime();
         $localRecheck->sub(new DateInterval('PT1M'));
-        $oldSubject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $oldSubject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
         $oldSubject->setRecheck($localRecheck);
 
         // test 1 - validity
         $this->assertTrue($oldSubject->isValid(false, $this->httpClient));
 
         // Create a new subject to test session persistence
-        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
 
         // test 2 - session persistence
         $this->assertEquals($date->format(DateTime::ISO8601), $this->subject->getRecheck()->format(DateTime::ISO8601));
@@ -207,7 +207,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
         $localRecheck = new DateTime();
         $localRecheck->sub(new DateInterval('PT1M'));
 
-        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
         $this->subject->setRecheck($localRecheck);
 
         // test 1 - validity
@@ -216,7 +216,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
 
     public function ssoTokenExists_IfSsoTokenExists_ItShouldReturnTrue()
     {
-        $this->subject = Maestrano_Sso_Session::create($this->marketplace, $this->httpSession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $this->httpSession);
 
         // test 1 - validity
         $this->assertTrue($this->subject->ssoTokenExists());
@@ -225,7 +225,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
     public function ssoTokenExists_IfNoSsoTokenExists_ItShouldReturnFalse()
     {
         $emptySession = array();
-        $this->subject = new Maestrano_Sso_Session($emptySession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $emptySession);
 
         // test 1 - validity
         $this->assertFalse($this->subject->ssoTokenExists());
@@ -234,7 +234,7 @@ class Maestrano_Sso_SessionTest extends PHPUnit_Framework_TestCase
     public function isValid_WhenNoSsoTokenIsPresent_ItShouldReturnFalse()
     {
         $emptySession = array();
-        $this->subject = new Maestrano_Sso_Session($emptySession);
+        $this->subject = new Maestrano_Sso_Session($this->marketplace, $emptySession);
 
         // test 1 - validity
         $this->assertFalse($this->subject->isValid());
