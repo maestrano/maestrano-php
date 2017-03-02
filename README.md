@@ -174,6 +174,9 @@ if ($resp->isValid()) {
     $_SESSION["id"] = $user->getId();
     $_SESSION["email"] = $user->getEmail();
 
+    $_SESSION["vid"] = $user->getVirtualId();
+    $_SESSION["vemail"] = $user->getVirtualEmail();
+
     // Store group details
     $_SESSION["groupId"] = $group->getId();
     $_SESSION["groupName"] = $group->getName();
