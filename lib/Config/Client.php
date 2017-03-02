@@ -4,6 +4,7 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
 {
     /* Internal Config Map */
     protected static $config = array();
+    protected static $cache = NULL;
 
     /**
      * Configure the Maestrano PHP SDK using the Developer Platform
@@ -45,22 +46,39 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
      */
     public static function loadMarketplacesConfigWithPreset($preset)
     {
-        $apiKey = self::$config[$preset]['environment.api_key'];
-        $apiSecret = self::$config[$preset]['environment.api_secret'];
-        $host = self::$config[$preset]['dev-platform.host'];
-        $api_path = self::$config[$preset]['dev-platform.api_path'];
+        if (self::$cache == NULL)
+            self::$cache = new Maestrano_Util_Cache();
+        self::$cache->cache_path = './';
+        self::$cache->cache_time = 43200; // 12h
 
-        // Call to the dev-platform
-        $response = \Httpful\Request::get($host . $api_path . "marketplaces")
-            ->authenticateWith($apiKey, $apiSecret)
-            ->send();
+        if(!$data = self::$cache->get_cache('dev-platform')) {
+            $apiKey = self::$config[$preset]['environment.api_key'];
+            $apiSecret = self::$config[$preset]['environment.api_secret'];
+            $host = self::$config[$preset]['dev-platform.host'];
+            $api_path = self::$config[$preset]['dev-platform.api_path'];
 
-        // Connection error management
-        if ($response->code >= 400)
-            throw new Maestrano_Config_Error("An error occurred while retrieving the marketplaces. HTTP Error code: $response->code", $response->code);
+            try {
+                // Call to the dev-platform
+                $response = \Httpful\Request::get($host . $api_path . "marketplaces")
+                    ->authenticateWith($apiKey, $apiSecret)
+                    ->send();
+                $data = $response->raw_body;
 
-        // Httpful is dumb and doesn't allow you to get json as an associative array but only as an object
-        $json_body = json_decode($response->raw_body, true);
+                if ($response->code >= 400) {
+                    throw new Maestrano_Config_Error("HTTP Error, code: $response->code", $response->code);
+                }
+            } catch (Exception $e) {
+                error_log("maestrano-php: An error occurred while retrieving the marketplaces. Error: $e");
+                error_log("maestrano-php: Re-using existing cached configuration, if any.");
+                if (!$data = self::$cache->get_cached_file('dev-platform'))
+                    throw new Maestrano_Config_Error("No cached configuration found.");
+            }
+
+            self::$cache->set_cache('dev-platform', $data);
+        }
+
+        // Transform json as an associative array
+        $json_body = json_decode($data, true);
 
         // Dev-platform error management
         if (array_key_exists('error', $json_body))

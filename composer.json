@@ -19,7 +19,8 @@
     "ext-curl": "*",
     "ext-json": "*",
     "ext-mbstring": "*",
-    "nategood/httpful": "*"
+    "nategood/httpful": "*",
+    "gilbitron/php-simplecache": "~1.4"
   },
   "require-dev": {
     "phpunit/phpunit": "4.8.*"
