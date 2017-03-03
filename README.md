@@ -141,6 +141,12 @@ $req = Maestrano_Saml_Request::with($marketplace)->new($_GET);
 header('Location: ' . $req->getRedirectUrl());
 ```
 
+For some reason, you may need to have a dynamic host where the consume request will be sent. You can use this method on the request object:
+```
+$req->setConsumerHost('http://consume.myapp.com/');
+```
+The default consume path will be appended appended to this host. (eg. `http://consume.myapp.com/maestrano/auth/saml/consume.php?marketplace=maestrano`)
+
 Based on your application requirements the consume action might look like this:
 ```php
 <?php

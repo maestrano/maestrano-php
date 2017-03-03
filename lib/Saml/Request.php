@@ -19,26 +19,29 @@ class Maestrano_Saml_Request extends Maestrano_Util_PresetObject
      */
     protected $_get_params;
 
+
     /**
      * Construct the Request object.
      *
      * @param $get_params the GET parameters associative array
      */
-    public function __construct($get_params = array(), $settings = null)
+    private function __construct($preset, $get_params = array(), $settings = null)
     {
         if ($settings == null) {
-          $settings = Maestrano::sso()->getSamlSettings();
+            $settings = Maestrano::sso()->getSamlSettings();
         }
 
         $this->_settings = $settings;
         $this->_get_params = $get_params;
+        $this->_preset = $preset;
     }
 
-    public static function newWithPreset($preset, $get_params = array(), $settings = null) {
-      if ($settings == null) {
-        $settings = Maestrano::with($preset)->sso()->getSamlSettings();
-      }
-      return new Maestrano_Saml_Request($get_params,$settings);
+    public static function newWithPreset($preset, $get_params = array(), $settings = null)
+    {
+        if ($settings == null) {
+            $settings = Maestrano::with($preset)->sso()->getSamlSettings();
+        }
+        return new Maestrano_Saml_Request($preset, $get_params, $settings);
     }
 
     /**
@@ -81,10 +84,21 @@ AUTHNREQUEST;
 
         // Keep the original GET parameters
         foreach ($this->_get_params as $param => $value) {
-          $url .= "&" . $param . "=" . urlencode($value);
+            $url .= "&" . $param . "=" . urlencode($value);
         }
 
         return $url;
+    }
+
+    /**
+     * Override the default host to contact for the consume.
+     * The default consume path is appended to this host.
+     * @param $host string Host to contact
+     */
+    public function setConsumerHost($host)
+    {
+        $host = rtrim($host, '/');
+        $this->_settings->spReturnUrl = $host . Maestrano::with($this->_preset)->param('sso.consume_path');
     }
 
     protected function _generateUniqueID()
