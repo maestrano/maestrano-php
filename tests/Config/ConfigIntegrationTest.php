@@ -10,11 +10,10 @@ class ConfigIntegrationTest extends PHPUnit_Framework_TestCase
     public function setUp() {
         $this->config = json_decode('{
           "dev-platform": {
-            "host": "https://dev-platform.maestrano.com",
+            "host": "https://developer.maestrano.com",
             "api_path": "/api/config/v1/"
           },
           "environment": {
-            "name": "local",
             "api_key": "5e351c6a-b385-425d-b7d2-bafdb22f9476",
             "api_secret": "SFHrk0XVRZXfQS9hO8stYA"
           }
@@ -24,7 +23,7 @@ class ConfigIntegrationTest extends PHPUnit_Framework_TestCase
     public function testConfigure() {
         $result = Maestrano_Config_Client::with('dev-platform')->configure($this->config);
 
-        $this->assertEquals($result['dev-platform.host'], 'https://dev-platform.maestrano.com');
+        $this->assertEquals($result['dev-platform.host'], 'https://developer.maestrano.com');
         $this->assertEquals($result['dev-platform.api_path'], '/api/config/v1/');
         $this->assertEquals($result['environment.api_key'], '5e351c6a-b385-425d-b7d2-bafdb22f9476');
         $this->assertEquals($result['environment.api_secret'], 'SFHrk0XVRZXfQS9hO8stYA');
