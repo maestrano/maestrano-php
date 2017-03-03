@@ -48,7 +48,7 @@ class Maestrano_Config_Client extends Maestrano_Util_PresetObject
     {
         if (self::$cache == NULL)
             self::$cache = new Maestrano_Util_Cache();
-        self::$cache->cache_path = './';
+        self::$cache->cache_path = dirname(__FILE__) . '/';
         self::$cache->cache_time = 43200; // 12h
 
         if(!$data = self::$cache->get_cache('dev-platform')) {
